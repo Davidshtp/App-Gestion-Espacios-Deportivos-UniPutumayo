@@ -1,0 +1,183 @@
+/* --- Contenedor general --- */
+.noticias-section {
+    width: 100%; /* Ajustado para evitar desbordamiento */
+    margin-top: 5px;
+    padding: 0 16px;
+    overflow: hidden;
+}
+
+.noticias-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: #111827;
+    margin-left: 4vh;
+}
+
+/* --- Slider con flechas --- */
+.slider-wrapper {
+    width: 100%; /* Ocupa el 100% del padre (.noticias-section) */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+.arrow {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111827;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s, opacity 0.3s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+.arrow svg {
+    pointer-events: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.arrow:hover:not(:disabled) {
+    background-color: #f3f4f6;
+    transform: scale(1.08);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.arrow:disabled,
+.arrow-hidden {
+    background-color: #f9fafb;
+    border-color: #e5e7eb;
+    color: #9ca3af;
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Contenedor para el scroll */
+.slider-container {
+    overflow-x: auto;
+    width: 100%; /* Ocupa el 100% del espacio entre las flechas */
+    padding: 3vh 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 16px; /* Sincronizado con el padding del wrapper */
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none;
+}
+
+.slider {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 15px;
+    padding: 0;
+}
+
+/* --- Tarjeta individual --- */
+.noticia-card {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vh;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-bottom: 2px solid #e5e7eb;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    overflow: hidden;
+    padding-bottom: 12px;
+    box-sizing: border-box;
+}
+
+.noticia-card:hover {
+    transform: scale(1.02);
+}
+
+.noticia-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.noticia-card h4 {
+    margin: 12px 12px 4px;
+    font-size: 16px;
+    color: #1f2937;
+    max-height: 8em;
+    overflow: hidden;
+}
+
+.noticia-card p {
+    margin: 0 12px;
+    font-size: 14px;
+    color: #4b5563;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    min-height: 40px;
+}
+
+.fecha-evento {
+    margin: 0 12px;
+    margin-top: auto;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* --- Mensaje cuando no hay noticias --- */
+.noticias-empty {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.1rem;
+    color: #777;
+    font-style: italic;
+    width: 100%;
+}
+
+/* --- Media Queries para el responsive --- */
+
+/* Por defecto (móviles) */
+.noticia-card {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+}
+
+/* Tabletas y pantallas pequeñas (más de 550px) */
+@media (min-width: 600px) {
+  .noticia-card {
+    flex: 0 0 calc((100% - 15px) / 2); /* 2 tarjetas con 15px de gap */
+    scroll-snap-align: start;
+  }
+}
+
+/* Portátiles y pantallas medianas (más de 769px) */
+@media (min-width: 769px) {
+  .noticia-card {
+    flex: 0 0 calc((100% - 15px * 2) / 3); /* 3 tarjetas con 2x15px de gap */
+  }
+}
+
+/* Escritorio y pantallas grandes (más de 1025px) */
+@media (min-width: 1025px) {
+  .noticia-card {
+    flex: 0 0 calc((100% - 15px * 3) / 4); /* 4 tarjetas con 3x15px de gap */
+  }
+}

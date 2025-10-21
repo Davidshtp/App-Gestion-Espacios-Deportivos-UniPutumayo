@@ -1,0 +1,59 @@
+/* Tarjeta principal */
+.stat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  color: white;
+  overflow: hidden;
+  min-width: 220px;
+  max-width: 300px;
+}
+
+
+/* Encabezado */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.card-icon {
+  font-size: 3rem;
+  color: #fff;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+.stat-label {
+  margin: 10px 0 0 0;
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.eventos-detalle {
+  margin-top: 15px;
+  font-size: 14px;
+  font-style: italic;
+  opacity: 0.9;
+  text-align: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+/* Error */
+.error-card {
+  background-color: #ef4444; /* Rojo para indicar un error */
+  text-align: center;
+}

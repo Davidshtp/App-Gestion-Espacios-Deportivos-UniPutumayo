@@ -1,0 +1,518 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+/*Reseteo de pagina*/
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  box-sizing: inherit;
+  font-family: 'Poppins', sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
+/*Estilos de imagenes*/
+.background-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: zoom 15s ease-in-out infinite;
+  transform: scale(1);
+  transition: opacity 1.5s ease-in-out;
+  z-index: 1;
+}
+
+.background-image.active {
+  opacity: 1;
+}
+
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* overlay oscuro para el fondo de pantalla*/
+.background-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3));
+  z-index: 2;
+}
+
+/*Pagina entera*/
+.login-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+
+/* header del login*/
+.top-header {
+  position: absolute;
+  top: 6vh;
+  width: 100vw;
+  display: flex;
+  z-index: 4;
+  transition: transform 2s ease-in-out;
+  justify-content: flex-end;
+  padding: 0 5vw;
+}
+
+/* contenedor de botones de login*/
+.container_button {
+  display: flex;
+  gap: 5vw;
+}
+
+/* botones de login*/
+.container_button button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+  font-size: 0.8rem;
+}
+
+/*contenedor general de las cards*/
+.login-container {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  transition: transform 2.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+
+
+/*Estilos de decorative*/
+.decorative {
+  width: 100vw;
+  color: #fff;
+  display: flex;
+  gap: 1vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 8vh 10vw 8vh 10vw;
+  text-align: center;
+  margin-top: 10vh;
+}
+
+.decorative h1 {
+  font-size: 2.5rem;
+  color: #fff;
+}
+
+.decorative p {
+  color: #ccc;
+  max-width: 400px;
+  font-size: 0.8rem;
+}
+
+/*Estilos de logo*/
+.Logo_Itp {
+  position: absolute;
+  top: 4vh;
+  left: 4vw;
+  width: 30%;
+  max-width: 120px;
+  z-index: 5;
+  transform: translateX(0);
+  transition: transform 2s ease-in-out;
+}
+
+/*Estilos tarjeta frontal*/
+.login-card {
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  perspective: 2000px;
+  /* 👈 se mantiene aquí */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*Estilos cotenedor header tarjeta frontal*/
+.login-header {
+  display: flex;
+  flex-direction: column;
+  z-index: 4;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  margin-bottom: 3%;
+}
+
+.login-header h2 {
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.login-header p {
+  color: #aaa;
+  font-size: 1rem;
+}
+
+.login-card input {
+  padding: 4% 4%;
+  border: none;
+  border-radius: 9px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 0.8rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+  margin: 2% 4%;
+  width: 90%;
+  max-width: 645px;
+}
+
+.login-card input:focus {
+  outline: none;
+  background-color: #fff;
+}
+
+
+.login-card button {
+  padding: 1.3vh;
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.login-card button:hover {
+  background-color: #1259b0;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 0.7rem;
+  color: #ccc;
+}
+
+.options a {
+  color: #9ec5fe;
+  text-decoration: none;
+}
+
+.options a:hover {
+  text-decoration: underline;
+}
+
+.login-card p {
+  margin-top: 1vh;
+  font-size: 0.8rem;
+  color: #ddd;
+}
+
+/*Estilos card reverso*/
+.flip-inner {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  transition: transform 1s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+
+.flip-front,
+.flip-back {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  max-width: 440px;
+  width: 80%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-front form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.flip-back {
+  width: 95%;
+  background-color: rgba(68, 65, 65, 0.85);
+  color: #fff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5vw;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.flip-back h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.flip-back p {
+  max-width: 400px;
+  margin-bottom: 1.2rem;
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+.info-logo {
+  height: 7vh;
+  margin-top: 1rem;
+}
+
+.back-button {
+  margin-top: 1.5rem;
+  padding: 0.7vh 1.2vw;
+  background-color: #1a73e8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 50%;
+}
+
+.back-button:hover {
+  background-color: #1259b0;
+}
+
+.register-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-button button {
+  width: 70%;
+  max-width: 225px;
+  margin-top: 1vh;
+}
+
+.google-login {
+  margin-top: 1.5vh;
+  display: flex;
+  justify-content: center;
+}
+
+
+
+.p-login_google {
+  text-align: center;
+}
+
+/* Animación fade-form */
+.fade-form {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.fade-form.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.status-message {
+  margin-top: 12px;
+  text-align: center;
+  font-weight: bold;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.status-message.success {
+  color: #27ae60;
+}
+
+.status-message.error {
+  color: #c0392b;
+}
+
+
+
+
+
+/* Móviles grandes */
+@media (min-width: 440px) {
+
+  .login-card button {
+    padding: 1.4vh;
+  }
+}
+
+/* Tablets pequeñas */
+@media (min-width: 640px) {}
+
+/* Tablets medianas */
+@media (min-width: 900px) {
+  .login-container {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  /*Estilos tarjeta frontal*/
+  .login-card {
+    width: 75%;
+  }
+
+  .login-card,
+  .top-header,
+  .Logo_Itp,
+  .container_button,
+  .decorative {
+    transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+
+  }
+
+  .login-container.slide-register .login-card {
+    transform: translateX(calc(100vw - 100%));
+  }
+
+  .login-page.register-mode .container_button {
+    transform: translateX(calc(-100vw + 160%));
+  }
+
+  .login-container.slide-register .Logo_Itp {
+    transform: translateX(calc(-100vw + 130%));
+    /* logo a la izquierda */
+  }
+
+  .login-container.slide-register .decorative {
+    transform: translateX(calc(-100vw + 100%));
+    /* logo a la izquierda */
+  }
+
+
+
+  .decorative {
+    justify-content: center;
+
+  }
+
+  .info-logo {
+    height: 10vh;
+    margin-top: 1rem;
+  }
+
+  .Logo_Itp {
+    top: auto;
+    left: auto;
+    bottom: 3vh;
+    right: 3vw;
+    width: 13rem;
+    max-width: none;
+  }
+}
+
+/* Laptops */
+@media (min-width: 1024px) {
+  .login-container {
+    flex-direction: row;
+  }
+
+  /*Estilos tarjeta frontal*/
+  .login-card {
+    width: 75%;
+  }
+
+  .decorative h1 {
+    font-size: 2.7rem;
+  }
+
+  .decorative p {
+    font-size: 1rem;
+  }
+
+  .info-logo {
+    height: 5rem;
+    margin-top: 1rem;
+  }
+
+  .Logo_Itp {
+    top: auto;
+    left: auto;
+    bottom: 3vh;
+    right: 3vw;
+    width: 15rem;
+    max-width: none;
+  }
+}
+
+/* Escritorios medianos */
+@media (min-width: 1280px) {
+  .decorative h1 {
+    font-size: 3rem;
+  }
+
+  .decorative p {
+    font-size: 1.1rem;
+  }
+
+  .login-header h2,
+  .flip-back h2 {
+    font-size: 2rem;
+  }
+
+  .login-card input,
+  .login-card button,
+  .login-header p,
+  .container_button button,
+  .flip-back p {
+    font-size: 1rem;
+  }
+
+  .options a {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .container_button {
+    gap: 4vw;
+  }
+}

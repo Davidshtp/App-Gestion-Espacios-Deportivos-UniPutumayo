@@ -1,0 +1,53 @@
+/* src/components/AccessDenied.css */
+.access-denied-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 30vh);
+  background-color: #f2f2f2;
+  padding: 2rem;
+}
+
+
+.access-denied-card {
+  background-color: #fff;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 460px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e0e0e0;
+}
+
+.access-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.access-denied-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+  color: #333;
+}
+
+.access-denied-card p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.access-denied-card button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.access-denied-card button:hover {
+  background-color: #000;
+}

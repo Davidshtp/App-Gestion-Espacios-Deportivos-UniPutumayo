@@ -1,0 +1,177 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+}
+
+/*animacion abrir modal */
+@keyframes expandirModal {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* Modal ancho con scroll interno invisible */
+.modal-evento-wide {
+  background: #fef8f8;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1000px;
+  height: 85vh;            /* ← Esto limita su altura */
+  max-height: 800px;
+  overflow: hidden;        /* ← Esto impide que el modal se expanda */
+  box-sizing: border-box;
+  animation: expandirModal 0.35s ease-out;
+}
+
+/* Scroll invisible en navegadores Webkit */
+.modal-evento-wide::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Para Firefox */
+.modal-evento-wide {
+  scrollbar-width: none;
+}
+
+/* Columnas del modal */
+.modal-left {
+  flex: 1;
+  min-width: 75vh;
+}
+
+.modal-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+  padding-right: 2rem;       /* espacio para el scrollbar */
+  margin-right: -1rem;       /* lo compensa visualmente */
+  box-sizing: content-box;   /* necesario para evitar que padding afecte el ancho */
+  overflow-x: hidden;      /* evita scroll horizontal */
+  max-width: 100%;         /* asegura que no crezca más del contenedor padre */
+}
+
+
+/* Scroll invisible (WebKit) */
+.modal-right::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+/* Inputs y textarea */
+.modal-right input,
+.modal-right textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* Drag & drop area */
+.drop-area {
+  border: 2px dashed #aaa;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.drop-area.dragover {
+  background-color: #f0f0f0;
+  border-color: #333;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 200px;
+  display: block;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.preview-placeholder {
+  color: #888;
+}
+
+/* Botones */
+.modal-botones {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-botones button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-botones .btn-cancelar {
+  background: #ccc;
+}
+
+.modal-botones button:not(.btn-cancelar) {
+  background-color: #007bff;
+  color: white;
+}
+
+.modal-right textarea.descripcion-input {
+  min-height: 35px;
+  resize: vertical;
+  flex-shrink: 0;
+  flex-grow: 1;
+  box-sizing: border-box;
+}
+
+.preview-container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.remove-image-button:hover {
+  background: rgba(83, 78, 78, 0.8);
+}
+

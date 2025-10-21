@@ -1,0 +1,95 @@
+.calendario-container {
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 85%;
+  margin-inline: auto;
+  padding: 2rem 1.5rem;
+  border-radius: 14px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.calendario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.calendario-header button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #3b82f6;
+}
+
+.calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+}
+
+.dias-semana {
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.cal-dia-semana {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.dias-del-mes {
+  text-align: center;
+}
+
+.cal-dia button {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 0;
+  color: #1f2937;
+}
+
+.cal-dia button:hover:not(:disabled) {
+  background-color: #dbeafe;
+  color: #1e40af;
+  font-weight: bold;
+}
+
+/* Deshabilitado (fechas pasadas) */
+.cal-dia button:disabled {
+  background-color: #e5e7eb;
+  color: #9ca3af;
+  cursor:default ;
+  opacity: 0.6;
+}
+
+/* Hoy */
+.cal-dia button.hoy {
+  background-color: #c7d2fe;
+  color: #3730a3;
+  font-weight: bold;
+}
+
+/* Capa de selección encima */
+.cal-dia button.seleccionada .overlay-seleccionada {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(31, 41, 55, 0.4); /* gris oscuro translúcido */
+  border-radius: 8px;
+  z-index: 1;
+}

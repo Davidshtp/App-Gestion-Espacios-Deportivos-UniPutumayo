@@ -1,0 +1,136 @@
+/* Evita scrolls globales innecesarios */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal de las tarjetas */
+.reserva-layout {
+  display: flex;
+  width: 78vw;
+  height: 78vh; /* Ajustar según header */
+  overflow: hidden;
+  gap: 1.5rem;         /* Espacio entre tarjetas */
+  padding: 1rem 2rem;  /* Margen del borde de pantalla */
+  box-sizing: border-box;
+}
+
+/* Cada tarjeta representa un espacio deportivo */
+.tarjeta {
+  flex: 1;
+  height: 100%;
+  perspective: 1200px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  transition: transform 0.4s ease-in-out;
+}
+
+/* Hover solo si la tarjeta está visible (no volteada) */
+.tarjeta:not(.flipped):hover {
+  transform: scale(1.05);
+  z-index: 2;
+  border-radius: 70px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  overflow: visible;
+}
+
+/* Cursor para mostrar interactividad */
+.tarjeta:not(.flipped) {
+  cursor: pointer;
+}
+
+.tarjeta.flipped {
+  cursor: default;
+}
+
+/* Parte interna giratoria */
+.tarjeta-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+}
+
+/* Gira la tarjeta cuando se activa */
+.tarjeta.flipped .tarjeta-inner {
+  transform: rotateY(180deg);
+}
+
+/* Caras de la tarjeta */
+.tarjeta-front,
+.tarjeta-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Parte frontal: título + imagen */
+.tarjeta-front {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.tarjeta-front h2 {
+  margin: 0.5rem;
+  font-size: 1.5rem;
+}
+
+/* Imágenes con cobertura completa */
+.tarjeta-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+/* Colores diferenciados */
+.tarjeta:nth-child(1) .tarjeta-front {
+  background-color: #0d9488; /* Verde agua para polideportivo */
+}
+
+.tarjeta:nth-child(2) .tarjeta-front {
+  background-color: #1d4ed8; /* Azul para cancha sintética */
+}
+
+/* Parte trasera: calendario y horas */
+.tarjeta-back {
+  transform: rotateY(180deg);
+  background-color: rgb(238, 236, 236);
+  overflow-y: auto;
+}
+
+/* Contenedor del calendario y horas */
+.contenido-reserva {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-top: 3vh;
+  padding-right: 10px;
+  box-sizing: border-box;
+  padding-left: 1vh;
+  padding-bottom: 3vh;
+  gap:4vh
+}
+
+.contenido-reserva::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+

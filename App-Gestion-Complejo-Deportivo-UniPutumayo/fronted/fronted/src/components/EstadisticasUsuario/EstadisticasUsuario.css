@@ -1,0 +1,38 @@
+/* EstadisticasUsuario.css */
+
+.estadisticas-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center; /* Centra los elementos horizontalmente */
+}
+.stat-card {
+  flex: 1;
+  min-width: 180px;
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(85, 73, 57);
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.stat-label {
+  margin-top: 6px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Colores */
+.azul {
+  background-color: #3b82f6;
+}
+
+.morado {
+  background-color: #8b5cf6;
+}
+
