@@ -44,19 +44,6 @@ export const cancelarReserva = async ({ fecha_hora, espacio_id }) => {
   }
 };
 
-
-// Obtener deportes disponibles para reservar
-export const getDeportes = async () => {
-  try {
-    const response = await api.get("/deportes/obtener-deportes");
-    return response.data;
-  } catch (err) {
-    console.error("Error al obtener los deportes:", err);
-    throw err;
-  }
-};
-
-
 // Marcar reserva como "en uso" (solo admin)
 export const marcarReservaEnUso = async ({ fecha_hora, espacio_id }) => {
   try {

@@ -29,18 +29,27 @@ export default function Sidebar() {
         <Link to="/inicio" className={isActive("/inicio") ? "active" : ""} onClick={() => setIsOpen(false)}>
           🏠 <span className="link-text">Inicio</span>
         </Link>
-        <Link to="/reservar" className={isActive("/reservar") ? "active" : ""}onClick={() => setIsOpen(false)}>
+        <Link to="/reservar" className={isActive("/reservar") ? "active" : ""} onClick={() => setIsOpen(false)}>
           📅 <span className="link-text">Reservar</span>
         </Link>
-        <Link to="/mis-reservas" className={isActive("/mis-reservas") ? "active" : ""}onClick={() => setIsOpen(false)}>
+        <Link to="/mis-reservas" className={isActive("/mis-reservas") ? "active" : ""} onClick={() => setIsOpen(false)}>
           📖 <span className="link-text">Mis reservas</span>
         </Link>
         {user.rolId === 1 && (
-          <Link to="/eventos" className={isActive("/eventos") ? "active" : ""}onClick={() => setIsOpen(false)}>
-            📢 <span className="link-text">Eventos</span>
-          </Link>
+          <>
+            <Link to="/eventos" className={isActive("/eventos") ? "active" : ""} onClick={() => setIsOpen(false)}>
+              📢 <span className="link-text">Eventos</span>
+            </Link>
+            <Link to="/espacios" className={isActive("/espacios") ? "active" : ""} onClick={() => setIsOpen(false)}>
+              🏟️ <span className="link-text">Espacios Deportivos</span>
+            </Link>
+            <Link to="/deportes" className={isActive("/deportes") ? "active" : ""} onClick={() => setIsOpen(false)}>
+              🏐 <span className="link-text">Deportes</span>
+            </Link>
+          </>
+
         )}
-        <Link to="/perfil" className={isActive("/perfil") ? "active" : ""}onClick={() => setIsOpen(false)}>
+        <Link to="/perfil" className={isActive("/perfil") ? "active" : ""} onClick={() => setIsOpen(false)}>
           👤 <span className="link-text">Perfil</span>
         </Link>
         <Link to="/" onClick={handleLogout} className="logout-link">

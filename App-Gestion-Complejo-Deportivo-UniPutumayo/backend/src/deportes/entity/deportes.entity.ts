@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ReservaEntity } from "src/reservas/entity/reservas.entity";
+import { EspacioEntity } from "src/espacio/entity/espacio.entity";
 
 @Entity({ name: "deporte" })
 export class DeporteEntity {
@@ -11,4 +12,7 @@ export class DeporteEntity {
 
   @OneToMany(() => ReservaEntity, (reserva) => reserva.deporte)
   reservas: ReservaEntity[];
+
+  @ManyToMany(() => EspacioEntity, espacio => espacio.deportes)
+  espacios: EspacioEntity[];
 }

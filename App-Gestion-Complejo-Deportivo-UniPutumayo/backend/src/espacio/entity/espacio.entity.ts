@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ReservaEntity } from "src/reservas/entity/reservas.entity";
+import { DeporteEntity } from "src/deportes/entity/deportes.entity";
 
 @Entity({ name: "espacio" })
 export class EspacioEntity {
@@ -9,6 +10,17 @@ export class EspacioEntity {
   @Column({ type: "varchar", length: 25 })
   espacio: string;
 
-  @OneToMany(() => ReservaEntity, (reserva) => reserva.espacio)
+  @Column({ type: "varchar", length: 500, nullable: true })
+  imagen_url: string;
+
+  @OneToMany(() => ReservaEntity, reserva => reserva.espacio, { cascade: true, onDelete: 'CASCADE' })
   reservas: ReservaEntity[];
+
+  @ManyToMany(() => DeporteEntity)
+  @JoinTable({
+    name: "espacio_deporte",
+    joinColumn: { name: "espacio_id", referencedColumnName: "id_espacio" },
+    inverseJoinColumn: { name: "deporte_id", referencedColumnName: "id_deporte" },
+  })
+  deportes: DeporteEntity[];
 }

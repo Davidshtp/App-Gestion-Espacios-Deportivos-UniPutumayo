@@ -19,8 +19,7 @@ export class ReservaEntity {
     @JoinColumn({ name: 'usuario_id' })
     usuario: UserEntity | null;
 
-    @ManyToOne(() => EspacioEntity, (espacio) => espacio.reservas)
-    @JoinColumn({ name: "espacio_id" })
+    @ManyToOne(() => EspacioEntity, espacio => espacio.reservas, { onDelete: 'CASCADE' })
     espacio: EspacioEntity;
 
     @ManyToOne(() => DeporteEntity, (deporte) => deporte.reservas, { nullable: true })

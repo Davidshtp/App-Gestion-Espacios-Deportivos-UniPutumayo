@@ -1,94 +1,92 @@
-/* Evita scrolls globales innecesarios */
-html, body, #root {
+/* --- Base global --- */
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   box-sizing: border-box;
 }
 
-/* Contenedor principal de las tarjetas */
+/* --- Layout flexible y responsivo --- */
 .reserva-layout {
-  display: flex;
-  width: 78vw;
-  height: 78vh; /* Ajustar según header */
-  overflow: hidden;
-  gap: 1.5rem;         /* Espacio entre tarjetas */
-  padding: 1rem 2rem;  /* Margen del borde de pantalla */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  justify-content: center;
+  align-content: start;
+  gap: 1.5rem;
+  width: 100%;
+  min-height: 90vh;
+  padding: 1.5rem 2rem;
   box-sizing: border-box;
-}
-
-/* Cada tarjeta representa un espacio deportivo */
-.tarjeta {
-  flex: 1;
-  height: 100%;
-  perspective: 1200px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 5px;
-  transition: transform 0.4s ease-in-out;
-}
-
-/* Hover solo si la tarjeta está visible (no volteada) */
-.tarjeta:not(.flipped):hover {
-  transform: scale(1.05);
-  z-index: 2;
-  border-radius: 70px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   overflow: visible;
 }
 
-/* Cursor para mostrar interactividad */
+/* --- Tarjeta general --- */
+.tarjeta {
+  position: relative;
+  perspective: 1200px;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.4s ease-in-out, min-height 0.4s ease;
+  height: 100%;
+  min-height: 300px;
+}
+
+/* Hover solo si no está volteada */
+.tarjeta:not(.flipped):hover {
+  transform: scale(1.03);
+  z-index: 2;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Cursor */
 .tarjeta:not(.flipped) {
   cursor: pointer;
 }
 
-.tarjeta.flipped {
-  cursor: default;
-}
-
-/* Parte interna giratoria */
+/* --- Parte interna giratoria --- */
 .tarjeta-inner {
   width: 100%;
   height: 100%;
   transition: transform 0.8s ease;
   transform-style: preserve-3d;
-  will-change: transform;
   position: relative;
 }
 
-/* Gira la tarjeta cuando se activa */
 .tarjeta.flipped .tarjeta-inner {
   transform: rotateY(180deg);
 }
 
-/* Caras de la tarjeta */
+/* --- Caras --- */
 .tarjeta-front,
 .tarjeta-back {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  overflow: hidden;
   border-radius: 10px;
+  overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Parte frontal: título + imagen */
+/* --- Frontal --- */
 .tarjeta-front {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   color: white;
 }
 
 .tarjeta-front h2 {
   margin: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
+  text-align: center;
 }
 
-/* Imágenes con cobertura completa */
 .tarjeta-front img {
   width: 100%;
   height: 100%;
@@ -96,41 +94,132 @@ html, body, #root {
   opacity: 0.85;
 }
 
-/* Colores diferenciados */
+/* Colores personalizados */
 .tarjeta:nth-child(1) .tarjeta-front {
-  background-color: #0d9488; /* Verde agua para polideportivo */
+  background-color: #0d9488;
 }
-
 .tarjeta:nth-child(2) .tarjeta-front {
-  background-color: #1d4ed8; /* Azul para cancha sintética */
+  background-color: #1d4ed8;
+}
+.tarjeta:nth-child(3) .tarjeta-front {
+  background-color: #011730;
+}
+.tarjeta:nth-child(4) .tarjeta-front {
+  background-color: #973777;
+}
+.tarjeta:nth-child(5) .tarjeta-front {
+  background-color: #b98b56;
+}
+.tarjeta:nth-child(6) .tarjeta-front {
+  background-color: #684040;
+}
+.tarjeta:nth-child(7) .tarjeta-front {
+  background-color: #9bdaf3;
+}
+.tarjeta:nth-child(8) .tarjeta-front {
+  background-color: #693d03;
+}
+.tarjeta:nth-child(9) .tarjeta-front {
+  background-color: #4a0968;
 }
 
-/* Parte trasera: calendario y horas */
+/* --- Parte trasera --- */
 .tarjeta-back {
   transform: rotateY(180deg);
   background-color: rgb(238, 236, 236);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
-/* Contenedor del calendario y horas */
+/* --- Contenido interno --- */
 .contenido-reserva {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100%;
-  overflow-y: auto;
-  scrollbar-width: none;
-  padding-top: 3vh;
-  padding-right: 10px;
+  min-height: 100%;
+  max-height: 100%;
+  padding: 3vh 10px;
+  gap: 4vh;
   box-sizing: border-box;
-  padding-left: 1vh;
-  padding-bottom: 3vh;
-  gap:4vh
+  scrollbar-width: none;
+}
+
+/* ✅ Cuando hay horas (fecha seleccionada) → permitir scroll interno */
+.contenido-reserva.scroll-activo {
+  overflow-y: auto;
+}
+
+/* ❌ Cuando solo está el calendario → sin scroll interno */
+.contenido-reserva.scroll-desactivado {
+  overflow: hidden;
 }
 
 .contenido-reserva::-webkit-scrollbar {
-  width: 0px;
+  width: 0;
   background: transparent;
 }
 
+/* --- Altura por defecto --- */
+.reserva-layout .tarjeta {
+  min-height: var(--altura-tarjeta, 400px);
+}
+
+/* --- Celulares --- */
+@media (max-width: 907px) {
+  .reserva-layout {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  .reserva-layout .tarjeta {
+    min-height: 620px !important;
+  }
+  .tarjeta-front h2 {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 720px) {
+  .reserva-layout .tarjeta {
+    min-height: 500px !important;
+  }
+}
+@media (max-width: 580px) {
+  .reserva-layout .tarjeta {
+    min-height: 420px !important;
+  }
+}
+
+/* --- Laptops medianas (1025px a 1116px) --- */
+@media (min-width: 1025px) and (max-width: 1116px) {
+  .reserva-layout .tarjeta {
+    min-height: 420px !important;
+  }
+}
+
+/* --- Si hay 1 o 2 tarjetas → ajustar altura --- */
+.reserva-layout:has(.tarjeta:nth-child(2):last-child),
+.reserva-layout:has(.tarjeta:nth-child(1):last-child) {
+  --altura-tarjeta: 550px;
+}
+
+/* ✅ Si hay solo 1 tarjeta → centrada y totalmente responsive */
+
+.reserva-layout:has(.tarjeta:nth-child(1):last-child) .tarjeta {
+  width: min(90%, 600px); /* máximo 600px, ocupa 90% en móvil */
+  min-height: clamp(360px, 100vh, 500px); /* ajusta dinámicamente la altura */
+  margin: 0 auto;
+  transform: none;
+}
+
+/* --- Animación suave al mostrar las horas --- */
+.horas-animadas {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: aparecerSuave 0.6s ease-out forwards;
+}
+
+@keyframes aparecerSuave {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

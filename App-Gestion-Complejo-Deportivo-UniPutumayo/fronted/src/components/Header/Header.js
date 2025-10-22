@@ -22,6 +22,10 @@ export default function Header() {
           return "Perfil";
         case "/eventos":
           return "Eventos";
+        case "/espacios":
+          return "Espacios";
+        case "/deportes":
+          return "Deportes";
         default:
           return "";
       }

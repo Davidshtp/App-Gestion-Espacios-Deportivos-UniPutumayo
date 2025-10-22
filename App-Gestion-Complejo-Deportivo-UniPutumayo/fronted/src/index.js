@@ -10,6 +10,9 @@ import GestionEventos from './components/Eventos/Eventos';
 import 'flatpickr/dist/themes/material_blue.css';
 import AdminRoute from './routes/AdminRoute';
 import AccessDenied from './components/AccessDenied/AccesDenied';
+import GestionEspacios from "./components/GestionEspacios/GestionEspacios"
+import GestionDeportes from './components/GestionDeportes/GestionDeportes';
+
 
 
 
@@ -34,13 +37,29 @@ root.render(
         >
           <Route path="inicio" element={<Inicio />} />
           <Route path="reservar" element={<Reservar />} />
-          <Route path='accesDenied' element={<AccessDenied/>}></Route>
+          <Route path='accesDenied' element={<AccessDenied />}></Route>
           {/* rutas para solo admins  */}
           <Route
             path="eventos"
             element={
               <AdminRoute>
                 <GestionEventos />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="espacios"
+            element={
+              <AdminRoute>
+                <GestionEspacios />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="deportes"
+            element={
+              <AdminRoute>
+                <GestionDeportes />
               </AdminRoute>
             }
           />

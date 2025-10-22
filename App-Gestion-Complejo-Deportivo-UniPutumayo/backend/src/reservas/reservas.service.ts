@@ -119,7 +119,7 @@ export class ReservasService {
     }
 
     // Solo aplicar restricción por día si el usuario es estudiante
-    if (usuario.rol.rol === 'estudiante') { // Asumo que tienes el rol en el usuario
+    if (usuario.rol.rol === 'estudiante') { 
       const puedeReservar = await this.puedeReservarHoy({ usuario_id: usuario.usuario_id, fecha: dto.fecha_hora });
       if (!puedeReservar) {
         throw new BadRequestException(

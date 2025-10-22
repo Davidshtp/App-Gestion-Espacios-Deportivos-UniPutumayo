@@ -29,8 +29,8 @@ export class CloudinaryService {
           resource_type: 'auto',
           folder: 'Eventos',
           format: 'webp',
-          quality: 'auto:low',
-          width: 800,
+          quality: 'auto:best',
+          width: 1200,
           strip: true
         },
         (error, result) => {

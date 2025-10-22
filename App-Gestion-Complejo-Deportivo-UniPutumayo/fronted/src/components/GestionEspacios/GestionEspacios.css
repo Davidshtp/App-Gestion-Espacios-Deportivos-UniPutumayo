@@ -1,36 +1,25 @@
 /* Contenedor principal */
-.gestion-eventos-container {
+.gestion-espacios-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    font-family: 'Inter', sans-serif;
-    padding: 2rem;
-    margin: 0 2rem; /* margen adaptable */
 }
 
-/* Título */
-.gestion-eventos-container h1 {
-    text-align: center;
-    color: #222;
+/* Título principal */
+.gestion-espacios-container h1 {
+    margin-bottom: 2rem;
     font-size: 2rem;
+    color: #222;
     font-weight: 500;
-    margin-bottom: 1.5rem;
 }
 
-/* Mensaje de acceso denegado */
-.gestion-eventos-container > p.access-denied-message {
-    text-align: center;
-    color: #d9534f;
-    font-size: 1.1rem;
-    padding: 20px;
-    border: 1px solid #d9534f;
-    border-radius: 8px;
-    background-color: #fdecea;
-    margin-bottom: 20px;
-}
-
-/* Botón Crear Evento */
-.btn-crear-evento {
+/* Botón de crear espacio */
+.btn-crear-espacio {
     background-color: #222;
     color: #fff;
     padding: 10px 20px;
@@ -43,32 +32,32 @@
     transition: all 0.2s ease-in-out;
 }
 
-.btn-crear-evento:hover {
+.btn-crear-espacio:hover {
     background-color: #000;
     transform: translateY(-1px);
 }
 
-/* Mensaje si no hay eventos */
-.no-eventos-msg {
-    text-align: center;
+/* Mensaje cuando no hay espacios */
+.no-espacios-msg {
+    margin-top: 3rem;
     color: #777;
-    font-size: 1rem;
+    font-style: italic;
+    font-size: 1.1rem;
     padding: 30px;
     background-color: #f4f4f4;
     border-radius: 10px;
-    margin-top: 20px;
 }
 
-/* Lista de eventos como grid */
-.eventos-lista {
+/* Lista de espacios como grid */
+.espacios-lista {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 24px;
     padding: 10px 0;
 }
 
-/* Tarjeta del evento */
-.evento-card {
+/* Tarjeta individual */
+.espacio-card {
     background-color: #fdfdfd;
     border: 1px solid #eaeaea;
     border-radius: 12px;
@@ -79,14 +68,14 @@
     min-height: 300px; /* altura uniforme */
 }
 
-.evento-card:hover {
+.espacio-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.1);
     cursor: pointer;
 }
 
-/* Imagen del evento */
-.evento-imagen {
+/* Imagen del espacio */
+.espacio-imagen {
     width: 100%;
     height: 160px;
     border-radius: 8px;
@@ -97,7 +86,7 @@
     background-color: #f1f1f1;
 }
 
-.evento-imagen img {
+.espacio-imagen img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -115,47 +104,24 @@
     font-style: italic;
 }
 
-/* Información del evento */
-.evento-info {
-    flex-grow: 1;
-}
-
-.evento-info h3 {
-    margin: 0;
+/* Información del espacio */
+.espacio-info h3 {
+    margin: 0.5rem 0;
     font-size: 1.2rem;
     font-weight: 600;
     color: #222;
 }
 
-.evento-fecha {
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin-bottom: 6px;
-}
-
-.evento-descripcion {
-    font-size: 0.95rem;
-    color: #4b5563;
-    display: -webkit-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.4;
-    min-height: 40px;
-}
-
 /* Acciones */
-.evento-acciones {
+.espacio-acciones {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
     margin-top: auto; /* mantiene botones abajo */
-    padding: 1rem;
+    padding:1rem ;
 }
 
-.evento-acciones button {
+.espacio-acciones button {
     padding: 8px 14px;
     border: none;
     border-radius: 6px;
@@ -184,44 +150,29 @@
     background-color: #c62828;
 }
 
-/* Responsive: tablets */
+/* Responsive */
 @media (max-width: 768px) {
-    .btn-crear-evento {
+    .btn-crear-espacio {
         width: 100%;
     }
 
-    .eventos-lista {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    .espacios-lista {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 16px;
     }
 }
 
-/* Responsive: móviles */
 @media (max-width: 480px) {
-    .gestion-eventos-container {
-        padding: 1rem;
-        margin: 0 1rem;
-    }
-
-    .eventos-lista {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .evento-imagen {
+    .espacio-imagen {
         height: 120px;
     }
 
-    .evento-info h3 {
+    .espacio-info h3 {
         font-size: 1rem;
     }
 
-    .evento-acciones button {
+    .espacio-acciones button {
         font-size: 0.8rem;
         padding: 4px 8px;
-    }
-
-    .evento-acciones {
-        justify-content: space-between;
     }
 }
