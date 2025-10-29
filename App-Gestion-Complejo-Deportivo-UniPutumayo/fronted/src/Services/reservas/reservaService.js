@@ -109,6 +109,20 @@ export const obtenerHorasTotalesUso = async () => {
   return response.data;
 };
 
+// Reservar todo un día completo (solo administradores)
+export const reservarTodoElDia = async (espacioId, fecha) => {
+  try {
+    const response = await api.post("/reservas/reservar-todo-el-dia", {
+      espacioId,
+      fecha,
+    });
+    return response.data;
+  } catch (err) {
+    console.error("Error al reservar todo el día:", err);
+    throw err;
+  }
+};
+
 
 
 

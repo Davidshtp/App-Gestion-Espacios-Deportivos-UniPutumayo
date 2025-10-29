@@ -1,14 +1,87 @@
 import "./HorasDelDia.css";
+import Swal from "sweetalert2";
 import useHorasDelDia from "./hooks/useHorasDelDia";
+import { reservarTodoElDia } from "../../Services/reservas/reservaService";
+import { useState } from "react";
+import { MdCalendarMonth } from "react-icons/md";
+
 
 export default function HorasDelDia({ fecha, espacioId }) {
-  const { reservas, user, HORAS_DEL_DIA, esHoraPasada, handleCrearReserva, handleCancelarReserva, handleMarcarEnUso, handleLiberarReserva, } = useHorasDelDia(fecha, espacioId);
+  const {
+    reservas,
+    user,
+    HORAS_DEL_DIA,
+    esHoraPasada,
+    handleCrearReserva,
+    handleCancelarReserva,
+    handleMarcarEnUso,
+    handleLiberarReserva,
+    actualizarReservasLocalmente,
+  } = useHorasDelDia(fecha, espacioId);
 
+  const [cargando, setCargando] = useState(false);
   const fechaFormateada = fecha.split("-").reverse().join("/");
+  const esAdministrador = user && user.rolId === 1;
+
+  // 👇 Botón admin para reservar todo el día
+  const handleReservarTodoElDia = async () => {
+    if (!espacioId || !fecha) return;
+
+    const confirmacion = await Swal.fire({
+      title: `¿Reservar todo el día ${fechaFormateada}?`,
+      text: "Esto cancelará reservas existentes y bloqueará todas las horas disponibles.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, reservar todo el día",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    });
+
+    if (!confirmacion.isConfirmed) return;
+
+    try {
+      setCargando(true);
+      const resultado = await reservarTodoElDia(espacioId, fecha);
+
+      await Swal.fire({
+        title: "¡Hecho!",
+        text: resultado.message || "Se reservaron todas las horas disponibles.",
+        icon: "success",
+      });
+
+      // 🔄 refresca desde el hook sin recargar página
+      await actualizarReservasLocalmente();
+    } catch (err) {
+      console.error("Error al reservar todo el día:", err);
+      await Swal.fire({
+        title: "Error",
+        text: err.response?.data?.message || "No se pudo reservar todo el día.",
+        icon: "error",
+      });
+    } finally {
+      setCargando(false);
+    }
+  };
 
   return (
     <div className="horas-container">
-      <h2>Disponibilidad del {fechaFormateada}</h2>
+      <div className="header-horas">
+        <h2>Disponibilidad del {fechaFormateada}</h2>
+
+        {esAdministrador && (
+          <button
+            className="icono-reservar-dia"
+            onClick={handleReservarTodoElDia}
+            disabled={cargando}
+            title="Reservar todo el día"
+          >
+            <MdCalendarMonth size={22} />
+          </button>
+        )}
+      </div>
+
+
       <div className="horas-grid">
         {HORAS_DEL_DIA.map((hora) => {
           const pasada = esHoraPasada(fecha, hora);
@@ -17,31 +90,23 @@ export default function HorasDelDia({ fecha, espacioId }) {
           const clase = pasada ? "pasada" : estado;
           const esLibre = !pasada && !reserva;
 
-          // Variables de control para permisos
           const esMiReserva = user && reserva && reserva.usuario_id === user.userId;
-          const esAdministrador = user && user.rolId === 1; // Ajusta el ID si tu admin tiene otro rolId
+          const esAdmin = user && user.rolId === 1;
 
-          // Condición para mostrar el botón de cancelar
           const mostrarBotonCancelar =
             !pasada &&
             reserva &&
             (estado === "reservado" || estado === "esperando") &&
-            (esMiReserva || esAdministrador);
+            (esMiReserva || esAdmin);
 
-          // Condición para mostrar el botón de "En uso"
           const mostrarBotonEnUso =
             !pasada &&
             reserva &&
             (estado === "esperando" || estado === "uso_libre") &&
-            esAdministrador;
+            esAdmin;
 
-
-          // Condición para mostrar el botón de "Liberar"
           const mostrarBotonLiberar =
-            !pasada &&
-            reserva &&
-            estado === "en_uso" &&
-            esAdministrador;
+            !pasada && reserva && estado === "en_uso" && esAdmin;
 
           return (
             <div
@@ -50,22 +115,23 @@ export default function HorasDelDia({ fecha, espacioId }) {
               onClick={() => {
                 if (esLibre) handleCrearReserva(hora);
               }}
-              style={{
-                pointerEvents: pasada ? "none" : "auto",
-              }}
+              style={{ pointerEvents: pasada ? "none" : "auto" }}
             >
-              <div className="hora-header">{hora}
-              </div>
+              <div className="hora-header">{hora}</div>
 
               {!pasada && reserva && (
                 <>
                   <div className="hora-estado">
                     {estado === "esperando" ? (
-                      <span className="animando">Esperando<span className="puntos">...</span></span>
-                    ) : estado.replace("_", " ")}
+                      <span className="animando">
+                        Esperando<span className="puntos">...</span>
+                      </span>
+                    ) : (
+                      estado.replace("_", " ")
+                    )}
                   </div>
                   <div className="hora-usuario">
-                    {reserva.evento || reserva.usuario || 'Puedes jugar sin reserva'}
+                    {reserva.evento || reserva.usuario || "Puedes jugar sin reserva"}
                   </div>
 
                   <div className="acciones">
@@ -80,21 +146,25 @@ export default function HorasDelDia({ fecha, espacioId }) {
                         Cancelar
                       </button>
                     )}
-
                     {mostrarBotonEnUso && (
-                      <button className="boton en-uso" onClick={(e) => {
-                        e.stopPropagation();
-                        handleMarcarEnUso(hora, hora);
-                      }}>
+                      <button
+                        className="boton en-uso"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMarcarEnUso(hora, hora);
+                        }}
+                      >
                         En uso
                       </button>
                     )}
-
                     {mostrarBotonLiberar && (
-                      <button className="boton liberar" onClick={(e) => {
-                        e.stopPropagation();
-                        handleLiberarReserva(hora, hora);
-                      }}>
+                      <button
+                        className="boton liberar"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLiberarReserva(hora, hora);
+                        }}
+                      >
                         Liberar
                       </button>
                     )}
@@ -102,9 +172,7 @@ export default function HorasDelDia({ fecha, espacioId }) {
                 </>
               )}
 
-              {esLibre && (
-                <div className="hora-estado disponible">Disponible</div>
-              )}
+              {esLibre && <div className="hora-estado disponible">Disponible</div>}
             </div>
           );
         })}

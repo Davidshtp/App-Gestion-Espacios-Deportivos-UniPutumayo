@@ -338,5 +338,7 @@ export default function useHorasDelDia(fecha, espacioId) {
     handleCancelarReserva,
     handleMarcarEnUso,
     handleLiberarReserva,
+    actualizarReservasLocalmente, 
   };
+
 }

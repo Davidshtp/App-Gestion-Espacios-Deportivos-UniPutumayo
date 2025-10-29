@@ -425,5 +425,95 @@ export class ReservasService {
     }
   }
 
+  async reservarTodoElDia(
+    espacioId: number,
+    fecha: string, // formato "YYYY-MM-DD"
+    user: { userId: number; rolId: number },
+  ) {
+    if (user.rolId !== 1) {
+      throw new ForbiddenException('Solo los administradores pueden usar esta función');
+    }
+
+    const espacio = await this.getEspacio(espacioId);
+    const hoy = new Date();
+    const fechaBase = new Date(`${fecha}T00:00:00`);
+    const esHoy = fechaBase.toDateString() === hoy.toDateString();
+
+    const horaInicio = 7;
+    const horaFin = 23;
+    const horaActual = hoy.getHours();
+
+    // ✅ Generar solo las horas válidas a reservar
+    const horasAReservar: number[] = [];
+    for (let h = horaInicio; h <= horaFin; h++) {
+      if (esHoy && h <= horaActual) continue; // si es hoy, saltar horas pasadas
+      horasAReservar.push(h);
+    }
+
+    if (!horasAReservar.length) {
+      throw new BadRequestException(
+        'No hay horas disponibles para reservar en esta fecha',
+      );
+    }
+
+    // 1️⃣ Obtener reservas existentes del día
+    const inicioDia = new Date(`${fecha}T00:00:00`);
+    const finDia = new Date(`${fecha}T23:59:59`);
+
+    const reservasExistentes = await this.reservaRepository.find({
+      where: {
+        espacio: { id_espacio: espacioId },
+        fecha_hora: Between(inicioDia, finDia),
+        estado: In(['reservado', 'en_uso', 'esperando', 'uso_libre']),
+      },
+      relations: ['usuario'],
+    });
+
+    // 2️⃣ Cancelar reservas existentes — ignorando las no encontradas
+    for (const r of reservasExistentes) {
+      try {
+        await this.cancelarReserva(
+          { fecha_hora: r.fecha_hora.toISOString(), espacio_id: espacioId },
+          user,
+        );
+      } catch (err) {
+        if (err instanceof NotFoundException) {
+          continue;
+        }
+        throw err; // si es otro error, sí se lanza
+      }
+    }
+
+    // 3️⃣ Crear nuevas reservas para las horas disponibles
+    const nuevasReservas: {
+      id: number;
+      fecha: Date;
+      estado: string;
+      espacio: string;
+      deporte: string;
+      evento: string;
+      usuario: { nombre: string; apellido: string };
+    }[] = [];
+
+    for (const h of horasAReservar) {
+      const fechaHora = new Date(`${fecha}T${String(h).padStart(2, '0')}:00:00`);
+
+      try {
+        const reserva = await this.crearReserva({
+          usuario_id: user.userId,
+          espacio_id: espacioId,
+          fecha_hora: fechaHora.toISOString(),
+        } as CreateReservaDto);
+
+        nuevasReservas.push(reserva.reserva);
+      } catch (err) {
+      }
+    }
+
+    return {
+      message: `Se reservaron ${nuevasReservas.length} horas para el ${fecha}`,
+      reservas: nuevasReservas,
+    };
+  }
 
 }

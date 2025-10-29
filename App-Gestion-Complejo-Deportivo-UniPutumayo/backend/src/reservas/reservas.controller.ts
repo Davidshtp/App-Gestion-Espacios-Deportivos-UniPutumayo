@@ -95,7 +95,22 @@ export class ReservasController {
     return resultado;
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('reservar-todo-el-dia')
+  async reservarTodoElDia(
+    @Body() body: { espacioId: number; fecha: string },
+    @Req() req: Request,
+  ) {
+    const user = {
+      userId: req['user'].userId,
+      rolId: req['user'].rolId,
+    };
 
+    if (!body.espacioId || !body.fecha) {
+      throw new BadRequestException('El ID del espacio y la fecha son obligatorios');
+    }
 
-
+    return this.reservaService.reservarTodoElDia(body.espacioId, body.fecha, user);
+  }
 }

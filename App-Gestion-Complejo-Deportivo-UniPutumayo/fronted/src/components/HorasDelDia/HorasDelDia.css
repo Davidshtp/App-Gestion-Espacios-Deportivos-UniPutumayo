@@ -224,6 +224,79 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
+.header-horas {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; /* ✅ Permite que el botón baje debajo del título en pantallas pequeñas */
+  gap: 0.8rem;
+  margin-bottom: 1.8rem;
+  padding: 0.6rem 1rem;
+  background-color: #f9fafb;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.header-horas h2 {
+  font-size: 1.4rem;
+  color: #1f2937;
+  margin: 0;
+  flex: 1; /* ✅ Hace que el título use el espacio disponible */
+  text-align: left;
+  word-break: break-word; /* Evita desbordes */
+}
+
+/* Botón circular moderno */
+.icono-reservar-dia {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0; /* ✅ Evita que el botón se reduzca */
+}
+
+.icono-reservar-dia:hover {
+  background-color: #0056b3;
+  transform: scale(1.08);
+}
+
+.icono-reservar-dia:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 📱 Ajustes responsivos */
+@media (max-width: 600px) {
+  .header-horas {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 0.8rem;
+  }
+
+  .header-horas h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+    text-align: center;
+  }
+
+  .icono-reservar-dia {
+    align-self: center;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+
 /* Media query para pantallas más pequeñas, si es necesario */
 @media (max-width: 768px) {
   .horas-grid {
