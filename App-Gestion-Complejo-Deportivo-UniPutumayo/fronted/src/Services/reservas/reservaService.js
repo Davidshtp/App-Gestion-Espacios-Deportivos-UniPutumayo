@@ -14,7 +14,7 @@ export const getReservasPorDia = async (fecha, espacioId) => {
 };
 
 // Crear reserva (usa fecha_hora completa como string ISO)
-export const crearReserva = async ({ fecha_hora, espacio_id, deporte_id,evento_id }) => {
+export const crearReserva = async ({ fecha_hora, espacio_id, deporte_id, evento_id }) => {
   try {
     const response = await api.post("/reservas/crear-reserva", {
       fecha_hora,
@@ -71,5 +71,16 @@ export const liberarReservaEnUso = async (fecha_hora, espacio_id) => {
     throw error;
   }
 };
+
+// Obtener reservas activas del usuario autenticado
+export const getMisReservasActivas = async () => {
+  try {
+    const response = await api.get("/reservas/mis-reservas-activas");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 

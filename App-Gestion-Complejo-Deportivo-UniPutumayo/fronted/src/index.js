@@ -14,6 +14,7 @@ import AccessDenied from './components/AccessDenied/AccesDenied';
 import GestionEspacios from "./components/GestionEspacios/GestionEspacios"
 import GestionDeportes from './components/GestionDeportes/GestionDeportes';
 import ProfilePage from './pages/Perfil/ProfilePage';
+import MisReservasActivas from './pages/Mis-reservas/MisReservasActivas';
 
 
 
@@ -41,6 +42,7 @@ root.render(
           <Route path="reservar" element={<Reservar />} />
           <Route path='accesDenied' element={<AccessDenied />}></Route>
           <Route path='perfil' element={<ProfilePage/>}></Route>
+          <Route path='mis-reservas' element={<MisReservasActivas/>}></Route>
           {/* rutas para solo admins  */}
           <Route
             path="eventos"

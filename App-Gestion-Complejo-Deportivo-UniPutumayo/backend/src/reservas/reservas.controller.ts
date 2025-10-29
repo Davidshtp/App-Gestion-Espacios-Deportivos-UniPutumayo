@@ -49,7 +49,7 @@ export class ReservasController {
     const user = req['user'];
     return this.reservaService.marcarReservaEnUso(dto, user);
   }
-  
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Post('liberar')
@@ -61,6 +61,15 @@ export class ReservasController {
 
     return this.reservaService.ponerEnUsoLibre(dto, user);
   }
+
+  // Obtener reservas activas del usuario autenticado
+  @UseGuards(JwtAuthGuard)
+  @Get('mis-reservas-activas')
+  async obtenerMisReservasActivas(@Req() req: Request) {
+    const usuarioId = req['user'].userId;
+    return this.reservaService.obtenerReservasActivasDeUsuario(usuarioId);
+  }
+
 
 
 }

@@ -1,0 +1,147 @@
+/* Contenedor principal */
+.mis-reservas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Título */
+.mis-reservas-container h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #000;
+}
+
+/* Lista de reservas */
+.reservas-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 10px 0;
+}
+
+/* Tarjeta individual */
+.reserva-card {
+  background-color: #fdfdfd;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 200px;
+}
+
+.reserva-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Campos de información */
+.reserva-card p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.reserva-card strong {
+  color: #000;
+}
+
+/* Estado visual */
+.reserva-estado {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  align-self: flex-start;
+}
+
+/* Colores según estado */
+.reserva-estado.reservado {
+  background-color: #4c76a2;
+}
+
+.reserva-estado.en_uso {
+  background-color: #2e7d32;
+}
+
+.reserva-estado.esperando {
+  background-color: #ffb300;
+  color: #222;
+}
+
+.reserva-estado.uso_libre {
+  background-color: #6d4c41;
+}
+
+/* Botón cancelar */
+.btn-cancelar-reserva {
+  margin-top: auto;
+  align-self: flex-end;
+  background-color: #af413f;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-cancelar-reserva:hover {
+  background-color: #c62828;
+  transform: translateY(-1px);
+}
+
+/* Mensaje vacío */
+.no-reservas-msg {
+  margin-top: 3rem;
+  color: #777;
+  font-style: italic;
+  font-size: 1.1rem;
+  padding: 30px;
+  margin: 30px;
+  background-color: #fdf5f5;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reservas-lista {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .mis-reservas-container h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .reserva-card {
+    padding: 1rem;
+  }
+
+  .reserva-card p {
+    font-size: 0.85rem;
+  }
+
+  .reserva-estado {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+
+  .btn-cancelar-reserva {
+    width: 100%;
+  }
+}

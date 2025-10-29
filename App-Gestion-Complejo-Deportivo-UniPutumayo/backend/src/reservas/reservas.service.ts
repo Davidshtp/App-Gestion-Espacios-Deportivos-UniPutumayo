@@ -29,7 +29,7 @@ export class ReservasService {
     @InjectRepository(DeporteEntity)
     private deporteRepository: Repository<DeporteEntity>,
 
-    @InjectRepository(EventoEntity) 
+    @InjectRepository(EventoEntity)
     private readonly eventoRepository: Repository<EventoEntity>,
 
     private readonly reservasGateway: AppGateway,
@@ -50,19 +50,19 @@ export class ReservasService {
     return espacio;
   }
 
- private async getDeporte(deporteId: number | undefined): Promise<DeporteEntity | null> {
-  
-  if(!deporteId){
-    return null
-  }
-  const deporte = await this.deporteRepository.findOneBy({ id_deporte: deporteId });
+  private async getDeporte(deporteId: number | undefined): Promise<DeporteEntity | null> {
 
-  if (!deporte) {
-    throw new NotFoundException('Deporte no encontrado');
-  }
+    if (!deporteId) {
+      return null
+    }
+    const deporte = await this.deporteRepository.findOneBy({ id_deporte: deporteId });
 
-  return deporte;
-}
+    if (!deporte) {
+      throw new NotFoundException('Deporte no encontrado');
+    }
+
+    return deporte;
+  }
   private esHoraExacta(fecha: Date): boolean {
     return (
       fecha.getMinutes() === 0 &&
@@ -70,7 +70,7 @@ export class ReservasService {
       fecha.getMilliseconds() === 0
     );
   }
-  private async getEvento(eventoId: number | undefined): Promise<EventoEntity | null> { 
+  private async getEvento(eventoId: number | undefined): Promise<EventoEntity | null> {
     if (!eventoId) {
       return null;
     }
@@ -119,7 +119,7 @@ export class ReservasService {
     }
 
     // Solo aplicar restricción por día si el usuario es estudiante
-    if (usuario.rol.rol === 'estudiante') { 
+    if (usuario.rol.rol === 'estudiante') {
       const puedeReservar = await this.puedeReservarHoy({ usuario_id: usuario.usuario_id, fecha: dto.fecha_hora });
       if (!puedeReservar) {
         throw new BadRequestException(
@@ -271,7 +271,7 @@ export class ReservasService {
 
     return { message: 'Reserva marcada como en uso correctamente' };
   }
-  
+
   async ponerEnUsoLibre(dto: PonerEnUsoLibreDto, user: { userId: number; rolId: number }) {
     if (user.rolId !== 1) {
       throw new ForbiddenException('Solo administradores pueden liberar reservas.');
@@ -307,5 +307,30 @@ export class ReservasService {
 
     return { message: 'Reserva cancelada y espacio marcado como libre exitosamente' };
   }
+
+  async obtenerReservasActivasDeUsuario(usuarioId: number) {
+    const reservas = await this.reservaRepository.find({
+      where: {
+        usuario: { usuario_id: usuarioId },
+        estado: In(['reservado', 'en_uso', 'esperando', 'uso_libre']),
+      },
+      relations: ['espacio', 'deporte', 'evento'],
+      order: { fecha_hora: 'ASC' },
+    });
+
+    if (!reservas.length) {
+      throw new NotFoundException('No tienes reservas activas actualmente');
+    }
+
+    return reservas.map((r) => ({
+      id_reserva: r.id_reserva,
+      fecha_hora: r.fecha_hora,
+      estado: r.estado,
+      espacio: r.espacio?.espacio ?? null,
+      deporte: r.deporte?.nombre ?? null,
+      evento: r.evento?.nombre ?? null,
+    }));
+  }
+
 
 }
