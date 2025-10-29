@@ -1,4 +1,3 @@
-/* Tarjeta principal */
 .stat-card {
   position: relative;
   display: flex;
@@ -7,17 +6,26 @@
   align-items: center;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   color: white;
   overflow: hidden;
   min-width: 220px;
   max-width: 300px;
+  transition: all 0.3s ease; /* Transición suave */
+  transform: translateY(0);
 }
 
-.morado {
-  background: linear-gradient(135deg, #7F00FF, #E100FF);
+/* Fondo naranja con gradiente cálido */
+.naranja {
+  background: linear-gradient(135deg, #ff8008, #ffc837);
 }
 
+/* Efecto hover */
+.stat-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  filter: brightness(1.1);
+}
 
 /* Encabezado */
 .card-header {
@@ -29,20 +37,26 @@
 .card-icon {
   font-size: 3rem;
   color: #fff;
+  transition: transform 0.3s ease;
+}
+
+/* Ícono se mueve un poquito al hacer hover */
+.stat-card:hover .card-icon {
+  transform: rotate(8deg) scale(1.1);
 }
 
 .stat-number {
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .stat-label {
   margin: 10px 0 0 0;
   font-weight: 600;
   text-align: center;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .eventos-detalle {
@@ -55,9 +69,8 @@
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-
-/* Error */
+/* Tarjeta de error */
 .error-card {
-  background-color: #ef4444; /* Rojo para indicar un error */
+  background-color: #ef4444;
   text-align: center;
 }

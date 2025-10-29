@@ -14,10 +14,10 @@
   max-width: 300px;
 }
 
-.morado {
-  background: linear-gradient(135deg, #7F00FF, #E100FF);
+/* Colores personalizados */
+.azul {
+  background: linear-gradient(135deg, #007bff, #00c6ff);
 }
-
 
 /* Encabezado */
 .card-header {
@@ -55,9 +55,8 @@
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-
 /* Error */
 .error-card {
-  background-color: #ef4444; /* Rojo para indicar un error */
+  background-color: #ef4444;
   text-align: center;
 }

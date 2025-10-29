@@ -60,5 +60,5 @@ export const obtenerEventosActivos =async ()=>{
     console.error('Error al obtener el numero de eventos activos',err);
     throw err;
   }
-  
+
 }

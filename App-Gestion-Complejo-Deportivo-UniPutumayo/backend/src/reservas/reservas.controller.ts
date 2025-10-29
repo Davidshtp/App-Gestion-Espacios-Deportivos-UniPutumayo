@@ -79,4 +79,23 @@ export class ReservasController {
     return this.reservaService.obtenerDiasCompletamenteReservados(espacioId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('contar-activas')
+  async contarReservasActivasDelUsuario(@Req() req: Request) {
+    const usuarioId = req['user'].userId;
+    const total = await this.reservaService.contarReservasActivasPorUsuario(usuarioId);
+    return { total };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('horas-totales')
+  async obtenerHorasTotalesUso(@Req() req: Request) {
+    const usuarioId = req['user'].userId;
+    const resultado = await this.reservaService.obtenerHorasTotalesDeUso(usuarioId);
+    return resultado;
+  }
+
+
+
+
 }

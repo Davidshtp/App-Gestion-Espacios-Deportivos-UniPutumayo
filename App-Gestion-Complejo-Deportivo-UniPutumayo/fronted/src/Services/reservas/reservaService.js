@@ -94,6 +94,21 @@ export const getDiasCompletamenteReservados = async (espacioId) => {
   }
 };
 
+export const obtenerReservasActivasDelUsuario = async () => {
+  try {
+    const response = await api.get('/reservas/contar-activas');
+    return response.data;
+  } catch (err) {
+    console.error('Error al obtener las reservas activas del usuario:', err);
+    throw err;
+  }
+};
+
+export const obtenerHorasTotalesUso = async () => {
+  const response = await api.get('/reservas/horas-totales');
+  return response.data;
+};
+
 
 
 

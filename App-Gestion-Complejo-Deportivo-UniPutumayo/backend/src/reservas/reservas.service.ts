@@ -398,4 +398,32 @@ export class ReservasService {
     }
     return diasCompletos;
   }
+
+  async contarReservasActivasPorUsuario(idUsuario: number): Promise<number> {
+    const total = await this.reservaRepository.count({
+      where: {
+        usuario: { usuario_id: idUsuario },
+        estado: 'reservado',
+      },
+    });
+    return total;
+  }
+
+  async obtenerHorasTotalesDeUso(usuarioId: number): Promise<{ totalHoras: number }> {
+    try {
+      const totalHoras = await this.reservaRepository.count({
+        where: {
+          usuario: { usuario_id: usuarioId },
+          estado: 'usado',
+        },
+      });
+
+      return { totalHoras };
+    } catch (error) {
+      console.error('Error al obtener las horas totales de uso:', error);
+      throw new InternalServerErrorException('No se pudieron obtener las horas totales de uso');
+    }
+  }
+
+
 }
