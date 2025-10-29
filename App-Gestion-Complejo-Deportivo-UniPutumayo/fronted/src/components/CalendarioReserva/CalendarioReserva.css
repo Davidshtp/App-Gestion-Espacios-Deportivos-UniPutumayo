@@ -61,35 +61,51 @@
   color: #1f2937;
 }
 
+/* Hover general */
 .cal-dia button:hover:not(:disabled) {
   background-color: #dbeafe;
   color: #1e40af;
   font-weight: bold;
 }
 
-/* Deshabilitado (fechas pasadas) */
+/* Fechas pasadas (deshabilitadas) */
 .cal-dia button:disabled {
   background-color: #e5e7eb;
   color: #9ca3af;
-  cursor:default ;
   opacity: 0.6;
+  cursor: default;
 }
 
-/* Hoy */
+/* Día actual */
 .cal-dia button.hoy {
   background-color: #c7d2fe;
   color: #3730a3;
   font-weight: bold;
 }
 
-/* Capa de selección encima */
+/* Día seleccionado (overlay oscuro encima) */
 .cal-dia button.seleccionada .overlay-seleccionada {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(31, 41, 55, 0.4); /* gris oscuro translúcido */
+  background-color: rgba(31, 41, 55, 0.4);
   border-radius: 8px;
   z-index: 1;
+}
+
+/* Día completamente reservado (lleno) — visible pero clickeable */
+.cal-dia button.lleno {
+  background-color: #fecaca; /* rojo suave */
+  color: #991b1b;
+  font-weight: bold;
+  border: 1px solid #f87171;
+  cursor: pointer;
+}
+
+/* Hover del día lleno */
+.cal-dia button.lleno:hover {
+  background-color: #fca5a5;
+  color: #7f1d1d;
 }

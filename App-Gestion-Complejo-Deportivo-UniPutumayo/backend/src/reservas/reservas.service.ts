@@ -332,5 +332,70 @@ export class ReservasService {
     }));
   }
 
+  async obtenerDiasCompletamenteReservados(idEspacio: number) {
+    const horaInicio = 7;
+    const horaFin = 23;
+    const totalHorasDisponibles = horaFin - horaInicio;
 
+    const reservas = await this.reservaRepository.find({
+      where: {
+        espacio: { id_espacio: idEspacio },
+        estado: In(['reservado', 'en_uso', 'esperando', 'uso_libre']),
+      },
+      select: ['fecha_hora'],
+    });
+
+    if (!reservas.length) return [];
+
+    const reservasPorDia: Record<string, number[]> = {};
+
+    for (const r of reservas) {
+      const fechaDB = r.fecha_hora as Date;
+      const anio = fechaDB.getFullYear();
+      const mes = fechaDB.getMonth();
+      const diaNum = fechaDB.getDate();
+      const horaAgrupacion = fechaDB.getHours();
+      const fechaAgrupacion = new Date(anio, mes, diaNum);
+      const diaAgrupacion = `${fechaAgrupacion.getFullYear()}-${String(fechaAgrupacion.getMonth() + 1).padStart(2, '0')}-${String(fechaAgrupacion.getDate()).padStart(2, '0')}`;
+
+      if (horaAgrupacion >= horaInicio && horaAgrupacion < horaFin) {
+        if (!reservasPorDia[diaAgrupacion]) reservasPorDia[diaAgrupacion] = [];
+        reservasPorDia[diaAgrupacion].push(horaAgrupacion);
+      }
+    }
+
+    const horasPosiblesCompletas = Array.from({ length: totalHorasDisponibles }, (_, i) => i + horaInicio);
+    const hoy = new Date();
+    const hoyISO = hoy.toISOString().split("T")[0];
+    const horaActualServidor = hoy.getHours();
+    const diasCompletos: string[] = [];
+
+    for (const [fecha, horasReservadas] of Object.entries(reservasPorDia)) {
+      const horasUnicasReservadas = new Set(horasReservadas);
+      let horasRequeridas: number[] = [];
+
+      if (fecha > hoyISO) {
+        horasRequeridas = horasPosiblesCompletas;
+      } else if (fecha === hoyISO) {
+        const proximaHoraReserva = Math.max(horaActualServidor + 1, horaInicio);
+
+        if (proximaHoraReserva >= horaFin) continue;
+
+        horasRequeridas = horasPosiblesCompletas.filter(h => h >= proximaHoraReserva);
+      } else {
+        continue;
+      }
+
+      if (horasRequeridas.length === 0) continue;
+
+      const todasOcupadasRequeridas =
+        (horasUnicasReservadas.size === horasRequeridas.length) &&
+        horasRequeridas.every(h => horasUnicasReservadas.has(h));
+
+      if (todasOcupadasRequeridas) {
+        diasCompletos.push(fecha);
+      }
+    }
+    return diasCompletos;
+  }
 }

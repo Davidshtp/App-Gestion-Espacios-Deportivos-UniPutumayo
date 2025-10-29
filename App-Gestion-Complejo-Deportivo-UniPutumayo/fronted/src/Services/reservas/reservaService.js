@@ -82,5 +82,18 @@ export const getMisReservasActivas = async () => {
   }
 };
 
+// Obtener los días completamente reservados para un espacio
+export const getDiasCompletamenteReservados = async (espacioId) => {
+  try {
+    const response = await api.get("/reservas/dias-completos", {
+      params: { espacioId },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 
 

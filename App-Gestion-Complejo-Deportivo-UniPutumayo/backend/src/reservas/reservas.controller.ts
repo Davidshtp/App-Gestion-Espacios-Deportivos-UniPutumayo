@@ -1,5 +1,5 @@
 // reservas.controller.ts
-import { Body, Controller, Post, UseGuards, Req, Get, Query, Delete, Patch, Request } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Req, Get, Query, Delete, Patch, Request, BadRequestException } from '@nestjs/common';
 import { ReservasService } from './reservas.service';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -70,6 +70,13 @@ export class ReservasController {
     return this.reservaService.obtenerReservasActivasDeUsuario(usuarioId);
   }
 
-
+  @UseGuards(JwtAuthGuard)
+  @Get('dias-completos')
+  async obtenerDiasLlenos(@Query('espacioId') espacioId: number) {
+    if (!espacioId) {
+      throw new BadRequestException('El ID del espacio es obligatorio');
+    }
+    return this.reservaService.obtenerDiasCompletamenteReservados(espacioId);
+  }
 
 }
