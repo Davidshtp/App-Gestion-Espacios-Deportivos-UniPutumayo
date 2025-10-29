@@ -5,20 +5,20 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
     font-family: 'Inter', sans-serif;
     padding: 2rem;
-    margin: 0 2rem; /* margen adaptable */
+    margin: 0 2rem;
+    /* margen adaptable */
 }
 
 /* Título */
 .gestion-eventos-container h1 {
     text-align: center;
-    color: #222;
+    margin-bottom: 2rem;
     font-size: 2rem;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
+    color: #000;
 }
 
 /* Mensaje de acceso denegado */
-.gestion-eventos-container > p.access-denied-message {
+.gestion-eventos-container>p.access-denied-message {
     text-align: center;
     color: #d9534f;
     font-size: 1.1rem;
@@ -76,12 +76,13 @@
     flex-direction: column;
     gap: 12px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    min-height: 300px; /* altura uniforme */
+    min-height: 300px;
+    /* altura uniforme */
 }
 
 .evento-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
 
@@ -151,7 +152,8 @@
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    margin-top: auto; /* mantiene botones abajo */
+    margin-top: auto;
+    /* mantiene botones abajo */
     padding: 1rem;
 }
 

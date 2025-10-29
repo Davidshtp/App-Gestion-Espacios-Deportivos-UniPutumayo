@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
             userId: profile.usuario_id,
             rolId: profile.rol.id_rol,
             nombreCompleto: `${profile.nombre} ${profile.apellido}`,
-            email: profile.email,
+            email: profile.correo,
             urlImage: profile.urlimage
           });
         } else {
