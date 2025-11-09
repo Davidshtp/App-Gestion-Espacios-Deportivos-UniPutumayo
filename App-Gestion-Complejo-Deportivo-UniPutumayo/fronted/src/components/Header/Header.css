@@ -54,18 +54,14 @@
     font-size: 18px;
   }
   .user-info span {
-    font-size:12px ;
+    font-size: 12px;
   }
-  .header{
+  .header {
     padding: 0 1rem;
   }
 }
 @media (max-width: 400px) {
-  
   .user-info span {
     opacity: 0;
   }
-  
 }
-
-

@@ -6,13 +6,13 @@ import { EventoEntity } from './entity/evento.entity';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 import { GatewaysModule } from 'src/gateways/gateways.module';
 
-
-
 @Module({
-  imports: [TypeOrmModule.forFeature([EventoEntity]),
-  CloudinaryModule,GatewaysModule
-],
+  imports: [
+    TypeOrmModule.forFeature([EventoEntity]),
+    CloudinaryModule,
+    GatewaysModule,
+  ],
   providers: [EventosService],
-  controllers: [EventosController]
+  controllers: [EventosController],
 })
 export class EventosModule {}

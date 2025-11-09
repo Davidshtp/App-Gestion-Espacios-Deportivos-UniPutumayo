@@ -1,5 +1,17 @@
 // src/eventos/eventos.controller.ts
-import {Controller,Post,Get,Put,Body,Param,UseGuards,UseInterceptors,UploadedFile,ParseIntPipe,Patch,} from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Put,
+  Body,
+  Param,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  ParseIntPipe,
+  Patch,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerImageOptions } from 'src/common/configs/multer.config';
 import { EventosService } from './eventos.service';
@@ -12,7 +24,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('eventos')
 export class EventosController {
-  constructor(private readonly eventosService: EventosService) { }
+  constructor(private readonly eventosService: EventosService) {}
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -61,6 +73,4 @@ export class EventosController {
     const total = await this.eventosService.contarEventosActivos();
     return { total };
   }
-
-
 }

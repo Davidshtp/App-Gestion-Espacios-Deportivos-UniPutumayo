@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeporteEntity } from './entity/deportes.entity';
 import { Repository, Not } from 'typeorm';
@@ -10,7 +14,7 @@ export class DeportesService {
   constructor(
     @InjectRepository(DeporteEntity)
     private readonly deporteRepository: Repository<DeporteEntity>,
-  ) { }
+  ) {}
 
   // Obtener todos los deportes
   async obtenerDeportes(): Promise<DeporteEntity[]> {
@@ -28,14 +32,20 @@ export class DeportesService {
   }
 
   async crearDeporte(dto: CreateDeporteDto): Promise<DeporteEntity> {
-    const existe = await this.deporteRepository.findOne({ where: { nombre: dto.nombre } });
-    if (existe) throw new BadRequestException('Ya existe un deporte con ese nombre');
+    const existe = await this.deporteRepository.findOne({
+      where: { nombre: dto.nombre },
+    });
+    if (existe)
+      throw new BadRequestException('Ya existe un deporte con ese nombre');
 
     const nuevo = this.deporteRepository.create(dto);
     return this.deporteRepository.save(nuevo);
   }
 
-  async actualizarDeporte(id: number, dto: UpdateDeporteDto): Promise<DeporteEntity> {
+  async actualizarDeporte(
+    id: number,
+    dto: UpdateDeporteDto,
+  ): Promise<DeporteEntity> {
     const deporte = await this.obtenerDeporte(id);
     if (dto.nombre) deporte.nombre = dto.nombre;
     return this.deporteRepository.save(deporte);

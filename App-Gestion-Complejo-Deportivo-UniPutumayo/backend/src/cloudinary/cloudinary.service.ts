@@ -21,7 +21,11 @@ export class CloudinaryService {
     return new Promise((resolve, reject) => {
       // ¡Ahora verificamos file.buffer en lugar de file.path!
       if (!file || !file.buffer) {
-        return reject(new BadRequestException('El archivo no está disponible en memoria para la subida a Cloudinary.'));
+        return reject(
+          new BadRequestException(
+            'El archivo no está disponible en memoria para la subida a Cloudinary.',
+          ),
+        );
       }
 
       const uploadStream = cloudinary.uploader.upload_stream(
@@ -31,7 +35,7 @@ export class CloudinaryService {
           format: 'webp',
           quality: 'auto:best',
           width: 1200,
-          strip: true
+          strip: true,
         },
         (error, result) => {
           // Ya NO necesitamos eliminar el archivo temporal, porque está en memoria
@@ -44,7 +48,11 @@ export class CloudinaryService {
           if (result) {
             resolve(result.secure_url);
           } else {
-            reject(new BadRequestException(`Error al subir imagen a Cloudinary: ${error?.message || 'Error desconocido'}`));
+            reject(
+              new BadRequestException(
+                `Error al subir imagen a Cloudinary: ${error?.message || 'Error desconocido'}`,
+              ),
+            );
           }
         },
       );
@@ -64,12 +72,16 @@ export class CloudinaryService {
       const parts = imageUrl.split('/');
       const uploadIndex = parts.indexOf('upload');
       if (uploadIndex === -1 || parts.length < uploadIndex + 2) {
-        console.warn(`URL de Cloudinary inválida para extraer public_id: ${imageUrl}`);
+        console.warn(
+          `URL de Cloudinary inválida para extraer public_id: ${imageUrl}`,
+        );
         return false;
       }
 
       const publicIdWithVersion = parts.slice(uploadIndex + 2).join('/');
-      const publicIdMatch = publicIdWithVersion.match(/(?:v\d+\/)?(.+?)(?:\.\w+)?$/);
+      const publicIdMatch = publicIdWithVersion.match(
+        /(?:v\d+\/)?(.+?)(?:\.\w+)?$/,
+      );
 
       let publicId: string | undefined = undefined;
 
@@ -87,15 +99,23 @@ export class CloudinaryService {
       if (result.result === 'ok') {
         return true;
       } else if (result.result === 'not found') {
-        console.warn(`Imagen no encontrada en Cloudinary (posiblemente ya eliminada o URL inválida): ${imageUrl}`);
+        console.warn(
+          `Imagen no encontrada en Cloudinary (posiblemente ya eliminada o URL inválida): ${imageUrl}`,
+        );
         return false;
       } else {
-        console.error(`Error al eliminar imagen de Cloudinary: ${result.error?.message || 'Error desconocido'} para publicId: ${publicId}`);
-        throw new BadRequestException(`Error al eliminar imagen de Cloudinary: ${result.error?.message}`);
+        console.error(
+          `Error al eliminar imagen de Cloudinary: ${result.error?.message || 'Error desconocido'} para publicId: ${publicId}`,
+        );
+        throw new BadRequestException(
+          `Error al eliminar imagen de Cloudinary: ${result.error?.message}`,
+        );
       }
     } catch (error) {
       console.error('Error en deleteImage de CloudinaryService:', error);
-      throw new BadRequestException(`Error al intentar eliminar la imagen: ${error.message}`);
+      throw new BadRequestException(
+        `Error al intentar eliminar la imagen: ${error.message}`,
+      );
     }
   }
 }

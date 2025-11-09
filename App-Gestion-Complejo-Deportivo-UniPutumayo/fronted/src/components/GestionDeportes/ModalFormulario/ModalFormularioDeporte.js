@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "./ModalFormularioDeporte.css";
 
-export default function ModalFormularioDeporte({ visible, onClose, onSubmit, deporteInicial }) {
+export default function ModalFormularioDeporte({
+  visible,
+  onClose,
+  onSubmit,
+  deporteInicial,
+}) {
   const [nombre, setNombre] = useState("");
 
   useEffect(() => {

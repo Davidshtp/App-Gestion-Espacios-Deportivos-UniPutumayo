@@ -1,7 +1,7 @@
 import "./Header.css";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from "../../context/AuthContext";
 
 export default function Header() {
   const location = useLocation();
@@ -45,9 +45,7 @@ export default function Header() {
         {titulo}
       </h2>
       <div className="user-info">
-        <span>
-          {user.nombreCompleto}
-        </span>
+        <span>{user.nombreCompleto}</span>
         <img
           src={user.urlImage || "https://i.pravatar.cc/40"}
           alt="Foto de usuario"

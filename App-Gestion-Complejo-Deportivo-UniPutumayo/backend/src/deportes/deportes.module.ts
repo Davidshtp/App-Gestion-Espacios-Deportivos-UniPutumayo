@@ -7,6 +7,6 @@ import { DeporteEntity } from './entity/deportes.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([DeporteEntity])],
   providers: [DeportesService],
-  controllers: [DeportesController]
+  controllers: [DeportesController],
 })
 export class DeportesModule {}

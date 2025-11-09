@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { DeportesService } from './deportes.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { CreateDeporteDto } from './dto/create-deporte.dto';
@@ -8,7 +18,7 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @Controller('deportes')
 export class DeportesController {
-  constructor(private readonly deportesService: DeportesService) { }
+  constructor(private readonly deportesService: DeportesService) {}
 
   @Get('obtener-deportes')
   @UseGuards(JwtAuthGuard)

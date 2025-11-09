@@ -5,7 +5,6 @@ import { reservarTodoElDia } from "../../Services/reservas/reservaService";
 import { useState } from "react";
 import { MdCalendarMonth } from "react-icons/md";
 
-
 export default function HorasDelDia({ fecha, espacioId }) {
   const {
     reservas,
@@ -81,7 +80,6 @@ export default function HorasDelDia({ fecha, espacioId }) {
         )}
       </div>
 
-
       <div className="horas-grid">
         {HORAS_DEL_DIA.map((hora) => {
           const pasada = esHoraPasada(fecha, hora);
@@ -90,7 +88,8 @@ export default function HorasDelDia({ fecha, espacioId }) {
           const clase = pasada ? "pasada" : estado;
           const esLibre = !pasada && !reserva;
 
-          const esMiReserva = user && reserva && reserva.usuario_id === user.userId;
+          const esMiReserva =
+            user && reserva && reserva.usuario_id === user.userId;
           const esAdmin = user && user.rolId === 1;
 
           const mostrarBotonCancelar =
@@ -131,7 +130,9 @@ export default function HorasDelDia({ fecha, espacioId }) {
                     )}
                   </div>
                   <div className="hora-usuario">
-                    {reserva.evento || reserva.usuario || "Puedes jugar sin reserva"}
+                    {reserva.evento ||
+                      reserva.usuario ||
+                      "Puedes jugar sin reserva"}
                   </div>
 
                   <div className="acciones">
@@ -172,7 +173,9 @@ export default function HorasDelDia({ fecha, espacioId }) {
                 </>
               )}
 
-              {esLibre && <div className="hora-estado disponible">Disponible</div>}
+              {esLibre && (
+                <div className="hora-estado disponible">Disponible</div>
+              )}
             </div>
           );
         })}

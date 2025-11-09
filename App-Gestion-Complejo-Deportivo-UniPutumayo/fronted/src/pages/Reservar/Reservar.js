@@ -3,7 +3,7 @@ import CalendarioReserva from "../../components/CalendarioReserva/CalendarioRese
 import HorasDelDia from "../../components/HorasDelDia/HorasDelDia";
 import "./Reservar.css";
 import useReservaSocket from "../../hooks/useReservaSocket";
-import {obtenerTodosLosEspacios} from "../../Services/espacios/espaciosService"
+import { obtenerTodosLosEspacios } from "../../Services/espacios/espaciosService";
 
 export default function Reservar() {
   const [espacios, setEspacios] = useState([]);
@@ -48,9 +48,10 @@ export default function Reservar() {
     const animarScroll = (now) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = progress < 0.5
-        ? 2 * progress * progress
-        : -1 + (4 - 2 * progress) * progress;
+      const eased =
+        progress < 0.5
+          ? 2 * progress * progress
+          : -1 + (4 - 2 * progress) * progress;
 
       contenedor.scrollTop = start + distance * eased;
       if (progress < 1) requestAnimationFrame(animarScroll);
@@ -68,7 +69,9 @@ export default function Reservar() {
       if (document.querySelector(".swal2-container")) return;
 
       const clickDentro = layout.contains(e.target);
-      const permitido = e.target.closest(".calendario-container, .horas-animadas, button");
+      const permitido = e.target.closest(
+        ".calendario-container, .horas-animadas, button",
+      );
 
       if (!clickDentro || !permitido) {
         setEspacioSeleccionado(null);
@@ -118,7 +121,9 @@ export default function Reservar() {
               <h2>{espacio}</h2>
               <img src={imagen_url} alt={espacio} />
             </div>
-            <div className="tarjeta-back">{renderContenido(id_espacio, espacio)}</div>
+            <div className="tarjeta-back">
+              {renderContenido(id_espacio, espacio)}
+            </div>
           </div>
         </div>
       ))}

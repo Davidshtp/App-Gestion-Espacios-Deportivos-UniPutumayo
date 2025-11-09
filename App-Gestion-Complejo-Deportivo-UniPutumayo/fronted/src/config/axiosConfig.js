@@ -4,11 +4,11 @@ import { logout } from "../Services/auth/authService";
 
 const api = axios.create({
   baseURL: "http://localhost:5560",
-  withCredentials: true, 
+  withCredentials: true,
 });
 api.interceptors.response.use(
-  res => res,
-  async error => {
+  (res) => res,
+  async (error) => {
     const reqUrl = error?.config?.url;
 
     // 🔒 Solo redirige si el error 401 viene de /auth/me
@@ -18,8 +18,7 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
-
 
 export default api;

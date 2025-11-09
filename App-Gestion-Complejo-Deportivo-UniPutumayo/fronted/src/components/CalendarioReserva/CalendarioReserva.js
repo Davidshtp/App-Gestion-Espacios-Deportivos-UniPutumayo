@@ -15,8 +15,7 @@ export default function CalendarioReserva({ espacioId, onSelectFecha }) {
       if (!espacioId) return;
       const data = await getDiasCompletamenteReservados(espacioId);
       setDiasCompletos(data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -39,8 +38,16 @@ export default function CalendarioReserva({ espacioId, onSelectFecha }) {
   };
 
   const generarDiasDelMes = () => {
-    const inicioMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
-    const finMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
+    const inicioMes = new Date(
+      fechaActual.getFullYear(),
+      fechaActual.getMonth(),
+      1,
+    );
+    const finMes = new Date(
+      fechaActual.getFullYear(),
+      fechaActual.getMonth() + 1,
+      0,
+    );
 
     const dias = [];
     for (let i = 0; i < inicioMes.getDay(); i++) dias.push(null);
@@ -81,7 +88,7 @@ export default function CalendarioReserva({ espacioId, onSelectFecha }) {
           if (!dia) return <div key={idx} className="cal-dia-vacio" />;
 
           const isoFecha = `${dia.getFullYear()}-${String(
-            dia.getMonth() + 1
+            dia.getMonth() + 1,
           ).padStart(2, "0")}-${String(dia.getDate()).padStart(2, "0")}`;
 
           const isToday =

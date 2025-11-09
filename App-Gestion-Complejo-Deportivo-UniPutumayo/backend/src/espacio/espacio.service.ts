@@ -1,5 +1,9 @@
 // src/espacio/espacio.service.ts
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { EspacioEntity } from './entity/espacio.entity';
@@ -17,7 +21,7 @@ export class EspacioService {
     private readonly deporteRepository: Repository<DeporteEntity>,
 
     private readonly cloudinaryService: CloudinaryService,
-  ) { }
+  ) {}
 
   async obtenerDeportesDeEspacio(id: number) {
     const espacio = await this.espacioRepository.findOne({
@@ -33,7 +37,10 @@ export class EspacioService {
   }
 
   // Crear un nuevo espacio con imagen
-  async crearEspacio(dto: CreateEspacioDto, file: Express.Multer.File): Promise<EspacioEntity> {
+  async crearEspacio(
+    dto: CreateEspacioDto,
+    file: Express.Multer.File,
+  ): Promise<EspacioEntity> {
     if (!file) throw new BadRequestException('La imagen es obligatoria');
 
     const imagenUrl = await this.cloudinaryService.uploadImage(file);
@@ -61,15 +68,23 @@ export class EspacioService {
 
   // Obtener un espacio por su ID
   async obtenerPorId(id_espacio: number): Promise<EspacioEntity> {
-    const espacio = await this.espacioRepository.findOne({ where: { id_espacio } });
+    const espacio = await this.espacioRepository.findOne({
+      where: { id_espacio },
+    });
     if (!espacio) {
-      throw new NotFoundException(`No se encontró el espacio con id ${id_espacio}`);
+      throw new NotFoundException(
+        `No se encontró el espacio con id ${id_espacio}`,
+      );
     }
     return espacio;
   }
 
   // Actualizar un espacio (opcionalmente con imagen)
-  async actualizarEspacio(id: number, dto: UpdateEspacioDto, file?: Express.Multer.File): Promise<EspacioEntity> {
+  async actualizarEspacio(
+    id: number,
+    dto: UpdateEspacioDto,
+    file?: Express.Multer.File,
+  ): Promise<EspacioEntity> {
     const espacio = await this.obtenerPorId(id);
 
     if (dto.espacio) espacio.espacio = dto.espacio;

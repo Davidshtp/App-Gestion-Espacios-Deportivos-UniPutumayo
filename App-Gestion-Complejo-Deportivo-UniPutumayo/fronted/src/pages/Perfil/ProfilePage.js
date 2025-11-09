@@ -3,7 +3,6 @@ import "./ProfilePage.css";
 
 const ProfilePage = () => {
   const { user } = useAuth();
-  
 
   if (!user) {
     return (

@@ -1,9 +1,15 @@
 // src/eventos/dto/update-evento.dto.ts
-import { IsString, IsOptional, IsUrl, IsDateString, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsUrl,
+  IsDateString,
+  IsEnum,
+} from 'class-validator';
 import { Transform } from 'class-transformer';
 
 const EventoEstado = ['activo', 'inactivo'] as const;
-type EventoEstadoType = typeof EventoEstado[number];
+type EventoEstadoType = (typeof EventoEstado)[number];
 
 export class UpdateEventoDto {
   @IsOptional()

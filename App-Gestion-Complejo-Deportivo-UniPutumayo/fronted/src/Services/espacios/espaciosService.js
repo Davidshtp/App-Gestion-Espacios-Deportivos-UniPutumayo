@@ -7,7 +7,10 @@ export const obtenerDeportesDeEspacio = async (idEspacio) => {
     const response = await api.get(`/espacio/${idEspacio}/deportes`);
     return response.data;
   } catch (err) {
-    console.error(`Error al obtener los deportes del espacio con ID ${idEspacio}:`, err);
+    console.error(
+      `Error al obtener los deportes del espacio con ID ${idEspacio}:`,
+      err,
+    );
     throw err;
   }
 };
@@ -34,7 +37,6 @@ export const crearEspacio = async (formData) => {
   }
 };
 
-
 export const actualizarEspacio = async (idEspacio, formData) => {
   try {
     const response = await api.put(`/espacio/${idEspacio}`, formData, {
@@ -47,7 +49,6 @@ export const actualizarEspacio = async (idEspacio, formData) => {
   }
 };
 
-
 export const eliminarEspacio = async (idEspacio) => {
   try {
     const response = await api.delete(`/espacio/${idEspacio}`);
@@ -57,7 +58,6 @@ export const eliminarEspacio = async (idEspacio) => {
     throw err;
   }
 };
-
 
 export const obtenerEspacioPorId = async (idEspacio) => {
   try {

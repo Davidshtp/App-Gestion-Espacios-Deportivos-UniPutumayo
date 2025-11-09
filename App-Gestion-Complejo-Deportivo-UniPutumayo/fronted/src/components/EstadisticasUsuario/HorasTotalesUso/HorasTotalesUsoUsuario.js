@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import './HorasTotalesUsoUsuario.css';
-import { obtenerHorasTotalesUso } from '../../../Services/reservas/reservaService'
-import { FaClock } from 'react-icons/fa';
-import useReservaSocket from '../../../hooks/useReservaSocket';
+import React, { useState, useEffect } from "react";
+import "./HorasTotalesUsoUsuario.css";
+import { obtenerHorasTotalesUso } from "../../../Services/reservas/reservaService";
+import { FaClock } from "react-icons/fa";
+import useReservaSocket from "../../../hooks/useReservaSocket";
 
 export default function HorasTotalesUsoUsuario() {
   const [horas, setHoras] = useState(0);
@@ -17,7 +17,7 @@ export default function HorasTotalesUsoUsuario() {
       setHoras(response.totalHoras);
     } catch (err) {
       console.error("Error al cargar las horas totales de uso:", err);
-      setError('No se pudo cargar el total de horas de uso.');
+      setError("No se pudo cargar el total de horas de uso.");
     } finally {
       setLoading(false);
     }

@@ -8,17 +8,19 @@ import { UpdateEventoDto } from './dto/update-evento.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { AppGateway } from 'src/gateways/app.gateway';
 
-
 @Injectable()
 export class EventosService {
   constructor(
     @InjectRepository(EventoEntity)
     private readonly eventoRepository: Repository<EventoEntity>,
     private readonly cloudinaryService: CloudinaryService,
-    private readonly eventoGateway: AppGateway
-  ) { }
+    private readonly eventoGateway: AppGateway,
+  ) {}
 
-  async crearEvento(dto: CreateEventoDto, file?: Express.Multer.File): Promise<EventoEntity> {
+  async crearEvento(
+    dto: CreateEventoDto,
+    file?: Express.Multer.File,
+  ): Promise<EventoEntity> {
     let imageUrl: string | undefined;
     if (file) {
       imageUrl = await this.cloudinaryService.uploadImage(file);
@@ -45,7 +47,9 @@ export class EventosService {
     dto: UpdateEventoDto,
     file?: Express.Multer.File,
   ): Promise<EventoEntity> {
-    const evento = await this.eventoRepository.findOne({ where: { id_evento: id } });
+    const evento = await this.eventoRepository.findOne({
+      where: { id_evento: id },
+    });
     if (!evento) {
       throw new NotFoundException(`Evento con ID ${id} no encontrado.`);
     }
@@ -63,7 +67,6 @@ export class EventosService {
       evento.url_imagen_evento = null;
     }
 
-
     Object.assign(evento, dto);
 
     const actualizado = await this.eventoRepository.save(evento);
@@ -72,7 +75,9 @@ export class EventosService {
   }
 
   async softDeleteEvento(id: number): Promise<EventoEntity> {
-    const evento = await this.eventoRepository.findOne({ where: { id_evento: id } });
+    const evento = await this.eventoRepository.findOne({
+      where: { id_evento: id },
+    });
     if (!evento) {
       throw new NotFoundException(`Evento con ID ${id} no encontrado.`);
     }
@@ -86,9 +91,7 @@ export class EventosService {
     return eliminado;
   }
 
-
   async contarEventosActivos(): Promise<number> {
     return await this.eventoRepository.count({ where: { estado: 'activo' } });
   }
-
 }

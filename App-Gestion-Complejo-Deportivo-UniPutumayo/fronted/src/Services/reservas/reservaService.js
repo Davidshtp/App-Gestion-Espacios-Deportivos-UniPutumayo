@@ -14,7 +14,12 @@ export const getReservasPorDia = async (fecha, espacioId) => {
 };
 
 // Crear reserva (usa fecha_hora completa como string ISO)
-export const crearReserva = async ({ fecha_hora, espacio_id, deporte_id, evento_id }) => {
+export const crearReserva = async ({
+  fecha_hora,
+  espacio_id,
+  deporte_id,
+  evento_id,
+}) => {
   try {
     const response = await api.post("/reservas/crear-reserva", {
       fecha_hora,
@@ -29,8 +34,7 @@ export const crearReserva = async ({ fecha_hora, espacio_id, deporte_id, evento_
   }
 };
 
-
-// Cancelar reserva 
+// Cancelar reserva
 export const cancelarReserva = async ({ fecha_hora, espacio_id }) => {
   try {
     const response = await api.post("/reservas/cancelar", {
@@ -96,16 +100,16 @@ export const getDiasCompletamenteReservados = async (espacioId) => {
 
 export const obtenerReservasActivasDelUsuario = async () => {
   try {
-    const response = await api.get('/reservas/contar-activas');
+    const response = await api.get("/reservas/contar-activas");
     return response.data;
   } catch (err) {
-    console.error('Error al obtener las reservas activas del usuario:', err);
+    console.error("Error al obtener las reservas activas del usuario:", err);
     throw err;
   }
 };
 
 export const obtenerHorasTotalesUso = async () => {
-  const response = await api.get('/reservas/horas-totales');
+  const response = await api.get("/reservas/horas-totales");
   return response.data;
 };
 
@@ -122,7 +126,3 @@ export const reservarTodoElDia = async (espacioId, fecha) => {
     throw err;
   }
 };
-
-
-
-

@@ -8,10 +8,10 @@ import { DeporteEntity } from 'src/deportes/entity/deportes.entity';
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([EspacioEntity,DeporteEntity]),
-      CloudinaryModule
-    ],
+    TypeOrmModule.forFeature([EspacioEntity, DeporteEntity]),
+    CloudinaryModule,
+  ],
   controllers: [EspacioController],
-  providers: [EspacioService]
+  providers: [EspacioService],
 })
 export class EspacioModule {}

@@ -18,7 +18,7 @@ export class ReservaCronService implements OnModuleInit {
     private readonly espacioRepo: Repository<EspacioEntity>,
 
     private readonly reservasGateway: AppGateway,
-  ) { }
+  ) {}
 
   //  Ejecutar al iniciar el servidor
   async onModuleInit() {
@@ -32,7 +32,7 @@ export class ReservaCronService implements OnModuleInit {
     await this.actualizarReservas();
   }
 
-  // 🔧 Lógica central para actualizar el estado de reservas
+  // Lógica central para actualizar el estado de reservas
   private async actualizarReservas() {
     const ahora = new Date();
     const hoy = ahora.toISOString().slice(0, 10);
@@ -40,7 +40,7 @@ export class ReservaCronService implements OnModuleInit {
     const finDia = new Date(`${hoy}T23:59:59`);
     let huboCambios = false;
 
-    // 🔍 Obtener todas las reservas del día con sus relaciones
+    // Obtener todas las reservas del día con sus relaciones
     const reservas = await this.reservaRepo.find({
       where: { fecha_hora: Between(inicioDia, finDia) },
       relations: ['usuario', 'espacio'],
@@ -51,30 +51,33 @@ export class ReservaCronService implements OnModuleInit {
       const finHora = new Date(inicioHora.getTime() + 60 * 60 * 1000); // +1 hora
 
       // Pasar a "esperando" si la hora ya inició
-      if (reserva.estado === 'reservado' && ahora >= inicioHora && ahora < finHora) {
+      if (
+        reserva.estado === 'reservado' &&
+        ahora >= inicioHora &&
+        ahora < finHora
+      ) {
         reserva.estado = 'esperando';
         await this.reservaRepo.save(reserva);
         huboCambios = true;
         continue;
       }
-      // 🕓 Si está en 'reservado' pero la hora ya terminó completamente, cancelarla
-      if (reserva.estado === 'reservado' && ahora >= finHora) {
-        reserva.estado = 'cancelado';
-        await this.reservaRepo.save(reserva);
-        huboCambios = true;
-        continue;
-      }
 
-      // Cancelar si lleva más de 15 minutos en "esperando"
-      if (reserva.estado === 'esperando' && ahora >= new Date(inicioHora.getTime() + 15 * 60 * 1000)) {
-        reserva.estado = 'cancelado';
+      // Pasar a "ausente" si lleva más de 20 minutos en "esperando"
+      if (
+        reserva.estado === 'esperando' &&
+        ahora >= new Date(inicioHora.getTime() + 20 * 60 * 1000)
+      ) {
+        reserva.estado = 'ausente';
         await this.reservaRepo.save(reserva);
         huboCambios = true;
         continue;
       }
 
       //  Pasar a "usado" si ya terminó y estaba en uso o libre
-      if (['en_uso', 'uso_libre'].includes(reserva.estado) && ahora >= finHora) {
+      if (
+        ['en_uso', 'uso_libre'].includes(reserva.estado) &&
+        ahora >= finHora
+      ) {
         reserva.estado = 'usado';
         await this.reservaRepo.save(reserva);
         huboCambios = true;

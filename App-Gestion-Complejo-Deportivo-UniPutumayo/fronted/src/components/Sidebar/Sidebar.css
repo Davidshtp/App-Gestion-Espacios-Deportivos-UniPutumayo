@@ -8,7 +8,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  transition:
+    width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     padding 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: 1000;
@@ -38,7 +39,9 @@
   align-items: center;
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 0.3s ease-in-out 0.1s, transform 0.3s ease-in-out;
+  transition:
+    opacity 0.3s ease-in-out 0.1s,
+    transform 0.3s ease-in-out;
 }
 
 .sidebar.open {
@@ -82,7 +85,7 @@
 
 /* Backdrop mejorado con animaciones */
 .sidebar.open::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -116,7 +119,9 @@
   align-items: center;
   padding: 8px;
   border-radius: 4px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
   position: relative;
 }
 
@@ -207,7 +212,9 @@
 .sidebar.collapsed .link-text {
   opacity: 0;
   transform: translateX(-10px);
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  transition:
+    opacity 0.2s ease-in-out,
+    transform 0.2s ease-in-out;
   pointer-events: none;
 }
 
@@ -215,7 +222,9 @@
 .sidebar.open .link-text {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 0.3s ease-in-out 0.2s, transform 0.3s ease-in-out 0.2s;
+  transition:
+    opacity 0.3s ease-in-out 0.2s,
+    transform 0.3s ease-in-out 0.2s;
 }
 
 .sidebar-title {
@@ -246,20 +255,24 @@
 
 /* Efecto hover mejorado */
 .sidebar-nav a::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
   transition: left 0.5s ease-in-out;
 }
 
 .sidebar-nav a:hover::before {
   left: 100%;
 }
-
 
 /* Específico para sidebar abierto - mantener el efecto de desplazamiento */
 .sidebar.open .sidebar-nav a:hover,
@@ -279,8 +292,6 @@
   transition: flex-grow 0.3s ease-in-out;
 }
 
-
-
 /* Enlaces en modo colapsado con animaciones */
 .sidebar.collapsed .sidebar-nav a {
   justify-content: center;
@@ -297,8 +308,6 @@
   display: flex;
 }
 
-
-
 .sidebar.collapsed .sidebar-nav a.active {
   background-color: #3b82f6;
   color: white;
@@ -309,7 +318,7 @@
   animation: slideInFromLeft 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.sidebar.collapsed .sidebar-nav a>* {
+.sidebar.collapsed .sidebar-nav a > * {
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -367,5 +376,4 @@
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex !important;
   }
-
 }

@@ -1,10 +1,15 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import Swal from 'sweetalert2';
-import { useAuth } from '../../context/AuthContext';
-import ModalFormularioEspacio from './ModalFormulario/ModalFormularioEspacio';
-import {obtenerTodosLosEspacios,crearEspacio,actualizarEspacio,eliminarEspacio,} from '../../Services/espacios/espaciosService';
-import './GestionEspacios.css';
-import { mostrarCargando } from '../../utils/alerts';
+import React, { useEffect, useState, useCallback } from "react";
+import Swal from "sweetalert2";
+import { useAuth } from "../../context/AuthContext";
+import ModalFormularioEspacio from "./ModalFormulario/ModalFormularioEspacio";
+import {
+  obtenerTodosLosEspacios,
+  crearEspacio,
+  actualizarEspacio,
+  eliminarEspacio,
+} from "../../Services/espacios/espaciosService";
+import "./GestionEspacios.css";
+import { mostrarCargando } from "../../utils/alerts";
 
 export default function GestionEspacios() {
   const [espacios, setEspacios] = useState([]);
@@ -21,7 +26,7 @@ export default function GestionEspacios() {
       const data = await obtenerTodosLosEspacios(); // <-- usando servicio
       setEspacios(data);
     } catch (error) {
-      Swal.fire('Error', 'No se pudieron cargar los espacios.', 'error');
+      Swal.fire("Error", "No se pudieron cargar los espacios.", "error");
     }
   }, [user]);
 
@@ -31,44 +36,54 @@ export default function GestionEspacios() {
 
   const handleEliminarEspacio = async (espacio) => {
     const confirmar = await Swal.fire({
-      title: '¿Estás seguro?',
+      title: "¿Estás seguro?",
       text: `Eliminarás el espacio "${espacio.espacio}".`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
     });
 
     if (!confirmar.isConfirmed) return;
 
     try {
       await eliminarEspacio(espacio.id_espacio); // <-- usando servicio
-      Swal.fire('Eliminado', 'Espacio eliminado correctamente.', 'success');
+      Swal.fire("Eliminado", "Espacio eliminado correctamente.", "success");
       cargarEspacios();
     } catch (error) {
-      Swal.fire('Error', 'No se pudo eliminar el espacio.', 'error');
+      Swal.fire("Error", "No se pudo eliminar el espacio.", "error");
     }
   };
 
   const handleGuardarEspacio = async (formData) => {
-    mostrarCargando(espacioEnEdicion ? 'Actualizando espacio...' : 'Creando espacio...');
+    mostrarCargando(
+      espacioEnEdicion ? "Actualizando espacio..." : "Creando espacio...",
+    );
     try {
       if (espacioEnEdicion) {
         await actualizarEspacio(espacioEnEdicion.id_espacio, formData); // <-- usando servicio
-        Swal.fire('Actualizado', 'Espacio actualizado correctamente.', 'success');
+        Swal.fire(
+          "Actualizado",
+          "Espacio actualizado correctamente.",
+          "success",
+        );
       } else {
         await crearEspacio(formData); // <-- usando servicio
-        Swal.fire('Creado', 'Espacio creado correctamente.', 'success');
+        Swal.fire("Creado", "Espacio creado correctamente.", "success");
       }
       setMostrarModal(false);
       cargarEspacios();
     } catch (error) {
-      Swal.fire('Error', 'No se pudo guardar el espacio.', 'error');
+      Swal.fire("Error", "No se pudo guardar el espacio.", "error");
     }
   };
 
   if (!user || user.rolId !== 1) {
-    return <p className="access-denied-message">Acceso denegado. Solo administradores.</p>;
+    return (
+      <p className="access-denied-message">
+        Acceso denegado. Solo administradores.
+      </p>
+    );
   }
 
   return (
@@ -92,7 +107,9 @@ export default function GestionEspacios() {
       />
 
       {espacios.length === 0 ? (
-        <p className="no-espacios-msg">No hay espacios para mostrar. ¡Crea uno!</p>
+        <p className="no-espacios-msg">
+          No hay espacios para mostrar. ¡Crea uno!
+        </p>
       ) : (
         <div className="espacios-lista">
           {espacios.map((espacio) => (

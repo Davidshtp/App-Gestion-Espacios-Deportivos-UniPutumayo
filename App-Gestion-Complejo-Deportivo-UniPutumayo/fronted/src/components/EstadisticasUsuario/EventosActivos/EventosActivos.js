@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import './EventosActivos.css';
-import { obtenerEventosActivos } from '../../../Services/eventos/eventosService';
-import { FaCalendarAlt } from 'react-icons/fa';
-import useEventoSocket from '../../../hooks/useEventoSocket';
+import React, { useState, useEffect } from "react";
+import "./EventosActivos.css";
+import { obtenerEventosActivos } from "../../../Services/eventos/eventosService";
+import { FaCalendarAlt } from "react-icons/fa";
+import useEventoSocket from "../../../hooks/useEventoSocket";
 
 export default function EventosActivos() {
   const [eventos, setEventos] = useState(0);
@@ -17,7 +17,7 @@ export default function EventosActivos() {
       setEventos(response.total);
     } catch (err) {
       console.error("Error al cargar los eventos activos:", err);
-      setError('Ocurrió un error. No se pudo cargar el conteo de eventos.');
+      setError("Ocurrió un error. No se pudo cargar el conteo de eventos.");
     } finally {
       setLoading(false);
     }

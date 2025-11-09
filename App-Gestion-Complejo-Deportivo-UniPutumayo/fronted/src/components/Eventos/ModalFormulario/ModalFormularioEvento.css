@@ -9,7 +9,6 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-
 }
 
 /*animacion abrir modal */
@@ -33,9 +32,9 @@
   border-radius: 12px;
   width: 90%;
   max-width: 1000px;
-  height: 85vh;            /* ← Esto limita su altura */
+  height: 85vh; /* ← Esto limita su altura */
   max-height: 800px;
-  overflow: hidden;        /* ← Esto impide que el modal se expanda */
+  overflow: hidden; /* ← Esto impide que el modal se expanda */
   box-sizing: border-box;
   animation: expandirModal 0.35s ease-out;
 }
@@ -63,13 +62,12 @@
   flex-direction: column;
   gap: 1rem;
   overflow-y: auto;
-  padding-right: 2rem;       /* espacio para el scrollbar */
-  margin-right: -1rem;       /* lo compensa visualmente */
-  box-sizing: content-box;   /* necesario para evitar que padding afecte el ancho */
-  overflow-x: hidden;      /* evita scroll horizontal */
-  max-width: 100%;         /* asegura que no crezca más del contenedor padre */
+  padding-right: 2rem; /* espacio para el scrollbar */
+  margin-right: -1rem; /* lo compensa visualmente */
+  box-sizing: content-box; /* necesario para evitar que padding afecte el ancho */
+  overflow-x: hidden; /* evita scroll horizontal */
+  max-width: 100%; /* asegura que no crezca más del contenedor padre */
 }
-
 
 /* Scroll invisible (WebKit) */
 .modal-right::-webkit-scrollbar {
@@ -174,4 +172,3 @@
 .remove-image-button:hover {
   background: rgba(83, 78, 78, 0.8);
 }
-

@@ -12,8 +12,9 @@ import { obtenerEventosPublicos } from "../../../Services/eventos/eventosService
 import { obtenerDeportesDeEspacio } from "../../../Services/espacios/espaciosService";
 import { useAuth } from "../../../context/AuthContext";
 
-const HORAS_DEL_DIA = Array.from({ length: 17 }, (_, i) =>
-  `${String(7 + i).padStart(2, "0")}:00`
+const HORAS_DEL_DIA = Array.from(
+  { length: 17 },
+  (_, i) => `${String(7 + i).padStart(2, "0")}:00`,
 );
 
 const esHoraPasada = (fechaStr, horaStr) => {
@@ -63,7 +64,7 @@ export default function useHorasDelDia(fecha, espacioId) {
         Swal.fire(
           "Error",
           "No se pudieron cargar los datos adicionales (deportes/eventos).",
-          "error"
+          "error",
         );
       }
     };
@@ -91,7 +92,7 @@ export default function useHorasDelDia(fecha, espacioId) {
         Swal.fire(
           "Error",
           "No se pudo identificar al usuario para crear la reserva.",
-          "error"
+          "error",
         );
         return;
       }
@@ -106,7 +107,7 @@ export default function useHorasDelDia(fecha, espacioId) {
           Swal.fire(
             "Error",
             "No hay deportes disponibles para este espacio.",
-            "error"
+            "error",
           );
           return;
         }
@@ -161,7 +162,7 @@ export default function useHorasDelDia(fecha, espacioId) {
             Swal.fire(
               "Error",
               "No hay eventos predefinidos para seleccionar. Crea uno nuevo desde el panel de gestión de eventos.",
-              "error"
+              "error",
             );
             return;
           }
@@ -204,17 +205,21 @@ export default function useHorasDelDia(fecha, espacioId) {
         console.log("Payload reserva:", payload);
         await crearReserva(payload);
 
-        Swal.fire("¡Reservado!", `La hora ${hora} ha sido reservada.`, "success");
+        Swal.fire(
+          "¡Reservado!",
+          `La hora ${hora} ha sido reservada.`,
+          "success",
+        );
         await actualizarReservasLocalmente();
       } catch (error) {
         Swal.fire(
           "Error",
           error.response?.data?.message || "No se pudo crear la reserva.",
-          "error"
+          "error",
         );
       }
     },
-    [fecha, espacioId, user, deportes, eventos, actualizarReservasLocalmente]
+    [fecha, espacioId, user, deportes, eventos, actualizarReservasLocalmente],
   );
 
   // 🔴 Cancelar reserva
@@ -240,19 +245,19 @@ export default function useHorasDelDia(fecha, espacioId) {
           Swal.fire(
             "¡Cancelada!",
             `La reserva de las ${horaDisplay} ha sido cancelada.`,
-            "success"
+            "success",
           );
           await actualizarReservasLocalmente();
         } catch (error) {
           Swal.fire(
             "Error",
             error.response?.data?.message || "No se pudo cancelar la reserva.",
-            "error"
+            "error",
           );
         }
       }
     },
-    [fecha, espacioId, actualizarReservasLocalmente]
+    [fecha, espacioId, actualizarReservasLocalmente],
   );
 
   // 🟡 Marcar en uso
@@ -278,19 +283,20 @@ export default function useHorasDelDia(fecha, espacioId) {
           Swal.fire(
             "¡En uso!",
             `La reserva de las ${horaDisplay} ha sido marcada como en uso.`,
-            "success"
+            "success",
           );
           await actualizarReservasLocalmente();
         } catch (error) {
           Swal.fire(
             "Error",
-            error.response?.data?.message || "No se pudo marcar la reserva en uso.",
-            "error"
+            error.response?.data?.message ||
+              "No se pudo marcar la reserva en uso.",
+            "error",
           );
         }
       }
     },
-    [fecha, espacioId, actualizarReservasLocalmente]
+    [fecha, espacioId, actualizarReservasLocalmente],
   );
 
   // 🟢 Liberar reserva
@@ -313,19 +319,19 @@ export default function useHorasDelDia(fecha, espacioId) {
           Swal.fire(
             "¡Liberada!",
             `La reserva de las ${horaDisplay} ha sido liberada.`,
-            "success"
+            "success",
           );
           await actualizarReservasLocalmente();
         } catch (error) {
           Swal.fire(
             "Error",
             error.response?.data?.message || "No se pudo liberar la reserva.",
-            "error"
+            "error",
           );
         }
       }
     },
-    [fecha, espacioId, actualizarReservasLocalmente]
+    [fecha, espacioId, actualizarReservasLocalmente],
   );
 
   // 🔁 Return del hook
@@ -338,7 +344,6 @@ export default function useHorasDelDia(fecha, espacioId) {
     handleCancelarReserva,
     handleMarcarEnUso,
     handleLiberarReserva,
-    actualizarReservasLocalmente, 
+    actualizarReservasLocalmente,
   };
-
 }

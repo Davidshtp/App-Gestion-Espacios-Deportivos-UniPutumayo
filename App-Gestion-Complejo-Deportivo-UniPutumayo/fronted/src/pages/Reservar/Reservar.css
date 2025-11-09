@@ -29,7 +29,9 @@ body,
   perspective: 1200px;
   border-radius: 10px;
   overflow: hidden;
-  transition: transform 0.4s ease-in-out, min-height 0.4s ease;
+  transition:
+    transform 0.4s ease-in-out,
+    min-height 0.4s ease;
   height: 100%;
   min-height: 300px;
 }

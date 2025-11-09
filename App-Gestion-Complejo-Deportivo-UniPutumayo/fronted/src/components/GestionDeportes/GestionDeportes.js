@@ -1,8 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Swal from "sweetalert2";
 import { useAuth } from "../../context/AuthContext";
-import ModalFormularioDeporte from "./ModalFormulario/ModalFormularioDeporte"
-import {obtenerTodosLosDeportes,crearDeporte,actualizarDeporte,eliminarDeporte,} from "../../Services/deportes/deportesService";
+import ModalFormularioDeporte from "./ModalFormulario/ModalFormularioDeporte";
+import {
+  obtenerTodosLosDeportes,
+  crearDeporte,
+  actualizarDeporte,
+  eliminarDeporte,
+} from "../../Services/deportes/deportesService";
 import { mostrarCargando } from "../../utils/alerts";
 import "./GestionDeportes.css";
 
@@ -48,11 +53,17 @@ export default function GestionDeportes() {
   };
 
   const handleGuardar = async (deporte) => {
-    mostrarCargando(deporteEnEdicion ? "Actualizando deporte..." : "Creando deporte...");
+    mostrarCargando(
+      deporteEnEdicion ? "Actualizando deporte..." : "Creando deporte...",
+    );
     try {
       if (deporteEnEdicion) {
         await actualizarDeporte(deporteEnEdicion.id_deporte, deporte);
-        Swal.fire("Actualizado", "Deporte actualizado correctamente.", "success");
+        Swal.fire(
+          "Actualizado",
+          "Deporte actualizado correctamente.",
+          "success",
+        );
       } else {
         await crearDeporte(deporte);
         Swal.fire("Creado", "Deporte creado correctamente.", "success");
@@ -65,7 +76,11 @@ export default function GestionDeportes() {
   };
 
   if (!user || user.rolId !== 1)
-    return <p className="access-denied-message">Acceso denegado. Solo administradores.</p>;
+    return (
+      <p className="access-denied-message">
+        Acceso denegado. Solo administradores.
+      </p>
+    );
 
   return (
     <div className="gestion-deportes-container">
