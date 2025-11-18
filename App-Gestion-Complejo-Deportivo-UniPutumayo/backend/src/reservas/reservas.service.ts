@@ -329,6 +329,10 @@ export class ReservasService {
       espacio: r.espacio?.espacio ?? null,
       deporte: r.deporte?.nombre ?? null,
       evento: r.evento?.nombre ?? null,
+      // Exponer campos de QR para que el frontend pueda mostrarlos
+      qr_token: r.qr_token ?? null,
+      qr_available_from: r.qr_available_from ?? null,
+      qr_expires_at: r.qr_expires_at ?? null,
     }));
   }
 

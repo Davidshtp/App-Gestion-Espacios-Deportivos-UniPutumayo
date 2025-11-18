@@ -1,5 +1,5 @@
 // reservas.controller.ts
-import { Body, Controller, Post, UseGuards, Req, Get, Query, Delete, Patch, Request, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Req, Get, Query, Delete, Patch, Request, BadRequestException, Param, Res, ParseIntPipe } from '@nestjs/common';
 import { ReservasService } from './reservas.service';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -9,13 +9,15 @@ import { ObtenerReservasDto } from './dto/obtener-reservas.dto';
 import { CancelarReservaDto } from './dto/cancelar-reserva.dto';
 import { MarcarReservaEnUsoDto } from './dto/marcar-uso.dto';
 import { PonerEnUsoLibreDto } from './dto/poner-en-uso-libre.dto';
+import { ScanQrDto } from './dto/scan-qr.dto';
+import { Response } from 'express';
 
 @Controller('reservas')
+@UseGuards(JwtAuthGuard)
 export class ReservasController {
   constructor(private readonly reservaService: ReservasService) { }
 
   // Crear reserva con fecha_hora
-  @UseGuards(JwtAuthGuard)
   @Post('crear-reserva')
   crear(@Body() dto: CreateReservaDto, @Req() req: Request) {
     const usuarioId = req['user'].userId;
@@ -26,7 +28,6 @@ export class ReservasController {
   }
 
   // Obtener reservas del día (sigue usando "fecha" simple para este caso)
-  @UseGuards(JwtAuthGuard)
   @Get('reservas-por-dia')
   obtenerPorDia(@Query() dto: ObtenerReservasDto) {
     return this.reservaService.obtenerReservasPorDiaYEspacio(dto);
@@ -34,7 +35,6 @@ export class ReservasController {
 
 
   // Cancelar reserva con fecha_hora
-  @UseGuards(JwtAuthGuard)
   @Post('cancelar')
   cancelarReserva(@Body() dto: CancelarReservaDto, @Req() req: Request) {
     const user = req['user'];
@@ -42,7 +42,7 @@ export class ReservasController {
   }
 
   // Marcar reserva como "en uso" con fecha_hora
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles('admin')
   @Post('marcar-en-uso')
   marcarEnUso(@Body() dto: MarcarReservaEnUsoDto, @Req() req: Request) {
@@ -50,7 +50,7 @@ export class ReservasController {
     return this.reservaService.marcarReservaEnUso(dto, user);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles('admin')
   @Post('liberar')
   async liberarReservaEnUso(@Body() dto: PonerEnUsoLibreDto, @Req() req: Request) {
@@ -63,14 +63,12 @@ export class ReservasController {
   }
 
   // Obtener reservas activas del usuario autenticado
-  @UseGuards(JwtAuthGuard)
   @Get('mis-reservas-activas')
   async obtenerMisReservasActivas(@Req() req: Request) {
     const usuarioId = req['user'].userId;
     return this.reservaService.obtenerReservasActivasDeUsuario(usuarioId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('dias-completos')
   async obtenerDiasLlenos(@Query('espacioId') espacioId: number) {
     if (!espacioId) {
@@ -79,7 +77,6 @@ export class ReservasController {
     return this.reservaService.obtenerDiasCompletamenteReservados(espacioId);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('contar-activas')
   async contarReservasActivasDelUsuario(@Req() req: Request) {
     const usuarioId = req['user'].userId;
@@ -87,7 +84,6 @@ export class ReservasController {
     return { total };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('horas-totales')
   async obtenerHorasTotalesUso(@Req() req: Request) {
     const usuarioId = req['user'].userId;
@@ -95,7 +91,7 @@ export class ReservasController {
     return resultado;
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(RolesGuard)
   @Roles('admin')
   @Post('reservar-todo-el-dia')
   async reservarTodoElDia(
