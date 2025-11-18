@@ -1,5 +1,14 @@
 // auth.controller.ts
-import { BadRequestException, Body, Controller, Get, Post, Req, Res, UseGuards, } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { LoginDto } from './dto/login.dto';
@@ -8,7 +17,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   @Post('register')
   async register(@Body() user: CreateUsuarioDto) {
@@ -24,9 +33,13 @@ export class AuthController {
   }
 
   @Post('google-login')
-  async googleLogin(@Body() body: { credential: string }, @Res({ passthrough: true }) res: Response) {
+  async googleLogin(
+    @Body() body: { credential: string },
+    @Res({ passthrough: true }) res: Response,
+  ) {
     const { credential } = body;
-    if (!credential) throw new BadRequestException('Token de Google no proporcionado');
+    if (!credential)
+      throw new BadRequestException('Token de Google no proporcionado');
 
     const token = await this.authService.loginWithGoogle(credential, res);
 

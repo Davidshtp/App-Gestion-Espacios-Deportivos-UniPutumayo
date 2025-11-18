@@ -1,7 +1,7 @@
 export class MessageDto {
-    message: string[] = [];
+  message: string[] = [];
 
-    constructor(message: string) {
-        this.message[0] = message;
-    }
+  constructor(message: string) {
+    this.message[0] = message;
+  }
 }

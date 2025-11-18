@@ -3,10 +3,18 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import logo from "../../assets/images/Logo-Universidad.png";
-import { register, login, loginWithGoogle, } from "../../Services/auth/authService";
+import {
+  register,
+  login,
+  loginWithGoogle,
+} from "../../Services/auth/authService";
 import "./Login.css";
 
-const images = [require("../../assets/images/1.jpg"), require("../../assets/images/2.jpg"), require("../../assets/images/3.jpg"),];
+const images = [
+  require("../../assets/images/1.jpg"),
+  require("../../assets/images/2.jpg"),
+  require("../../assets/images/3.jpg"),
+];
 
 //Funciones auxiliares
 const soloLetras = (value) => {
@@ -89,7 +97,9 @@ export default function Login() {
     const identificacion = formData.identificacion.trim();
 
     if (!/^\d{6,10}$/.test(identificacion)) {
-      return mostrarMensaje("La identificación debe tener entre 6 y 10 números.");
+      return mostrarMensaje(
+        "La identificación debe tener entre 6 y 10 números.",
+      );
     }
 
     try {
@@ -109,7 +119,7 @@ export default function Login() {
     } catch (err) {
       const errorMsg = err?.response?.data?.message || "Error en el servidor";
       mostrarMensaje(errorMsg);
-      resetFormulario()
+      resetFormulario();
     }
   };
 
@@ -125,9 +135,9 @@ export default function Login() {
         setMessage("");
         navigate("/inicio");
       }, 2000);
-
     } catch (error) {
-      const msg = error?.response?.data?.message || "Error al iniciar con Google";
+      const msg =
+        error?.response?.data?.message || "Error al iniciar con Google";
       mostrarMensaje(msg);
     }
   };
@@ -151,17 +161,22 @@ export default function Login() {
           <button onClick={handleToggleForm}>
             {isRegistering ? "Iniciar sesión" : "Regístrate"}
           </button>
-          <button onClick={() => setShowInfo(true)}>Información</button></div>
+          <button onClick={() => setShowInfo(true)}>Información</button>
+        </div>
       </div>
 
-      <div className={`login-container ${isRegistering ? "slide-register" : ""}`}>
+      <div
+        className={`login-container ${isRegistering ? "slide-register" : ""}`}
+      >
         <div className={`login-card flip-card ${showInfo ? "flipped" : ""}`}>
           <div className="flip-inner">
             {/* Parte frontal (login/registro) */}
             <div className="flip-front">
               <div className="login-header">
                 <h2>{isRegistering ? "Registro" : "Inicio Sesión"}</h2>
-                <p>{isRegistering ? "Crea tu cuenta" : "Por favor inicia sesión"}</p>
+                <p>
+                  {isRegistering ? "Crea tu cuenta" : "Por favor inicia sesión"}
+                </p>
               </div>
 
               <form
@@ -217,7 +232,9 @@ export default function Login() {
               </form>
 
               {message && (
-                <p className={`status-message ${message.includes("exitoso") ? "success" : "error"}`}>
+                <p
+                  className={`status-message ${message.includes("exitoso") ? "success" : "error"}`}
+                >
                   {message}
                 </p>
               )}
@@ -233,14 +250,17 @@ export default function Login() {
                       <strong>admitidos y matriculados.</strong>
                     </p>
                     <p>
-                      O puedes iniciar sesión con <strong>Correo Institucional</strong>
+                      O puedes iniciar sesión con{" "}
+                      <strong>Correo Institucional</strong>
                     </p>
                   </div>
 
                   <div className="google-login">
                     <GoogleLogin
                       onSuccess={handleGoogleLogin}
-                      onError={() => mostrarMensaje("Error al autenticar con Google")}
+                      onError={() =>
+                        mostrarMensaje("Error al autenticar con Google")
+                      }
                       useOneTap={false}
                     />
                   </div>
@@ -255,9 +275,15 @@ export default function Login() {
                 Plataforma para gestión de espacios deportivos del{" "}
                 <strong>Instituto Tecnológico del Putumayo</strong>.
               </p>
-              <p>Solo estudiantes admitidos y matriculados pueden acceder al sistema.</p>
+              <p>
+                Solo estudiantes admitidos y matriculados pueden acceder al
+                sistema.
+              </p>
               <img src={logo} alt="Logo del ITP" className="info-logo" />
-              <button className="back-button" onClick={() => setShowInfo(false)}>
+              <button
+                className="back-button"
+                onClick={() => setShowInfo(false)}
+              >
                 Volver
               </button>
             </div>

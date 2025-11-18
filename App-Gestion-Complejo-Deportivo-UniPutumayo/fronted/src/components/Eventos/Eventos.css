@@ -1,229 +1,231 @@
 /* Contenedor principal */
 .gestion-eventos-container {
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    font-family: 'Inter', sans-serif;
-    padding: 2rem;
-    margin: 0 2rem;
-    /* margen adaptable */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  font-family: "Inter", sans-serif;
+  padding: 2rem;
+  margin: 0 2rem;
+  /* margen adaptable */
 }
 
 /* Título */
 .gestion-eventos-container h1 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: #000;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #000;
 }
 
 /* Mensaje de acceso denegado */
-.gestion-eventos-container>p.access-denied-message {
-    text-align: center;
-    color: #d9534f;
-    font-size: 1.1rem;
-    padding: 20px;
-    border: 1px solid #d9534f;
-    border-radius: 8px;
-    background-color: #fdecea;
-    margin-bottom: 20px;
+.gestion-eventos-container > p.access-denied-message {
+  text-align: center;
+  color: #d9534f;
+  font-size: 1.1rem;
+  padding: 20px;
+  border: 1px solid #d9534f;
+  border-radius: 8px;
+  background-color: #fdecea;
+  margin-bottom: 20px;
 }
 
 /* Botón Crear Evento */
 .btn-crear-evento {
-    background-color: #222;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 0 auto 20px auto;
-    display: block;
-    transition: all 0.2s ease-in-out;
+  background-color: #222;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 auto 20px auto;
+  display: block;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-crear-evento:hover {
-    background-color: #000;
-    transform: translateY(-1px);
+  background-color: #000;
+  transform: translateY(-1px);
 }
 
 /* Mensaje si no hay eventos */
 .no-eventos-msg {
-    text-align: center;
-    color: #777;
-    font-size: 1rem;
-    padding: 30px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-    margin-top: 20px;
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+  padding: 30px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  margin-top: 20px;
 }
 
 /* Lista de eventos como grid */
 .eventos-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-    padding: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 10px 0;
 }
 
 /* Tarjeta del evento */
 .evento-card {
-    background-color: #fdfdfd;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    min-height: 300px;
-    /* altura uniforme */
+  background-color: #fdfdfd;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  min-height: 300px;
+  /* altura uniforme */
 }
 
 .evento-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 /* Imagen del evento */
 .evento-imagen {
-    width: 100%;
-    height: 160px;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f1f1f1;
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
 }
 
 .evento-imagen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .placeholder-imagen {
-    width: 100%;
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-    font-size: 0.9rem;
-    font-style: italic;
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 0.9rem;
+  font-style: italic;
 }
 
 /* Información del evento */
 .evento-info {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .evento-info h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #222;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
 }
 
 .evento-fecha {
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
 }
 
 .evento-descripcion {
-    font-size: 0.95rem;
-    color: #4b5563;
-    display: -webkit-box;
-    line-clamp: 2;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.4;
-    min-height: 40px;
+  font-size: 0.95rem;
+  color: #4b5563;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  min-height: 40px;
 }
 
 /* Acciones */
 .evento-acciones {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: auto;
-    /* mantiene botones abajo */
-    padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: auto;
+  /* mantiene botones abajo */
+  padding: 1rem;
 }
 
 .evento-acciones button {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 /* Botón editar */
 .btn-editar {
-    background-color: #4c76a2;
-    color: white;
+  background-color: #4c76a2;
+  color: white;
 }
 
 .btn-editar:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Botón eliminar */
 .btn-eliminar {
-    background-color: #af413f;
-    color: white;
+  background-color: #af413f;
+  color: white;
 }
 
 .btn-eliminar:hover {
-    background-color: #c62828;
+  background-color: #c62828;
 }
 
 /* Responsive: tablets */
 @media (max-width: 768px) {
-    .btn-crear-evento {
-        width: 100%;
-    }
+  .btn-crear-evento {
+    width: 100%;
+  }
 
-    .eventos-lista {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 16px;
-    }
+  .eventos-lista {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
 }
 
 /* Responsive: móviles */
 @media (max-width: 480px) {
-    .gestion-eventos-container {
-        padding: 1rem;
-        margin: 0 1rem;
-    }
+  .gestion-eventos-container {
+    padding: 1rem;
+    margin: 0 1rem;
+  }
 
-    .eventos-lista {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
+  .eventos-lista {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 
-    .evento-imagen {
-        height: 120px;
-    }
+  .evento-imagen {
+    height: 120px;
+  }
 
-    .evento-info h3 {
-        font-size: 1rem;
-    }
+  .evento-info h3 {
+    font-size: 1rem;
+  }
 
-    .evento-acciones button {
-        font-size: 0.8rem;
-        padding: 4px 8px;
-    }
+  .evento-acciones button {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
 
-    .evento-acciones {
-        justify-content: space-between;
-    }
+  .evento-acciones {
+    justify-content: space-between;
+  }
 }

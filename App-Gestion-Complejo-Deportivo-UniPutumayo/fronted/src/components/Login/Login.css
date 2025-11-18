@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 /*Reseteo de pagina*/
 *,
@@ -11,7 +11,7 @@
 
 html {
   box-sizing: inherit;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   height: 100%;
   overflow: hidden;
 }
@@ -104,8 +104,6 @@ html {
   transition: transform 2.5s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-
-
 /*Estilos de decorative*/
 .decorative {
   width: 100vw;
@@ -162,7 +160,9 @@ html {
   display: flex;
   flex-direction: column;
   z-index: 4;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
   margin-bottom: 3%;
 }
 
@@ -194,7 +194,6 @@ html {
   outline: none;
   background-color: #fff;
 }
-
 
 .login-card button {
   padding: 1.3vh;
@@ -251,7 +250,6 @@ html {
 .flipped .flip-inner {
   transform: rotateY(180deg);
 }
-
 
 .flip-front,
 .flip-back {
@@ -340,8 +338,6 @@ html {
   justify-content: center;
 }
 
-
-
 .p-login_google {
   text-align: center;
 }
@@ -350,7 +346,9 @@ html {
 .fade-form {
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .fade-form.active {
@@ -373,20 +371,16 @@ html {
   color: #c0392b;
 }
 
-
-
-
-
 /* Móviles grandes */
 @media (min-width: 440px) {
-
   .login-card button {
     padding: 1.4vh;
   }
 }
 
 /* Tablets pequeñas */
-@media (min-width: 640px) {}
+@media (min-width: 640px) {
+}
 
 /* Tablets medianas */
 @media (min-width: 900px) {
@@ -406,8 +400,6 @@ html {
   .container_button,
   .decorative {
     transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-
-
   }
 
   .login-container.slide-register .login-card {
@@ -428,11 +420,8 @@ html {
     /* logo a la izquierda */
   }
 
-
-
   .decorative {
     justify-content: center;
-
   }
 
   .info-logo {

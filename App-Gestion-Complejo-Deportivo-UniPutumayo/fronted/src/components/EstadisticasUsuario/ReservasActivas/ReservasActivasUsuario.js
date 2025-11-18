@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import './ReservasActivasUsuario.css';
-import { obtenerReservasActivasDelUsuario } from '../../../Services/reservas/reservaService';
-import { FaClipboardCheck } from 'react-icons/fa';
-import useReservaSocket from '../../../hooks/useReservaSocket';
+import React, { useState, useEffect } from "react";
+import "./ReservasActivasUsuario.css";
+import { obtenerReservasActivasDelUsuario } from "../../../Services/reservas/reservaService";
+import { FaClipboardCheck } from "react-icons/fa";
+import useReservaSocket from "../../../hooks/useReservaSocket";
 
 export default function ReservasActivasUsuario() {
   const [reservas, setReservas] = useState(0);
@@ -17,7 +17,7 @@ export default function ReservasActivasUsuario() {
       setReservas(response.total);
     } catch (err) {
       console.error("Error al cargar las reservas activas:", err);
-      setError('Ocurrió un error. No se pudo cargar el conteo de reservas.');
+      setError("Ocurrió un error. No se pudo cargar el conteo de reservas.");
     } finally {
       setLoading(false);
     }

@@ -1,179 +1,181 @@
 /* Contenedor principal */
 .gestion-espacios-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* Título principal */
 .gestion-espacios-container h1 {
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: #000;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #000;
 }
 
 /* Botón de crear espacio */
 .btn-crear-espacio {
-    background-color: #222;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin: 0 auto 20px auto;
-    display: block;
-    transition: all 0.2s ease-in-out;
+  background-color: #222;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 auto 20px auto;
+  display: block;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-crear-espacio:hover {
-    background-color: #000;
-    transform: translateY(-1px);
+  background-color: #000;
+  transform: translateY(-1px);
 }
 
 /* Mensaje cuando no hay espacios */
 .no-espacios-msg {
-    margin-top: 3rem;
-    color: #777;
-    font-style: italic;
-    font-size: 1.1rem;
-    padding: 30px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
+  margin-top: 3rem;
+  color: #777;
+  font-style: italic;
+  font-size: 1.1rem;
+  padding: 30px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
 }
 
 /* Lista de espacios como grid */
 .espacios-lista {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-    padding: 10px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 10px 0;
 }
 
 /* Tarjeta individual */
 .espacio-card {
-    background-color: #fdfdfd;
-    border: 1px solid #eaeaea;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    min-height: 300px;
-    /* altura uniforme */
+  background-color: #fdfdfd;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  min-height: 300px;
+  /* altura uniforme */
 }
 
 .espacio-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 /* Imagen del espacio */
 .espacio-imagen {
-    width: 100%;
-    height: 160px;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f1f1f1;
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
 }
 
 .espacio-imagen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .placeholder-imagen {
-    width: 100%;
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-    font-size: 0.9rem;
-    font-style: italic;
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 0.9rem;
+  font-style: italic;
 }
 
 /* Información del espacio */
 .espacio-info h3 {
-    margin: 0.5rem 0;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #222;
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
 }
 
 /* Acciones */
 .espacio-acciones {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: auto;
-    /* mantiene botones abajo */
-    padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: auto;
+  /* mantiene botones abajo */
+  padding: 1rem;
 }
 
 .espacio-acciones button {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 /* Botón editar */
 .btn-editar {
-    background-color: #4c76a2;
-    color: white;
+  background-color: #4c76a2;
+  color: white;
 }
 
 .btn-editar:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Botón eliminar */
 .btn-eliminar {
-    background-color: #af413f;
-    color: white;
+  background-color: #af413f;
+  color: white;
 }
 
 .btn-eliminar:hover {
-    background-color: #c62828;
+  background-color: #c62828;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .btn-crear-espacio {
-        width: 100%;
-    }
+  .btn-crear-espacio {
+    width: 100%;
+  }
 
-    .espacios-lista {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 16px;
-    }
+  .espacios-lista {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
 }
 
 @media (max-width: 480px) {
-    .espacio-imagen {
-        height: 120px;
-    }
+  .espacio-imagen {
+    height: 120px;
+  }
 
-    .espacio-info h3 {
-        font-size: 1rem;
-    }
+  .espacio-info h3 {
+    font-size: 1rem;
+  }
 
-    .espacio-acciones button {
-        font-size: 0.8rem;
-        padding: 4px 8px;
-    }
+  .espacio-acciones button {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
 }

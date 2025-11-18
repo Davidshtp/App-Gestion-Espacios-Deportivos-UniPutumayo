@@ -1,0 +1,13 @@
+{
+  // Establece Prettier como el formateador por defecto para que no haya conflictos
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // ¡La magia! Formatea el código automáticamente cada vez que guardas
+  "editor.formatOnSave": true,
+
+  // Asegura que los saltos de línea siempre sean LF, como lo requiere el proyecto
+  "files.eol": "\n",
+
+  // Opcional: Formatea también al pegar código
+  "editor.formatOnPaste": true
+}

@@ -1,13 +1,13 @@
 // src/context/AuthContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getUserData } from '../Services/auth/authService';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { getUserData } from "../Services/auth/authService";
 
 const AuthContext = createContext(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth debe usarse dentro de un AuthProvider');
+    throw new Error("useAuth debe usarse dentro de un AuthProvider");
   }
   return context;
 };
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
             rolId: profile.rol.id_rol,
             nombreCompleto: `${profile.nombre} ${profile.apellido}`,
             email: profile.correo,
-            urlImage: profile.urlimage
+            urlImage: profile.urlimage,
           });
         } else {
           setUser(null);
@@ -44,23 +44,50 @@ export const AuthProvider = ({ children }) => {
     fetchUserProfile();
   }, []);
 
-  
   const authContextValue = { user, loading, error };
 
-  
   if (loading) {
     return (
-      <div className="loading-full-screen" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5em', color: '#555' }}>
+      <div
+        className="loading-full-screen"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "1.5em",
+          color: "#555",
+        }}
+      >
         Cargando sesión...
       </div>
     );
   }
 
-  if (error || !user) { // Si hay un error, o si la carga terminó pero no hay usuario (ej. no autenticado)
+  if (error || !user) {
+    // Si hay un error, o si la carga terminó pero no hay usuario (ej. no autenticado)
     return (
-      <div className="error-full-screen" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', fontSize: '1.5em', color: 'red', textAlign: 'center' }}>
+      <div
+        className="error-full-screen"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          fontSize: "1.5em",
+          color: "red",
+          textAlign: "center",
+        }}
+      >
         <p>Error de autenticación o sesión no iniciada.</p>
-        <p>Por favor, <a href="/" style={{ color: 'blue', textDecoration: 'underline' }}>inicia sesión</a>.</p>
+        <p>
+          Por favor,{" "}
+          <a href="/" style={{ color: "blue", textDecoration: "underline" }}>
+            inicia sesión
+          </a>
+          .
+        </p>
       </div>
     );
   }

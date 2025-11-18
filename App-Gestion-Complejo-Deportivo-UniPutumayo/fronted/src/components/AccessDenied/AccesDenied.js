@@ -1,6 +1,6 @@
 // src/components/AccessDenied.jsx
-import { useNavigate } from 'react-router-dom';
-import './AccessDenied.css';
+import { useNavigate } from "react-router-dom";
+import "./AccessDenied.css";
 
 export default function AccessDenied() {
   const navigate = useNavigate();

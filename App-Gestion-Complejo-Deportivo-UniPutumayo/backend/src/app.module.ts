@@ -6,7 +6,13 @@ import { RolModule } from './rol/rol.module';
 import { ReservasModule } from './reservas/reservas.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from './config/constants';
+import {
+  DB_DATABASE,
+  DB_HOST,
+  DB_PASSWORD,
+  DB_PORT,
+  DB_USER,
+} from './config/constants';
 import { AuthModule } from './auth/auth.module';
 import { EspacioModule } from './espacio/espacio.module';
 import { DeportesModule } from './deportes/deportes.module';
@@ -19,7 +25,7 @@ import { QrModule } from './qr/qr.module';
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
-      isGlobal: true
+      isGlobal: true,
     }),
     ScheduleModule.forRoot(),
     TypeOrmModule.forRootAsync({
@@ -33,12 +39,20 @@ import { QrModule } from './qr/qr.module';
         database: configService.get<string>(DB_DATABASE),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
-        logging: false
+        logging: false,
       }),
       inject: [ConfigService],
     }),
-    UserModule, RolModule, ReservasModule, AuthModule, EspacioModule, DeportesModule, EventosModule, CloudinaryModule,QrModule],
+    UserModule,
+    RolModule,
+    ReservasModule,
+    AuthModule,
+    EspacioModule,
+    DeportesModule,
+    EventosModule,
+    CloudinaryModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

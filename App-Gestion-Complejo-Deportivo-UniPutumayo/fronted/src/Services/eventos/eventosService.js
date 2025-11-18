@@ -41,7 +41,6 @@ export const eliminarEvento = async (idEvento) => {
   }
 };
 
-
 export const obtenerEventosPublicos = async () => {
   try {
     const response = await api.get("/eventos"); // Endpoint GET /eventos
@@ -52,13 +51,12 @@ export const obtenerEventosPublicos = async () => {
   }
 };
 
-export const obtenerEventosActivos =async ()=>{
-  try{
-    const response=await api.get('/eventos/count-activos')
+export const obtenerEventosActivos = async () => {
+  try {
+    const response = await api.get("/eventos/count-activos");
     return response.data;
-  }catch(err){
-    console.error('Error al obtener el numero de eventos activos',err);
+  } catch (err) {
+    console.error("Error al obtener el numero de eventos activos", err);
     throw err;
   }
-
-}
+};

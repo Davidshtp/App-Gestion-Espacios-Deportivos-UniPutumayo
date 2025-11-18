@@ -1,13 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Swal from 'sweetalert2';
-import Select from 'react-select';
-import './ModalFormularioEspacio.css';
-import { obtenerTodosLosDeportes } from '../../../Services/deportes/deportesService';
+import React, { useState, useEffect, useRef } from "react";
+import Swal from "sweetalert2";
+import Select from "react-select";
+import "./ModalFormularioEspacio.css";
+import { obtenerTodosLosDeportes } from "../../../Services/deportes/deportesService";
 
-export default function ModalFormularioEspacio({ visible, onClose, onSubmit, espacioInicial }) {
-  const [espacio, setEspacio] = useState('');
+export default function ModalFormularioEspacio({
+  visible,
+  onClose,
+  onSubmit,
+  espacioInicial,
+}) {
+  const [espacio, setEspacio] = useState("");
   const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState("");
   const [deportesDisponibles, setDeportesDisponibles] = useState([]);
   const [deportesSeleccionados, setDeportesSeleccionados] = useState([]);
   const dropRef = useRef();
@@ -23,8 +28,8 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
         }));
         setDeportesDisponibles(options);
       } catch (err) {
-        console.error('Error al cargar los deportes:', err);
-        Swal.fire('Error', 'No se pudieron cargar los deportes.', 'error');
+        console.error("Error al cargar los deportes:", err);
+        Swal.fire("Error", "No se pudieron cargar los deportes.", "error");
       }
     };
     cargarDeportes();
@@ -33,15 +38,15 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
   // 🔹 Inicializar formulario al abrir (edición o creación)
   useEffect(() => {
     if (espacioInicial) {
-      setEspacio(espacioInicial.espacio || '');
-      setPreviewUrl(espacioInicial.imagen_url || '');
+      setEspacio(espacioInicial.espacio || "");
+      setPreviewUrl(espacioInicial.imagen_url || "");
       setFile(null);
 
       // Si el backend trae deportes como [{ id_deporte, nombre }]
       if (espacioInicial.deportes && espacioInicial.deportes.length > 0) {
         const seleccionados = espacioInicial.deportes.map((d) => ({
           value: d.id_deporte,
-          label: d.nombre || 'Sin nombre',
+          label: d.nombre || "Sin nombre",
         }));
         setDeportesSeleccionados(seleccionados);
       } else {
@@ -49,9 +54,9 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
       }
     } else {
       // Si es un nuevo espacio
-      setEspacio('');
+      setEspacio("");
       setFile(null);
-      setPreviewUrl('');
+      setPreviewUrl("");
       setDeportesSeleccionados([]);
     }
   }, [espacioInicial]);
@@ -60,14 +65,28 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
   const handleFile = (selected) => {
     if (!selected) return;
 
-    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp', 'image/svg+xml'];
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "image/webp",
+      "image/svg+xml",
+    ];
     if (!allowedTypes.includes(selected.type)) {
-      Swal.fire('Tipo no permitido', 'Solo se permiten PNG, JPG, WEBP o SVG.', 'warning');
+      Swal.fire(
+        "Tipo no permitido",
+        "Solo se permiten PNG, JPG, WEBP o SVG.",
+        "warning",
+      );
       return;
     }
 
     if (selected.size > 2 * 1024 * 1024) {
-      Swal.fire('Archivo muy grande', 'El tamaño máximo permitido es de 2 MB.', 'error');
+      Swal.fire(
+        "Archivo muy grande",
+        "El tamaño máximo permitido es de 2 MB.",
+        "error",
+      );
       return;
     }
 
@@ -80,17 +99,17 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
   // 🔹 Drag & Drop
   const handleDrop = (e) => {
     e.preventDefault();
-    dropRef.current.classList.remove('dragover');
+    dropRef.current.classList.remove("dragover");
     handleFile(e.dataTransfer.files[0]);
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
-    dropRef.current.classList.add('dragover');
+    dropRef.current.classList.add("dragover");
   };
 
   const handleDragLeave = () => {
-    dropRef.current.classList.remove('dragover');
+    dropRef.current.classList.remove("dragover");
   };
 
   // 🔹 Validar y enviar formulario
@@ -98,26 +117,38 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
     e.preventDefault();
 
     if (!espacio.trim()) {
-      Swal.fire('Campo obligatorio', 'El nombre del espacio es obligatorio.', 'warning');
+      Swal.fire(
+        "Campo obligatorio",
+        "El nombre del espacio es obligatorio.",
+        "warning",
+      );
       return;
     }
 
     if (!espacioInicial && !file) {
-      Swal.fire('Campo obligatorio', 'Debe subir una imagen para crear el espacio.', 'warning');
+      Swal.fire(
+        "Campo obligatorio",
+        "Debe subir una imagen para crear el espacio.",
+        "warning",
+      );
       return;
     }
 
     if (!deportesSeleccionados.length) {
-      Swal.fire('Campo obligatorio', 'Debe seleccionar al menos un deporte.', 'warning');
+      Swal.fire(
+        "Campo obligatorio",
+        "Debe seleccionar al menos un deporte.",
+        "warning",
+      );
       return;
     }
 
     const formData = new FormData();
-    formData.append('espacio', espacio);
-    if (file) formData.append('file', file);
+    formData.append("espacio", espacio);
+    if (file) formData.append("file", file);
 
     const idsDeportes = deportesSeleccionados.map((d) => d.value);
-    formData.append('deportes', JSON.stringify(idsDeportes));
+    formData.append("deportes", JSON.stringify(idsDeportes));
 
     onSubmit(formData);
   };
@@ -127,7 +158,7 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
   return (
     <div className="modal-overlay">
       <div className="modal-container">
-        <h2>{espacioInicial ? 'Editar Espacio' : 'Crear Nuevo Espacio'}</h2>
+        <h2>{espacioInicial ? "Editar Espacio" : "Crear Nuevo Espacio"}</h2>
 
         <form className="modal-form" onSubmit={handleSubmit}>
           {/* 🔸 Nombre del espacio */}
@@ -144,34 +175,45 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
           {/* 🔸 Imagen */}
           <div className="form-group">
             <label>
-              Imagen {espacioInicial ? '(opcional)' : <span className="obligatoria">(obligatoria)</span>}
+              Imagen{" "}
+              {espacioInicial ? (
+                "(opcional)"
+              ) : (
+                <span className="obligatoria">(obligatoria)</span>
+              )}
             </label>
 
             <div
               ref={dropRef}
               className="drop-area"
-              onClick={() => document.getElementById('fileInput').click()}
+              onClick={() => document.getElementById("fileInput").click()}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
             >
               {previewUrl ? (
                 <div className="preview-container">
-                  <img src={previewUrl} alt="Preview" className="preview-image" />
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className="preview-image"
+                  />
                   <button
                     type="button"
                     className="remove-image-button"
                     onClick={(e) => {
                       e.stopPropagation();
                       setFile(null);
-                      setPreviewUrl('');
+                      setPreviewUrl("");
                     }}
                   >
                     ✖
                   </button>
                 </div>
               ) : (
-                <p className="preview-placeholder">Arrastra una imagen o haz clic aquí</p>
+                <p className="preview-placeholder">
+                  Arrastra una imagen o haz clic aquí
+                </p>
               )}
 
               <input
@@ -197,22 +239,22 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
               styles={{
                 control: (base) => ({
                   ...base,
-                  borderRadius: '8px',
-                  borderColor: '#ccc',
-                  minHeight: '42px',
+                  borderRadius: "8px",
+                  borderColor: "#ccc",
+                  minHeight: "42px",
                 }),
                 multiValue: (base) => ({
                   ...base,
-                  backgroundColor: '#007bff20',
+                  backgroundColor: "#007bff20",
                 }),
                 multiValueLabel: (base) => ({
                   ...base,
-                  color: '#007bff',
+                  color: "#007bff",
                 }),
                 multiValueRemove: (base) => ({
                   ...base,
-                  color: '#007bff',
-                  ':hover': { backgroundColor: '#007bff', color: 'white' },
+                  color: "#007bff",
+                  ":hover": { backgroundColor: "#007bff", color: "white" },
                 }),
               }}
             />
@@ -221,15 +263,15 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
           {/* 🔸 Botones */}
           <div className="modal-actions">
             <button type="submit" className="btn-submit">
-              {espacioInicial ? 'Actualizar' : 'Crear'}
+              {espacioInicial ? "Actualizar" : "Crear"}
             </button>
             <button
               type="button"
               className="btn-cancel"
               onClick={() => {
-                setEspacio('');
+                setEspacio("");
                 setFile(null);
-                setPreviewUrl('');
+                setPreviewUrl("");
                 setDeportesSeleccionados([]);
                 onClose();
               }}

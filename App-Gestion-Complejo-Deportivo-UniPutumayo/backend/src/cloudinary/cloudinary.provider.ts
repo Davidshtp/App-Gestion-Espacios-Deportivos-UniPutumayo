@@ -1,6 +1,6 @@
 // src/cloudinary/cloudinary.provider.ts
 import { v2 as cloudinary } from 'cloudinary';
-import { CLOUDINARY } from '../config/constants'; 
+import { CLOUDINARY } from '../config/constants';
 
 export const CloudinaryProvider = {
   provide: CLOUDINARY,

@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, ForbiddenException, } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, In } from 'typeorm';
 import { ReservaEntity } from './entity/reservas.entity';
@@ -13,6 +19,10 @@ import { PonerEnUsoLibreDto } from './dto/poner-en-uso-libre.dto';
 import { PuedeReservarDto } from './dto/puede-reservar.dto';
 import { EventoEntity } from 'src/eventos/entity/evento.entity';
 import { AppGateway } from 'src/gateways/app.gateway';
+import * as Jimp from 'jimp';
+import * as QrCode from 'qrcode-reader';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class ReservasService {
@@ -33,7 +43,7 @@ export class ReservasService {
     private readonly eventoRepository: Repository<EventoEntity>,
 
     private readonly reservasGateway: AppGateway,
-  ) { }
+  ) {}
 
   private async getUsuarioConRol(usuario_id: number) {
     const usuario = await this.usuarioRepository.findOne({
@@ -50,12 +60,15 @@ export class ReservasService {
     return espacio;
   }
 
-  private async getDeporte(deporteId: number | undefined): Promise<DeporteEntity | null> {
-
+  private async getDeporte(
+    deporteId: number | undefined,
+  ): Promise<DeporteEntity | null> {
     if (!deporteId) {
-      return null
+      return null;
     }
-    const deporte = await this.deporteRepository.findOneBy({ id_deporte: deporteId });
+    const deporte = await this.deporteRepository.findOneBy({
+      id_deporte: deporteId,
+    });
 
     if (!deporte) {
       throw new NotFoundException('Deporte no encontrado');
@@ -70,11 +83,15 @@ export class ReservasService {
       fecha.getMilliseconds() === 0
     );
   }
-  private async getEvento(eventoId: number | undefined): Promise<EventoEntity | null> {
+  private async getEvento(
+    eventoId: number | undefined,
+  ): Promise<EventoEntity | null> {
     if (!eventoId) {
       return null;
     }
-    const evento = await this.eventoRepository.findOne({ where: { id_evento: eventoId } });
+    const evento = await this.eventoRepository.findOne({
+      where: { id_evento: eventoId },
+    });
     if (!evento) {
       throw new NotFoundException('Evento no encontrado');
     }
@@ -95,13 +112,17 @@ export class ReservasService {
       .where('usuario.usuario_id = :usuario_id', { usuario_id })
       .andWhere('DATE(reserva.fecha_hora) = :fechaStr', { fechaStr })
       .andWhere('reserva.estado IN (:...estados)', {
-        estados: ['reservado', 'en_uso', 'cancelado_antes_de_tiempo', 'esperando'],
+        estados: [
+          'reservado',
+          'en_uso',
+          'cancelado_antes_de_tiempo',
+          'esperando',
+        ],
       })
       .getCount();
 
     return reservasDelDia < 1;
   }
-
 
   async crearReserva(dto: CreateReservaDto) {
     // Obtener las entidades relacionadas
@@ -120,14 +141,16 @@ export class ReservasService {
 
     // Solo aplicar restricción por día si el usuario es estudiante
     if (usuario.rol.rol === 'estudiante') {
-      const puedeReservar = await this.puedeReservarHoy({ usuario_id: usuario.usuario_id, fecha: dto.fecha_hora });
+      const puedeReservar = await this.puedeReservarHoy({
+        usuario_id: usuario.usuario_id,
+        fecha: dto.fecha_hora,
+      });
       if (!puedeReservar) {
         throw new BadRequestException(
           'Como estudiante solo puedes tener una reserva por día.',
         );
       }
     }
-
 
     const yaExiste = await this.reservaRepository.findOne({
       where: {
@@ -149,7 +172,7 @@ export class ReservasService {
       usuario,
       espacio,
       deporte, // Asignar deporte (puede ser null)
-      evento,   // <-- ¡ASIGNAR EVENTO! (puede ser null)
+      evento, // <-- ¡ASIGNAR EVENTO! (puede ser null)
       estado: 'reservado',
     });
 
@@ -163,7 +186,9 @@ export class ReservasService {
     });
 
     if (!reservaCompleta) {
-      throw new InternalServerErrorException('Error al cargar los datos de la reserva');
+      throw new InternalServerErrorException(
+        'Error al cargar los datos de la reserva',
+      );
     }
 
     return {
@@ -205,7 +230,9 @@ export class ReservasService {
     }));
   }
 
-  async cancelarReserva(dto: CancelarReservaDto, user: { userId: number; rolId: number },
+  async cancelarReserva(
+    dto: CancelarReservaDto,
+    user: { userId: number; rolId: number },
   ) {
     const fecha = new Date(dto.fecha_hora);
 
@@ -229,10 +256,14 @@ export class ReservasService {
       // admin puede cancelar cualquier reserva válida
     } else if (esPropia) {
       if (!['reservado', 'esperando'].includes(reserva.estado)) {
-        throw new ForbiddenException('Solo puedes cancelar reservas que no estén en uso');
+        throw new ForbiddenException(
+          'Solo puedes cancelar reservas que no estén en uso',
+        );
       }
     } else {
-      throw new ForbiddenException('No tienes permisos para cancelar esta reserva');
+      throw new ForbiddenException(
+        'No tienes permisos para cancelar esta reserva',
+      );
     }
 
     reserva.estado = 'cancelado';
@@ -249,7 +280,9 @@ export class ReservasService {
     const fecha = new Date(dto.fecha_hora);
 
     if (user.rolId !== 1) {
-      throw new ForbiddenException('Solo los administradores pueden usar esta función');
+      throw new ForbiddenException(
+        'Solo los administradores pueden usar esta función',
+      );
     }
 
     const reserva = await this.reservaRepository.findOne({
@@ -272,9 +305,14 @@ export class ReservasService {
     return { message: 'Reserva marcada como en uso correctamente' };
   }
 
-  async ponerEnUsoLibre(dto: PonerEnUsoLibreDto, user: { userId: number; rolId: number }) {
+  async ponerEnUsoLibre(
+    dto: PonerEnUsoLibreDto,
+    user: { userId: number; rolId: number },
+  ) {
     if (user.rolId !== 1) {
-      throw new ForbiddenException('Solo administradores pueden liberar reservas.');
+      throw new ForbiddenException(
+        'Solo administradores pueden liberar reservas.',
+      );
     }
 
     const fecha = new Date(dto.fecha_hora);
@@ -305,7 +343,9 @@ export class ReservasService {
 
     this.reservasGateway.emitirNovedadReserva?.();
 
-    return { message: 'Reserva cancelada y espacio marcado como libre exitosamente' };
+    return {
+      message: 'Reserva cancelada y espacio marcado como libre exitosamente',
+    };
   }
 
   async obtenerReservasActivasDeUsuario(usuarioId: number) {
@@ -368,9 +408,12 @@ export class ReservasService {
       }
     }
 
-    const horasPosiblesCompletas = Array.from({ length: totalHorasDisponibles }, (_, i) => i + horaInicio);
+    const horasPosiblesCompletas = Array.from(
+      { length: totalHorasDisponibles },
+      (_, i) => i + horaInicio,
+    );
     const hoy = new Date();
-    const hoyISO = hoy.toISOString().split("T")[0];
+    const hoyISO = hoy.toISOString().split('T')[0];
     const horaActualServidor = hoy.getHours();
     const diasCompletos: string[] = [];
 
@@ -385,7 +428,9 @@ export class ReservasService {
 
         if (proximaHoraReserva >= horaFin) continue;
 
-        horasRequeridas = horasPosiblesCompletas.filter(h => h >= proximaHoraReserva);
+        horasRequeridas = horasPosiblesCompletas.filter(
+          (h) => h >= proximaHoraReserva,
+        );
       } else {
         continue;
       }
@@ -393,8 +438,8 @@ export class ReservasService {
       if (horasRequeridas.length === 0) continue;
 
       const todasOcupadasRequeridas =
-        (horasUnicasReservadas.size === horasRequeridas.length) &&
-        horasRequeridas.every(h => horasUnicasReservadas.has(h));
+        horasUnicasReservadas.size === horasRequeridas.length &&
+        horasRequeridas.every((h) => horasUnicasReservadas.has(h));
 
       if (todasOcupadasRequeridas) {
         diasCompletos.push(fecha);
@@ -413,7 +458,9 @@ export class ReservasService {
     return total;
   }
 
-  async obtenerHorasTotalesDeUso(usuarioId: number): Promise<{ totalHoras: number }> {
+  async obtenerHorasTotalesDeUso(
+    usuarioId: number,
+  ): Promise<{ totalHoras: number }> {
     try {
       const totalHoras = await this.reservaRepository.count({
         where: {
@@ -425,7 +472,9 @@ export class ReservasService {
       return { totalHoras };
     } catch (error) {
       console.error('Error al obtener las horas totales de uso:', error);
-      throw new InternalServerErrorException('No se pudieron obtener las horas totales de uso');
+      throw new InternalServerErrorException(
+        'No se pudieron obtener las horas totales de uso',
+      );
     }
   }
 
@@ -435,7 +484,9 @@ export class ReservasService {
     user: { userId: number; rolId: number },
   ) {
     if (user.rolId !== 1) {
-      throw new ForbiddenException('Solo los administradores pueden usar esta función');
+      throw new ForbiddenException(
+        'Solo los administradores pueden usar esta función',
+      );
     }
 
     const espacio = await this.getEspacio(espacioId);
@@ -500,7 +551,9 @@ export class ReservasService {
     }[] = [];
 
     for (const h of horasAReservar) {
-      const fechaHora = new Date(`${fecha}T${String(h).padStart(2, '0')}:00:00`);
+      const fechaHora = new Date(
+        `${fecha}T${String(h).padStart(2, '0')}:00:00`,
+      );
 
       try {
         const reserva = await this.crearReserva({
@@ -510,8 +563,7 @@ export class ReservasService {
         } as CreateReservaDto);
 
         nuevasReservas.push(reserva.reserva);
-      } catch (err) {
-      }
+      } catch (err) {}
     }
 
     return {
@@ -520,4 +572,104 @@ export class ReservasService {
     };
   }
 
+  async checkIn(file: Express.Multer.File, user: { userId: number }) {
+    let imageBuffer: Buffer;
+
+    // Si no llega archivo, usa la imagen estática de assets
+    if (!file) {
+      const qrPath = path.join(__dirname, '..', '..', 'assets', 'QR_Esp1.png');
+      if (!fs.existsSync(qrPath)) {
+        throw new BadRequestException(
+          'La imagen QR_Esp1.png no existe en assets.',
+        );
+      }
+      imageBuffer = fs.readFileSync(qrPath);
+    } else {
+      imageBuffer = file.buffer;
+    }
+
+    let espacioId: number;
+
+    try {
+      const image = await Jimp.read(imageBuffer);
+      const qr = new QrCode();
+      const value: any = await new Promise((resolve, reject) => {
+        qr.callback = (err, v) => (err != null ? reject(err) : resolve(v));
+        qr.decode(image.bitmap);
+      });
+
+      if (!value || !value.result) {
+        throw new Error('QR inválido');
+      }
+
+      // Asumimos que el QR contiene el ID del espacio directamente como un número o string numérico.
+      const parsedId = parseInt(value.result, 10);
+      if (isNaN(parsedId)) {
+        throw new BadRequestException(
+          'El contenido del QR no es un ID de espacio válido.',
+        );
+      }
+      espacioId = parsedId;
+    } catch (error) {
+      console.error('Error leyendo QR:', error);
+      throw new BadRequestException(
+        'No se pudo leer el código QR de la imagen. Asegúrate de que la imagen sea clara y válida.',
+      );
+    }
+
+    if (!espacioId) {
+      throw new BadRequestException(
+        'El código QR no contiene un ID de espacio válido.',
+      );
+    }
+
+    const ahora = new Date();
+
+    // Buscar reservas del usuario para ese espacio que puedan hacer check-in
+    const reservasPosibles = await this.reservaRepository.find({
+      where: {
+        usuario: { usuario_id: user.userId },
+        espacio: { id_espacio: espacioId },
+        estado: In(['reservado', 'esperando']),
+      },
+      order: {
+        fecha_hora: 'ASC',
+      },
+    });
+
+    if (!reservasPosibles.length) {
+      throw new NotFoundException(
+        'No tienes ninguna reserva pendiente para este espacio.',
+      );
+    }
+
+    let reservaParaCheckIn: ReservaEntity | null = null;
+
+    for (const reserva of reservasPosibles) {
+      const horaInicioReserva = new Date(reserva.fecha_hora);
+      const inicioVentanaCheckIn = new Date(
+        horaInicioReserva.getTime() - 5 * 60 * 1000,
+      ); // 5 minutos antes
+      const finVentanaCheckIn = new Date(
+        horaInicioReserva.getTime() + 20 * 60 * 1000,
+      ); // 20 minutos después
+
+      if (ahora >= inicioVentanaCheckIn && ahora <= finVentanaCheckIn) {
+        reservaParaCheckIn = reserva;
+        break;
+      }
+    }
+
+    if (!reservaParaCheckIn) {
+      throw new BadRequestException(
+        'No estás en el período de tiempo para hacer check-in (desde 5 min antes hasta 20 min después de la hora de inicio).',
+      );
+    }
+
+    reservaParaCheckIn.estado = 'en_uso'; // Cambiar a 'en_uso'
+    await this.reservaRepository.save(reservaParaCheckIn);
+    this.reservasGateway.emitirNovedadReserva();
+
+    return { message: 'Check-in realizado con éxito. ¡A disfrutar!' };
+  }
 }

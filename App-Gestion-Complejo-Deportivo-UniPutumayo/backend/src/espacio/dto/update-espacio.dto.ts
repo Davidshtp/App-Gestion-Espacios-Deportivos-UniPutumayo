@@ -1,5 +1,11 @@
 // src/espacio/dto/update-espacio.dto.ts
-import { IsString, Length, IsOptional, IsArray, ArrayNotEmpty } from 'class-validator';
+import {
+  IsString,
+  Length,
+  IsOptional,
+  IsArray,
+  ArrayNotEmpty,
+} from 'class-validator';
 
 export class UpdateEspacioDto {
   @IsOptional()
@@ -10,4 +16,8 @@ export class UpdateEspacioDto {
   @IsArray()
   @ArrayNotEmpty({ message: 'Debe seleccionar al menos un deporte.' })
   deportes?: number[];
+
+  @IsOptional()
+  @IsString()
+  qr_code?: string;
 }

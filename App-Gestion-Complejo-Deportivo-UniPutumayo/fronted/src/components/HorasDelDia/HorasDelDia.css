@@ -31,14 +31,15 @@
   /* Esto apila los elementos */
   align-items: center;
   /* Esto centra horizontalmente */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   cursor: pointer;
   text-align: center;
   position: relative;
   overflow: hidden;
   /* justify-content: flex-start; /* Esto es lo que era por defecto y empujaba hacia arriba */
 }
-
 
 .hora-card:hover {
   transform: translateY(-5px);
@@ -100,7 +101,6 @@
 }
 
 @keyframes pulsoEnUso {
-
   0%,
   100% {
     box-shadow: 0 0 0px rgba(59, 130, 246, 0.4);
@@ -134,7 +134,6 @@
 }
 
 @keyframes glowEsperando {
-
   0%,
   100% {
     box-shadow: 0 0 8px rgba(245, 158, 11, 0.2);
@@ -146,7 +145,6 @@
 }
 
 @keyframes iconoPulso {
-
   0%,
   100% {
     transform: scale(1);
@@ -158,25 +156,25 @@
 }
 
 .animando .puntos::after {
-  content: '';
+  content: "";
   animation: puntos 1.5s infinite steps(3);
 }
 
 @keyframes puntos {
   0% {
-    content: '';
+    content: "";
   }
 
   33% {
-    content: '.';
+    content: ".";
   }
 
   66% {
-    content: '..';
+    content: "..";
   }
 
   100% {
-    content: '...';
+    content: "...";
   }
 }
 
@@ -296,7 +294,6 @@
   }
 }
 
-
 /* Media query para pantallas más pequeñas, si es necesario */
 @media (max-width: 768px) {
   .horas-grid {
@@ -304,5 +301,3 @@
     /* Vuelve a una columna en pantallas pequeñas */
   }
 }
-
-

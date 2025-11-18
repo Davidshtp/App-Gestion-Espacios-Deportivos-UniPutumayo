@@ -14,10 +14,17 @@ import { EventoEntity } from 'src/eventos/entity/evento.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ReservaEntity, UserEntity, EspacioEntity, DeporteEntity,EventoEntity]),
-    ScheduleModule,GatewaysModule
+    TypeOrmModule.forFeature([
+      ReservaEntity,
+      UserEntity,
+      EspacioEntity,
+      DeporteEntity,
+      EventoEntity,
+    ]),
+    ScheduleModule,
+    GatewaysModule,
   ],
   controllers: [ReservasController],
-  providers: [ReservasService,ReservaCronService],
+  providers: [ReservasService, ReservaCronService],
 })
-export class ReservasModule { }
+export class ReservasModule {}

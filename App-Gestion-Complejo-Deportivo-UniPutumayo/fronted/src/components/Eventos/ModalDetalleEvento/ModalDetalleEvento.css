@@ -51,7 +51,9 @@
   border: none;
   cursor: pointer;
   padding: 6px;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
   color: #555;
 }
 

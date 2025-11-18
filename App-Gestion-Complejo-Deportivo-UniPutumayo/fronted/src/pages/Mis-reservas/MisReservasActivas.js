@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { getMisReservasActivas, cancelarReserva } from "../../Services/reservas/reservaService";
+import {
+  getMisReservasActivas,
+  cancelarReserva,
+} from "../../Services/reservas/reservaService";
 import "./MisReservasActivas.css";
 
 function MisReservasActivas() {
@@ -12,7 +15,7 @@ function MisReservasActivas() {
       const data = await getMisReservasActivas();
       setReservas(data);
     } catch (error) {
-      setReservas([]); 
+      setReservas([]);
     } finally {
       setLoading(false);
     }
@@ -26,7 +29,7 @@ function MisReservasActivas() {
     const confirmar = await Swal.fire({
       title: "¿Cancelar reserva?",
       text: `Cancelarás tu reserva del ${new Date(
-        reserva.fecha_hora
+        reserva.fecha_hora,
       ).toLocaleString("es-CO")} en "${reserva.espacio}".`,
       icon: "warning",
       showCancelButton: true,
@@ -42,7 +45,11 @@ function MisReservasActivas() {
         espacio_id: reserva.id_espacio,
       });
 
-      Swal.fire("Cancelada", "Tu reserva fue cancelada correctamente.", "success");
+      Swal.fire(
+        "Cancelada",
+        "Tu reserva fue cancelada correctamente.",
+        "success",
+      );
       fetchReservas(); // Recargar lista
     } catch (error) {
       console.error("Error al cancelar reserva:", error);
@@ -50,8 +57,7 @@ function MisReservasActivas() {
     }
   };
 
-  if (loading)
-    return <p className="no-reservas-msg">Cargando reservas...</p>;
+  if (loading) return <p className="no-reservas-msg">Cargando reservas...</p>;
 
   if (reservas.length === 0)
     return (

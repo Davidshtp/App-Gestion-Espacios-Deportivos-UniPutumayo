@@ -8,17 +8,17 @@ export class CreateReservaDto {
 
   @IsInt()
   @IsNotEmpty()
-  usuario_id: number; 
+  usuario_id: number;
 
   @IsInt()
   @IsNotEmpty()
   espacio_id: number;
 
   @IsInt()
-  @IsOptional() 
-  deporte_id?: number; 
+  @IsOptional()
+  deporte_id?: number;
 
   @IsInt()
-  @IsOptional() 
-  evento_id?: number; 
+  @IsOptional()
+  evento_id?: number;
 }

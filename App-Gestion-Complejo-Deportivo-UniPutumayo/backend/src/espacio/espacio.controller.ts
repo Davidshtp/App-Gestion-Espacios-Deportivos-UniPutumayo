@@ -1,5 +1,18 @@
 // src/espacio/espacio.controller.ts
-import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards, UseInterceptors, UploadedFile, ParseIntPipe, BadRequestException, } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  ParseIntPipe,
+  BadRequestException,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { EspacioService } from './espacio.service';
 import { CreateEspacioDto } from './dto/create-espacio.dto';
@@ -12,7 +25,7 @@ import { multerImageOptions } from 'src/common/configs/multer.config';
 
 @Controller('espacio')
 export class EspacioController {
-  constructor(private readonly espacioService: EspacioService) { }
+  constructor(private readonly espacioService: EspacioService) {}
 
   @Get(':id/deportes')
   @UseGuards(JwtAuthGuard)
@@ -28,7 +41,9 @@ export class EspacioController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  async obtenerPorId(@Param('id', ParseIntPipe) id: number): Promise<EspacioEntity> {
+  async obtenerPorId(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<EspacioEntity> {
     return this.espacioService.obtenerPorId(id);
   }
 
@@ -41,7 +56,9 @@ export class EspacioController {
     @UploadedFile() file?: Express.Multer.File,
   ): Promise<EspacioEntity> {
     if (!file) {
-      throw new BadRequestException('La imagen es obligatoria para crear un espacio.');
+      throw new BadRequestException(
+        'La imagen es obligatoria para crear un espacio.',
+      );
     }
     return this.espacioService.crearEspacio(dto, file);
   }
@@ -61,7 +78,9 @@ export class EspacioController {
   @Delete(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  async eliminarEspacio(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+  async eliminarEspacio(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string }> {
     await this.espacioService.eliminarEspacio(id);
     return { message: 'Espacio eliminado correctamente' };
   }
