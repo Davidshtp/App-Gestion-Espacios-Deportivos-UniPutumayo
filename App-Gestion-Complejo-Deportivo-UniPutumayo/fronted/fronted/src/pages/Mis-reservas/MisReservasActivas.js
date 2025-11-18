@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { getMisReservasActivas, cancelarReserva } from "../../Services/reservas/reservaService";
+import ReservaQr from "../../components/ReservaQr/ReservaQr";
 import "./MisReservasActivas.css";
 
 function MisReservasActivas() {
@@ -85,12 +86,20 @@ function MisReservasActivas() {
                 <strong>Evento:</strong> {r.evento}
               </p>
             )}
-            <button
-              className="btn-cancelar-reserva"
-              onClick={() => handleCancelar(r)}
-            >
-              Cancelar Reserva
-            </button>
+            <div className="reserva-actions">
+              {r.qr_token ? (
+                <ReservaQr reserva={r} />
+              ) : (
+                <small className="no-qr">QR no disponible aún</small>
+              )}
+
+              <button
+                className="btn-cancelar-reserva"
+                onClick={() => handleCancelar(r)}
+              >
+                Cancelar Reserva
+              </button>
+            </div>
           </div>
         ))}
       </div>

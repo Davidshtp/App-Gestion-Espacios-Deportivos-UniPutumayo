@@ -1,0 +1,105 @@
+.reserva-qr-wrapper { display: inline-block; }
+.btn-mostrar-qr {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.qr-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.qr-modal {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.2);
+  max-height: 90vh;
+  overflow: auto;
+}
+
+/* Animations */
+.qr-modal-backdrop { animation: fadeIn 140ms ease-out; }
+.qr-modal { animation: zoomIn 180ms ease-out; position: relative; }
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(0.96) }
+  to { opacity: 1; transform: scale(1) }
+}
+@keyframes fadeOut {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+@keyframes zoomOut {
+  from { opacity: 1; transform: scale(1) }
+  to { opacity: 0; transform: scale(0.96) }
+}
+
+/* clases para la animación de salida */
+.qr-modal-backdrop.closing { animation: fadeOut 160ms ease-in forwards; }
+.qr-modal.closing { animation: zoomOut 160ms ease-in forwards; }
+.qr-modal img { max-width: 100%; height: auto; margin: 8px 0; display:block; margin-left:auto; margin-right:auto }
+.qr-actions { display:flex; gap:8px; justify-content:center; margin-top:8px; flex-wrap:wrap }
+.qr-actions .btn { background:#10b981; color:white; border:none; padding:6px 8px; border-radius:6px; cursor:pointer }
+.qr-actions .btn-close { background:#ef4444 }
+.qr-meta small { display:block; color:#374151; }
+.qr-note { margin-top:8px; font-size:12px; color:#6b7280 }
+
+/* Make modal buttons responsive on small screens */
+@media (max-width: 480px) {
+  .qr-actions { flex-direction: column; gap: 10px; }
+  .qr-actions .btn { width: 100%; }
+}
+
+/* Improved responsiveness: full-screen style on very small devices */
+@media (max-width: 360px) {
+  .qr-modal {
+    width: 98%;
+    padding: 12px;
+    border-radius: 6px;
+  }
+  .qr-modal h3 { font-size: 1rem; margin-bottom: 6px }
+  .qr-modal img { width: 260px; max-width: 86vw; }
+}
+
+/* For tablets, slightly larger modal */
+@media (min-width: 481px) and (max-width: 900px) {
+  .qr-modal { max-width: 540px; width: 85%; }
+  .qr-modal img { width: 300px; max-width: 100%; }
+}
+
+/* Ensure backdrop covers entire viewport on mobile (address some mobile browser UI issues) */
+@supports (-webkit-overflow-scrolling: touch) {
+  .qr-modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; }
+}
+
+/* Close button in top-right */
+.qr-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  padding: 6px 8px;
+  cursor: pointer;
+  color: #374151;
+  border-radius: 6px;
+}
+.qr-close-btn:hover { background: rgba(0,0,0,0.06); }
+

@@ -115,6 +115,48 @@
   border-radius: 10px;
 }
 
+/* Acciones de la tarjeta: boton QR + cancelar */
+.reserva-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Botones base compartidos */
+.btn {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn-mostrar-qr {
+  background: #2563eb;
+  color: white;
+  flex: 0 0 auto;
+}
+
+.btn-cancelar-reserva {
+  background: #af413f;
+  color: #fff;
+  flex: 0 0 auto;
+}
+
+/* En pantallas pequeñas apilar y hacer full width */
+@media (max-width: 600px) {
+  .reserva-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn, .btn-mostrar-qr, .btn-cancelar-reserva {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .reservas-lista {
