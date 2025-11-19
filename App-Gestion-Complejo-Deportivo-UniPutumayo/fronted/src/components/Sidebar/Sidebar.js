@@ -40,6 +40,9 @@ export default function Sidebar() {
             <Link to="/eventos" className={isActive("/eventos") ? "active" : ""} onClick={() => setIsOpen(false)}>
               📢 <span className="link-text">Eventos</span>
             </Link>
+            <Link to="/checkin" className={isActive("/checkin") ? "active" : ""} onClick={() => setIsOpen(false)}>
+              🎯 <span className="link-text">Check-in</span>
+            </Link>
             <Link to="/espacios" className={isActive("/espacios") ? "active" : ""} onClick={() => setIsOpen(false)}>
               🏟️ <span className="link-text">Espacios Deportivos</span>
             </Link>

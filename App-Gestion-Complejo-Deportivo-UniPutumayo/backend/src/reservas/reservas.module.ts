@@ -11,11 +11,12 @@ import { DeporteEntity } from 'src/deportes/entity/deportes.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ReservaCronService } from './reserva-cron.service';
 import { EventoEntity } from 'src/eventos/entity/evento.entity';
+import { QrModule } from 'src/qr/qr.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ReservaEntity, UserEntity, EspacioEntity, DeporteEntity,EventoEntity]),
-    ScheduleModule,GatewaysModule
+    ScheduleModule,GatewaysModule,QrModule
   ],
   controllers: [ReservasController],
   providers: [ReservasService,ReservaCronService],

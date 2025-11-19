@@ -6,27 +6,19 @@ import { ReservaEntity } from './entity/reservas.entity';
 import * as crypto from 'crypto';
 import { AppGateway } from 'src/gateways/app.gateway';
 import { EspacioEntity } from 'src/espacio/entity/espacio.entity';
+import { QrService } from 'src/qr/qr.service';
 
 @Injectable()
 export class ReservaCronService {
   private readonly logger = new Logger(ReservaCronService.name);
-
   constructor(
     @InjectRepository(ReservaEntity)
     private readonly reservaRepository: Repository<ReservaEntity>,
-
     @InjectRepository(EspacioEntity)
     private readonly espacioRepo: Repository<EspacioEntity>,
-
     private readonly reservasGateway: AppGateway,
-  ) {}
-
-  private ventanas(fechaInicio: Date) {
-    const availableFrom = new Date(fechaInicio.getTime() - 5 * 60 * 1000);
-    const expiresAt = new Date(fechaInicio.getTime() + 15 * 60 * 1000);
-    return { availableFrom, expiresAt };
-  }
-
+    private readonly qrService: QrService,
+  ) { }
   @Cron('* * * * *')
   async generarTokensPendientes() {
     const now = new Date();
@@ -38,43 +30,15 @@ export class ReservaCronService {
         qr_token: IsNull(),
         fecha_hora: Between(now, en5min),
       },
-      relations: ['usuario'],
     });
 
     for (const r of pendientes) {
-      const token = crypto.randomBytes(32).toString('hex');
-      const { availableFrom, expiresAt } = this.ventanas(r.fecha_hora);
-
-      r.qr_token = token;
-      r.qr_available_from = availableFrom;
-      r.qr_expires_at = expiresAt;
-      r.qr_used_at = null;
-
-      await this.reservaRepository.save(r);
-    }
-  }
-
-  @Cron('* * * * *')
-  async invalidarTokensExpirados() {
-    const now = new Date();
-
-    const expirados = await this.reservaRepository.find({
-      where: {
-        qr_token: Not(IsNull()),
-        qr_expires_at: LessThan(now),
-      },
-    });
-
-    for (const r of expirados) {
-      r.qr_token = null;
-      r.qr_available_from = null;
-      r.qr_expires_at = null;
-      await this.reservaRepository.save(r);
+      await this.qrService.generarQrParaReserva(r.id_reserva);
     }
   }
 
   async onModuleInit() {
-    this.logger.log('🔄 Verificación inicial de reservas...');
+    this.logger.log('Verificación inicial de reservas...');
     await this.actualizarReservas();
   }
 
@@ -82,7 +46,7 @@ export class ReservaCronService {
   async actualizarReservasCadaMinuto() {
     await this.actualizarReservas();
   }
-  
+
   private async actualizarReservas() {
     const ahora = new Date();
     const hoy = ahora.toISOString().slice(0, 10);
@@ -98,14 +62,8 @@ export class ReservaCronService {
 
     for (const reserva of reservas) {
       const inicio = new Date(reserva.fecha_hora);
-      const fin = new Date(inicio.getTime() + 60 * 60 * 1000); // +1 hora
-
-      // ---------------------------------------
-      // A) Al llegar la hora → esperando (salvo admin → en_uso)
-      // ---------------------------------------
+      const fin = new Date(inicio.getTime() + 60 * 60 * 1000); 
       if (reserva.estado === 'reservado' && ahora >= inicio && ahora < fin) {
-        // Si el usuario que hizo la reserva es administrador (id_rol === 1),
-        // no necesita hacer check-in: marcar directamente como 'en_uso'.
         if (reserva.usuario && reserva.usuario.rol && reserva.usuario.rol.id_rol === 1) {
           reserva.estado = 'en_uso';
         } else {
@@ -115,10 +73,6 @@ export class ReservaCronService {
         huboCambios = true;
         continue;
       }
-
-      // ---------------------------------------
-      // B) check_in_previo → en_uso al llegar la hora
-      // ---------------------------------------
       if (reserva.estado === 'check_in_previo' && ahora >= inicio && ahora < fin) {
         reserva.estado = 'en_uso';
         await this.reservaRepository.save(reserva);
@@ -126,18 +80,12 @@ export class ReservaCronService {
         continue;
       }
 
-      // ---------------------------------------
-      // C) Si pasan 15 minutos sin check-in → cancelar la reserva y crear nueva de uso_libre
-      // ---------------------------------------
       if (
         reserva.estado === 'esperando' &&
         ahora >= new Date(inicio.getTime() + 15 * 60 * 1000)
       ) {
-        // Marcar la reserva original como cancelada
         reserva.estado = 'cancelado';
         await this.reservaRepository.save(reserva);
-
-        // Crear una nueva reserva como 'uso_libre' para ese espacio y hora
         const nuevaReserva = this.reservaRepository.create({
           fecha_hora: reserva.fecha_hora,
           espacio: reserva.espacio,
@@ -150,9 +98,6 @@ export class ReservaCronService {
         continue;
       }
 
-      // ---------------------------------------
-      // D) Si finaliza la hora y estaba en uso o libre
-      // ---------------------------------------
       if (['en_uso', 'uso_libre'].includes(reserva.estado) && ahora >= fin) {
         reserva.estado = 'usado';
         await this.reservaRepository.save(reserva);
@@ -160,10 +105,6 @@ export class ReservaCronService {
         continue;
       }
 
-      // ---------------------------------------
-      // E) TU REGLA FINAL:
-      // si estaba reservado y terminó la hora → cancelado
-      // ---------------------------------------
       if (reserva.estado === 'reservado' && ahora >= fin) {
         reserva.estado = 'cancelado';
         await this.reservaRepository.save(reserva);

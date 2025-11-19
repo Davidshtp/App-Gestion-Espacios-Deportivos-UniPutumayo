@@ -63,7 +63,6 @@ export class QrService {
       return { valido: false, mensaje: 'Este código QR ya fue utilizado', fechaUso: reserva.qr_used_at };
     }
 
-    // Marcar como usado y actualizar estado de la reserva
     reserva.qr_used_at = ahora;
 
     const inicio = new Date(reserva.fecha_hora);
@@ -74,7 +73,6 @@ export class QrService {
     } else if (ahora >= inicio && ahora < fin) {
       reserva.estado = 'en_uso';
     } else {
-      // si pasa fuera de la ventana, marcar apropiadamente
       reserva.estado = 'usado';
     }
 

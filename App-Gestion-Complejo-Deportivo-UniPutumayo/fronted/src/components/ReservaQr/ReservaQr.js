@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import QRCode from 'qrcode';
 import './ReservaQr.css';
@@ -9,9 +9,7 @@ export default function ReservaQr({ reserva }) {
   const [dataUrl, setDataUrl] = useState(null);
   const [generating, setGenerating] = useState(false);
   const closeTimerRef = useRef(null);
-  const ANIMATION_DURATION = 160; // ms - debe coincidir con CSS
-
-  // Desestructuramos de forma segura para que los hooks se llamen siempre
+  const ANIMATION_DURATION = 160;
   const { id_reserva, qr_token, qr_available_from, qr_expires_at } = reserva || {};
 
   const qrValue = `${window.location.origin}/checkin/scan/${id_reserva}?t=${qr_token}`;
@@ -51,13 +49,24 @@ export default function ReservaQr({ reserva }) {
     return () => { document.body.style.overflow = ''; };
   }, [open, closing]);
 
+  const handleClose = useCallback(() => {
+    if (!open || closing) return;
+    setClosing(true);
+    // esperar a que termine la animación antes de desmontar
+    closeTimerRef.current = setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+      closeTimerRef.current = null;
+    }, ANIMATION_DURATION);
+  }, [open, closing]);
+
   // Cerrar modal con Escape cuando esté abierto o en proceso de cierre (accesibilidad)
   useEffect(() => {
     if (!open && !closing) return;
     const onKey = (e) => { if (e.key === 'Escape') handleClose(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open, closing]);
+  }, [open, closing, handleClose]);
 
   const handleOpen = () => {
     // Defer abrir el modal para que el click que lo dispara termine
@@ -70,17 +79,6 @@ export default function ReservaQr({ reserva }) {
       setClosing(false);
       setOpen(true);
     }, 0);
-  };
-
-  const handleClose = () => {
-    if (!open || closing) return;
-    setClosing(true);
-    // esperar a que termine la animación antes de desmontar
-    closeTimerRef.current = setTimeout(() => {
-      setOpen(false);
-      setClosing(false);
-      closeTimerRef.current = null;
-    }, ANIMATION_DURATION);
   };
 
   const handleDownload = () => {

@@ -1,0 +1,82 @@
+.checkin-wrapper { max-width: 920px; margin: 12px auto; padding: 12px; }
+.qr-reader { width: 100%; max-width: 720px; margin: 0 auto; }
+.ci-message { color: #0f766e; margin-top: 8px; }
+.ci-error { color: #b91c1c; margin-top: 8px; }
+.ci-hint { margin-top: 8px; color: #374151; font-size: 0.95rem }
+
+
+.ci-status { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+.ci-status.success { color: #16a34a; }
+.ci-status.error { color: #dc2626; }
+.ci-icon { font-size: 1.2rem; font-weight: bold; }
+.ci-message { font-weight: 500; }
+
+.ci-details { margin-bottom: 12px; }
+.ci-details p { margin: 4px 0; }
+.ci-timestamp { color: #6b7280; font-size: 0.85rem; }
+
+.ci-expired, .ci-early, .ci-used { 
+  background: #f8fafc; 
+  border-radius: 8px; 
+  padding: 12px; 
+  margin: 8px 0;
+  border-left: 3px solid;
+}
+.ci-expired { border-left-color: #dc2626; }
+.ci-early { border-left-color: #f59e0b; }
+.ci-used { border-left-color: #6b7280; }
+
+.ci-info { color: #6b7280; font-size: 0.9rem; }
+.ci-warning { color: #dc2626; font-size: 0.9rem; font-weight: 500; }
+
+.ci-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.ci-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #2563eb;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.ci-loading-text {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ci-result {
+  margin-top: 16px;
+  text-align: center;
+  animation: slideIn 0.4s ease-out;
+}
+
+.btn { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; }
+.btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+@media (max-width: 640px) {
+  .qr-reader { width: 100%; }
+}

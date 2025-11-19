@@ -1,4 +1,3 @@
-
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Login/Login';
@@ -8,6 +7,7 @@ import Inicio from './pages/Inicio/Inicio';
 import Reservar from './pages/Reservar/Reservar';
 import DashboardLayout from './components/Layout/DashboardLayout';
 import GestionEventos from './components/Eventos/Eventos';
+import CheckIn from './components/CheckIn/CheckIn';
 import 'flatpickr/dist/themes/material_blue.css';
 import AdminRoute from './routes/AdminRoute';
 import AccessDenied from './components/AccessDenied/AccesDenied';
@@ -15,10 +15,6 @@ import GestionEspacios from "./components/GestionEspacios/GestionEspacios"
 import GestionDeportes from './components/GestionDeportes/GestionDeportes';
 import ProfilePage from './pages/Perfil/ProfilePage';
 import MisReservasActivas from './pages/Mis-reservas/MisReservasActivas';
-
-
-
-
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -65,6 +61,14 @@ root.render(
             element={
               <AdminRoute>
                 <GestionDeportes />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="checkin"
+            element={
+              <AdminRoute>
+                <CheckIn />
               </AdminRoute>
             }
           />

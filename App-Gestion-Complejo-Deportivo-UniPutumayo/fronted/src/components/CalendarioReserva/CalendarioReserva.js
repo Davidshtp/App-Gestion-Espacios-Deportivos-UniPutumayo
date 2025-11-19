@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./CalendarioReserva.css";
 import { getDiasCompletamenteReservados } from "../../Services/reservas/reservaService";
 
@@ -10,18 +10,19 @@ export default function CalendarioReserva({ espacioId, onSelectFecha }) {
   const [diasCompletos, setDiasCompletos] = useState([]);
 
   // Función para cargar los días completamente reservados del espacio
-  const fetchDiasCompletos = async () => {
+  const fetchDiasCompletos = useCallback(async () => {
     try {
       if (!espacioId) return;
       const data = await getDiasCompletamenteReservados(espacioId);
       setDiasCompletos(data);
     } catch (error) {
+      // Manejo silencioso del error
     }
-  };
+  }, [espacioId]);
 
   useEffect(() => {
     fetchDiasCompletos();
-  }, [espacioId, fechaActual.getMonth(), fechaActual.getFullYear()]);
+  }, [espacioId, fetchDiasCompletos]);
 
   useEffect(() => {
     const handleNovedad = () => {
@@ -30,7 +31,7 @@ export default function CalendarioReserva({ espacioId, onSelectFecha }) {
 
     window.addEventListener("novedad-reservas", handleNovedad);
     return () => window.removeEventListener("novedad-reservas", handleNovedad);
-  }, [espacioId]);
+  }, [espacioId, fetchDiasCompletos]);
 
   const cambiarMes = (meses) => {
     const nueva = new Date(fechaActual);

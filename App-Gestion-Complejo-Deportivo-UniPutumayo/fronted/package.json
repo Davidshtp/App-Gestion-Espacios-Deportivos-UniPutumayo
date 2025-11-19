@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.10.0",
     "flatpickr": "^4.6.13",
+    "html5-qrcode": "^2.3.8",
     "linkify-react": "^4.3.2",
     "qrcode": "^1.5.4",
     "react": "^19.1.0",

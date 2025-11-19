@@ -20,6 +20,8 @@ export default function Header() {
           return "Mis Reservas";
         case "/perfil":
           return "Perfil";
+        case "/checkin":
+          return "Check-in";
         case "/eventos":
           return "Eventos";
         case "/espacios":
