@@ -1,9 +1,392 @@
-/* Dashboard.css */
-
+/* Minimal Dashboard Styles */
 
 .dashboard-content {
-  margin: 20px 20px 10px 20px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  background-color: #fdfdfd;
+}
+
+/* Loading States */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  gap: 16px;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Welcome Header */
+.welcome-header {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border-radius: 12px;
+  padding: 32px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-info {
+  flex: 1;
+}
+
+.welcome-title {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+}
+
+.welcome-subtitle {
+  font-size: 1rem;
+  margin: 0 0 24px 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.datetime-info {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.date-display,
+.time-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.datetime-icon {
+  font-size: 16px;
+}
+
+.welcome-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  min-width: 140px;
+}
+
+.action-btn.primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.action-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-icon {
+  font-size: 16px;
+}
+
+/* Main Content - Simplificado */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Content Sections */
+.content-section {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Sección específica para estadísticas */
+.estadisticas-section {
+  padding: 24px 16px;
+}
+
+.estadisticas-section .section-header {
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.section-icon {
+  font-size: 20px;
+  color: #3b82f6;
+}
+
+
+
+/* Responsive Design - Mobile First Approach */
+
+/* Extra Large Screens (1440px+) */
+@media (min-width: 1440px) {
+  .dashboard-content {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .welcome-header {
+    padding: 40px;
+  }
+
+
+}
+
+/* Large Screens (1200px - 1439px) */
+@media (max-width: 1200px) {
+  .main-content {
+    gap: 20px;
+  }
+}
+
+/* Medium Screens (1024px - 1199px) */
+@media (max-width: 1024px) {
+  .dashboard-content {
+    padding: 20px;
+  }
+
+  .welcome-header {
+    padding: 28px;
+  }
+
+
+}
+
+/* Tablet Screens (768px - 1023px) */
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 16px;
+    gap: 20px;
+  }
+
+  .welcome-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .welcome-title {
+    font-size: 1.5rem;
+  }
+
+  .welcome-actions {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .action-btn {
+    flex: 1;
+    min-width: 120px;
+    max-width: 160px;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .datetime-info {
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .content-section {
+    padding: 20px;
+  }
+
+  /* Optimización del contenedor de estadísticas en tablet */
+  .estadisticas-section {
+    padding: 20px 10px !important;
+  }
+
+  .section-header h2 {
+    font-size: 1.125rem;
+  }
+
+
+}
+
+/* Small Tablet/Large Mobile (640px - 767px) */
+@media (max-width: 640px) {
+  .dashboard-content {
+    padding: 14px;
+    gap: 18px;
+  }
+
+  .welcome-header {
+    padding: 20px;
+  }
+
+  .welcome-title {
+    font-size: 1.375rem;
+  }
+
+  .datetime-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .welcome-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .action-btn {
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+    justify-content: center;
+  }
+
+  .content-section {
+    padding: 18px;
+  }
+
+  /* Optimización del contenedor de estadísticas en small tablet */
+  .estadisticas-section {
+    padding: 18px 8px !important;
+  }
+
+
+
+
+}
+
+/* Mobile Screens (480px - 639px) */
+@media (max-width: 480px) {
+  .dashboard-content {
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .welcome-header {
+    padding: 18px;
+  }
+
+  .welcome-title {
+    font-size: 1.25rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .content-section {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .section-header h2 {
+    font-size: 1rem;
+  }
+
+
+
+  /* Estilos específicos para estadísticas en móvil */
+  .estadisticas-container {
+    margin-bottom: 20px;
+  }
+
+  .estadisticas-container .section-header h2 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  /* Optimización del contenedor de estadísticas */
+  .estadisticas-section {
+    padding: 16px 6px !important;
+  }
+
+  .estadisticas-grid {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+}
+
+/* Small Mobile (320px - 479px) */
+@media (max-width: 320px) {
+  .dashboard-content {
+    padding: 10px;
+  }
+
+  .welcome-header {
+    padding: 16px;
+  }
+
+  .welcome-title {
+    font-size: 1.125rem;
+  }
+
+  .content-section {
+    padding: 14px;
+  }
+
+  /* Optimización del contenedor de estadísticas en small mobile */
+  .estadisticas-section {
+    padding: 14px 4px !important;
+  }
+
+
 }

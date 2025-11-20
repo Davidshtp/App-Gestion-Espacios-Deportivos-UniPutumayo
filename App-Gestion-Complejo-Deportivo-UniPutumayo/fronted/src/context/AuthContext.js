@@ -1,6 +1,7 @@
 // src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getUserData } from '../Services/auth/authService';
+import { getUserData, logout } from '../Services/auth/authService';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
 
@@ -16,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -44,8 +46,20 @@ export const AuthProvider = ({ children }) => {
     fetchUserProfile();
   }, []);
 
-  
-  const authContextValue = { user, loading, error };
+  const handleLogout = async () => {
+    try {
+      setLoading(true);
+      await logout();
+      setUser(null);
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const authContextValue = { user, loading, error, handleLogout };
 
   
   if (loading) {

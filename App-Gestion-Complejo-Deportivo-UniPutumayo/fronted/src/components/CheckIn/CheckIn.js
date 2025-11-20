@@ -7,7 +7,6 @@ export default function CheckIn() {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -23,12 +22,7 @@ export default function CheckIn() {
         const onScanSuccess = async (decodedText) => {
           // Evitar reentradas
           if (!mounted) return;
-          
-          // Activar loading y limpiar estados previos
-          setLoading(true);
-          setMessage(null);
-          setError(null);
-          setResult(null);
+          setMessage('QR detectado, validando...');
 
           try {
             // Esperamos que el QR sea una URL con /checkin/scan/{id}?t={token}
@@ -40,35 +34,20 @@ export default function CheckIn() {
 
             if (!reservaId || !token) throw new Error('Formato de QR no reconocido');
 
-            // Hacer la petición
             const resp = await api.post('/qr/validar', { reservaId, token });
-            
-            // Delay mínimo para mostrar el spinner (mejor UX)
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            if (!mounted) return;
-            
             setResult(resp.data);
+            setMessage(resp.data?.mensaje ?? 'Check-in procesado');
             setError(null);
           } catch (err) {
             console.error(err);
-            
-            // Delay mínimo para mostrar el spinner incluso en errores
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            if (!mounted) return;
-            
             setError(err?.response?.data?.message || err.message || 'Error validando QR');
-            setResult(null);
+            setMessage(null);
           } finally {
-            if (mounted) {
-              setLoading(false);
-              // detener y limpiar el scanner
-              try {
-                await scannerRef.current.clear();
-              } catch (e) {
-                // ignore
-              }
+            // detener y limpiar el scanner
+            try {
+              await scannerRef.current.clear();
+            } catch (e) {
+              // ignore
             }
           }
         };
@@ -99,8 +78,7 @@ export default function CheckIn() {
   const handleRestart = () => {
     setResult(null);
     setError(null);
-    setMessage(null);
-    setLoading(false);
+    setMessage('Reiniciando cámara...');
     // recargar la página del componente para re-iniciar el scanner
     window.location.reload();
   };
@@ -112,13 +90,6 @@ export default function CheckIn() {
 
       {message && <p className="ci-message">{message}</p>}
       {error && <p className="ci-error">{error}</p>}
-      
-      {loading && (
-        <div className="ci-loading">
-          <div className="ci-spinner"></div>
-          <p className="ci-loading-text">Validando código QR...</p>
-        </div>
-      )}
 
       {result && (
         <div className="ci-result">

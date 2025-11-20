@@ -21,6 +21,25 @@ html, body, #root {
   overflow: hidden;
   transition: margin-left 0.3s ease;
 }
+
+/* Responsive layout - liberar espacio en móvil */
+@media (max-width: 768px) {
+  .layout-main {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-content {
+    padding-bottom: 100px; /* Espacio para botón flotante */
+  }
+}
+
+@media (max-width: 320px) {
+  .layout-content {
+    padding-bottom: 90px; /* Ajustar para pantallas muy pequeñas */
+  }
+}
 header {
   height: 60px;
   background-color: #fff;

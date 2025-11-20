@@ -1,19 +1,31 @@
+/* Overlay para móviles */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998; /* Debajo del botón flotante */
+  transition: opacity 0.3s ease-in-out;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  background-color: #1f2937;
+  background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  align-items: center;
   transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
     padding 0.3s ease-in-out,
     transform 0.3s ease-in-out;
   z-index: 1000;
   overflow: hidden;
   will-change: width, padding;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-nav {
@@ -24,104 +36,130 @@
   transition: all 0.3s ease-in-out;
 }
 
-.sidebar.collapsed {
-  width: 12vw;
-  min-width: 40px;
-  max-width: 60px;
-  padding: 10px 5px;
+/* Estados del sidebar para desktop */
+.sidebar.desktop.collapsed {
+  width: 70px;
+  padding: 16px 8px;
   animation: slideToCollapsed 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.sidebar.collapsed .sidebar-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 0.3s ease-in-out 0.1s, transform 0.3s ease-in-out;
+.sidebar.desktop.open {
+  width: 280px;
+  padding: 16px 20px;
+  animation: slideToOpen 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.sidebar.open {
-  width: 20vw;
-  max-width: 200px;
-  min-width: 150px;
-  position: absolute;
-  height: 100vh;
-  padding: 10px 15px;
-  animation: slideToOpen 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+/* Estados del sidebar para móviles */
+.sidebar.mobile {
+  transform: translateX(-100%);
+  width: 280px;
+  padding: 16px 20px;
+  z-index: 9999;
+}
+
+.sidebar.mobile.open {
+  transform: translateX(0);
+}
+
+/* Botón flotante para móviles */
+.floating-menu-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9999; /* Prioridad alta para estar siempre visible */
+}
+
+/* Cuando el sidebar está abierto, cambiar color del botón para mejor visibilidad */
+.floating-menu-btn.open {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.floating-menu-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.floating-menu-btn:active {
+  transform: scale(0.95);
+}
+
+.floating-menu-btn svg {
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+
+.floating-menu-btn.open svg {
+  transform: rotate(180deg);
 }
 
 /* Animaciones keyframes para transiciones suaves */
 @keyframes slideToOpen {
   from {
-    width: 12vw;
-    min-width: 40px;
-    max-width: 60px;
+    width: 70px;
   }
-
   to {
-    width: 20vw;
-    min-width: 150px;
-    max-width: 200px;
+    width: 280px;
   }
 }
 
 @keyframes slideToCollapsed {
   from {
-    width: 20vw;
-    min-width: 150px;
-    max-width: 200px;
+    width: 280px;
   }
-
   to {
-    width: 12vw;
-    min-width: 40px;
-    max-width: 60px;
+    width: 70px;
   }
 }
 
-/* Backdrop mejorado con animaciones */
-.sidebar.open::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: -1;
-  opacity: 0;
-  animation: fadeInBackdrop 0.3s ease-in-out 0.1s forwards;
-}
-
-@keyframes fadeInBackdrop {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-/* Botón hamburguesa con animaciones mejoradas */
-.hamburger {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-bottom: 20px;
+/* Header del sidebar */
+.sidebar-header {
+  width: 100%;
+  margin-bottom: 2rem;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+}
+
+/* Botón hamburguesa mejorado */
+.hamburger {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  position: relative;
+  padding: 12px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  color: #ffffff;
+  width: 44px;
+  height: 44px;
+  align-self: center;
+}
+
+/* Ocultar hamburguesa en móviles (usamos botón flotante) */
+@media (max-width: 768px) {
+  .sidebar.mobile .hamburger {
+    display: none;
+  }
 }
 
 .hamburger:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.3);
   transform: scale(1.05);
 }
 
@@ -129,243 +167,295 @@
   transform: scale(0.95);
 }
 
-.sidebar.open .hamburger {
-  margin-top: 2rem;
-  transition: margin-top 0.3s ease-in-out;
-}
-
-/* Barras del hamburguesa con animaciones fluidas */
-.bar {
-  width: 20px;
-  height: 3px;
-  margin: 2px 0;
-  background-color: white;
-  border-radius: 2px;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform-origin: center;
-  will-change: transform, width, height;
-}
-
-/* Animación para barras verticales (estado colapsado) */
-.bar.vertical {
-  transform: rotate(-90deg) scale(1.1);
-  width: 3px;
-  height: 20px;
-  margin: 0 2px;
-  animation: toVertical 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* Animación para barras horizontales (estado abierto) */
-.bar:not(.vertical) {
-  animation: toHorizontal 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-@keyframes toVertical {
-  0% {
-    transform: rotate(0deg) scale(1);
-    width: 20px;
-    height: 3px;
-    margin: 2px 0;
-  }
-
-  50% {
-    transform: rotate(45deg) scale(1.05);
-    opacity: 0.7;
-  }
-
-  100% {
-    transform: rotate(90deg) scale(1.1);
-    width: 3px;
-    height: 20px;
-    margin: 0 2px;
-  }
-}
-
-@keyframes toHorizontal {
-  0% {
-    transform: rotate(90deg) scale(1.1);
-    width: 3px;
-    height: 20px;
-    margin: 0 2px;
-  }
-
-  50% {
-    transform: rotate(45deg) scale(1.05);
-    opacity: 0.7;
-  }
-
-  100% {
-    transform: rotate(0deg) scale(1);
-    width: 20px;
-    height: 3px;
-    margin: 2px 0;
-  }
-}
-
-/* Títulos y textos con animaciones de fade */
-.sidebar.collapsed .sidebar-title,
-.sidebar.collapsed .link-text {
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
-  pointer-events: none;
-}
-
-.sidebar.open .sidebar-title,
-.sidebar.open .link-text {
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 0.3s ease-in-out 0.2s, transform 0.3s ease-in-out 0.2s;
-}
-
+/* Título del sidebar */
 .sidebar-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 30px;
+  font-size: 18px;
+  font-weight: 700;
   text-align: center;
   transition: all 0.3s ease-in-out;
-}
-
-/* Enlaces con animaciones mejoradas */
-.sidebar-nav a {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #ffffffcc;
-  text-decoration: none;
-  padding: 14px 12px;
-  border-radius: 8px;
-  font-size: 16px;
-  position: relative;
+  white-space: nowrap;
+  color: #ffffff;
+}
+
+.title-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.title-text {
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  will-change: background-color, transform, box-shadow;
+}
+
+/* Ocultar texto en modo colapsado */
+.sidebar.collapsed .title-text,
+.sidebar.collapsed .link-text {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  transition: opacity 0.2s ease-in-out, width 0.3s ease-in-out;
+}
+
+.sidebar.open .title-text,
+.sidebar.open .link-text {
+  opacity: 1;
+  width: auto;
+  transition: opacity 0.3s ease-in-out 0.1s, width 0.3s ease-in-out;
+}
+
+/* Navegación del sidebar */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  height: 100%;
+  gap: 4px;
+}
+
+.nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-section {
+  margin-top: 1rem;
+}
+
+.user-section {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Divisor de sección */
+.section-divider {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+.divider-text {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.sidebar.collapsed .section-divider {
+  display: none;
+}
+
+/* Enlaces de navegación */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-height: 44px;
   box-sizing: border-box;
 }
 
-/* Efecto hover mejorado */
-.sidebar-nav a::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s ease-in-out;
+.nav-icon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
-.sidebar-nav a:hover::before {
-  left: 100%;
+.nav-link:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #ffffff;
+  transform: translateX(4px);
 }
 
+.nav-link:hover .nav-icon {
+  transform: scale(1.1);
+}
 
-/* Específico para sidebar abierto - mantener el efecto de desplazamiento */
-.sidebar.open .sidebar-nav a:hover,
-.sidebar.open .sidebar-nav a.active {
+.nav-link.active {
   background-color: #3b82f6;
-  color: white;
-  transform: translateX(2px);
+  color: #ffffff;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.sidebar-nav a:active {
-  transform: translateX(1px) scale(0.98);
+.nav-link.active .nav-icon {
+  color: #ffffff;
+}
+
+/* Estado colapsado */
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 12px;
+  gap: 0;
+  min-width: 44px;
+}
+
+.sidebar.collapsed .nav-link:hover {
+  transform: scale(1.05);
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Link de logout */
+.logout-link {
+  color: rgba(239, 68, 68, 0.8) !important;
+  margin-top: 8px;
+}
+
+.logout-link:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+.logout-link:hover .nav-icon {
+  color: #ef4444;
 }
 
 .spacer {
   flex-grow: 1;
-  transition: flex-grow 0.3s ease-in-out;
 }
 
-
-
-/* Enlaces en modo colapsado con animaciones */
-.sidebar.collapsed .sidebar-nav a {
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  min-height: 40px;
-  border-radius: 8px;
-  font-size: 100%;
-  padding: 12px 4px;
-  margin: 2px 0;
-  transform: scale(1);
-  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  display: flex;
-}
-
-
-
-.sidebar.collapsed .sidebar-nav a.active {
-  background-color: #3b82f6;
-  color: white;
-}
 
 /* Animación de carga inicial */
 .sidebar {
   animation: slideInFromLeft 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.sidebar.collapsed .sidebar-nav a>* {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-
-.sidebar.collapsed .sidebar-nav a .link-text {
-  display: none !important;
-}
-
-.sidebar.collapsed .sidebar-nav a:hover {
-  transform: scale(1.05) translateX(0);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-  background-color: #3b82f6;
-}
-
 @keyframes slideInFromLeft {
   from {
     transform: translateX(-100%);
   }
-
   to {
     transform: translateX(0);
   }
 }
 
-/* Media queries con transiciones */
-@media (max-width: 440px) {
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  /* Ocultar sidebar normal y mostrar botón flotante */
+  .sidebar.desktop {
+    display: none;
+  }
+  
+  .floating-menu-btn {
+    display: flex;
+  }
+  
+  .sidebar.mobile {
+    width: 100vw;
+    max-width: 320px;
+  }
+  
   .sidebar-title {
-    font-size: 12px;
-    transition: font-size 0.3s ease-in-out;
+    font-size: 16px;
   }
-
-  .sidebar.open {
-    padding: 1rem;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  .nav-link {
+    padding: 14px 16px;
+    font-size: 15px;
+    min-height: 48px;
   }
+}
 
-  .sidebar-nav a {
-    padding: 10px 8px;
-    font-size: 12px;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+@media (max-width: 480px) {
+  .floating-menu-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 52px;
+    height: 52px;
+    z-index: 10000; /* Asegurar que esté por encima del sidebar */
   }
-
-  .sidebar.collapsed .sidebar-nav a {
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    min-height: 35px;
-    border-radius: 8px;
+  
+  .floating-menu-btn svg {
+    font-size: 22px;
+  }
+  
+  .sidebar.mobile {
+    max-width: 75vw; /* Reducir ancho en pantallas pequeñas */
+  }
+  
+  .sidebar-title {
     font-size: 14px;
-    padding: 8px 4px;
-    margin: 1px 0;
-    transform: scale(1);
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    display: flex !important;
   }
+  
+  .nav-link {
+    padding: 12px 14px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+  
+  .nav-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
 
+@media (max-width: 320px) {
+  .floating-menu-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+    z-index: 10000;
+  }
+  
+  .floating-menu-btn svg {
+    font-size: 20px;
+  }
+  
+  .sidebar.mobile {
+    max-width: 70vw; /* Aún más pequeño en pantallas tiny */
+    padding: 12px 16px;
+  }
+  
+  .sidebar-header {
+    margin-bottom: 1rem;
+  }
+  
+  .sidebar-title {
+    font-size: 13px;
+  }
+  
+  .nav-link {
+    padding: 10px 12px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .nav-link,
+  .hamburger,
+  .sidebar-overlay {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Modo alto contraste */
+@media (prefers-contrast: high) {
+  .sidebar {
+    background: #000000;
+    border-right: 2px solid #ffffff;
+  }
+  
+  .nav-link {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .nav-link.active {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+  }
 }
