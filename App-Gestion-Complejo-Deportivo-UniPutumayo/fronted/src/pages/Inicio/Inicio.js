@@ -61,7 +61,7 @@ export default function Inicio() {
       <div className="welcome-header">
         <div className="welcome-info">
           <h1 className="welcome-title">
-            {getGreeting()}, {user?.nombreCompleto?.split(' ')[0] || 'Usuario'}
+            {getGreeting()}, {user?.nombreCompleto || 'Usuario'}
           </h1>
           <p className="welcome-subtitle">
             Bienvenido al Centro Deportivo UniPutumayo
@@ -81,10 +81,6 @@ export default function Inicio() {
           <Link to="/reservar" className="action-btn primary">
             <FiCalendar className="btn-icon" />
             <span>Reservar</span>
-          </Link>
-          <Link to="/espacios" className="action-btn secondary">
-            <FiMapPin className="btn-icon" />
-            <span>Espacios</span>
           </Link>
         </div>
       </div>

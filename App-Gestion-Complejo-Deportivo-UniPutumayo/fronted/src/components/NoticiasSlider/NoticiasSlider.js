@@ -118,7 +118,6 @@ export default function NoticiasSlider() {
 
     return (
         <div className="noticias-section">
-            <h3 className="noticias-title">Noticias y eventos</h3>
             <div className="slider-wrapper">
                 {/* Siempre renderiza el botón, su visibilidad se controla con CSS */}
                 <button

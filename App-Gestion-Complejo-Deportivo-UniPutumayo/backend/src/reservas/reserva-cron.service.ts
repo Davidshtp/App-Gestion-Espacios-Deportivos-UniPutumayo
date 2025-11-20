@@ -49,24 +49,43 @@ export class ReservaCronService {
 
   private async actualizarReservas() {
     const ahora = new Date();
-    const hoy = ahora.toISOString().slice(0, 10);
-    const inicioDia = new Date(`${hoy}T00:00:00`);
-    const finDia = new Date(`${hoy}T23:59:59`);
-
+    // Usar la fecha local en lugar de UTC
+    const year = ahora.getFullYear();
+    const month = String(ahora.getMonth() + 1).padStart(2, '0');
+    const day = String(ahora.getDate()).padStart(2, '0');
+    const hoy = `${year}-${month}-${day}`;
+    const inicioDia = new Date(`${hoy}T00:00:00.000-05:00`); // Colombia timezone
+    const finDia = new Date(`${hoy}T23:59:59.999-05:00`);
     let huboCambios = false;
 
+    // Primero veamos TODAS las reservas sin filtro de fecha
+    const todasLasReservas = await this.reservaRepository.find({
+      relations: ['usuario', 'usuario.rol', 'espacio'],
+    });
+
+    // Luego filtremos por hoy
     const reservas = await this.reservaRepository.find({
       where: { fecha_hora: Between(inicioDia, finDia) },
-      relations: ['usuario', 'espacio'],
+      relations: ['usuario', 'usuario.rol', 'espacio'],
     });
+
+    // Si no hay reservas para hoy, mostremos algunas fechas de ejemplo
+    if (reservas.length === 0 && todasLasReservas.length > 0) { 
+      todasLasReservas.slice(0, 5).forEach(r => {
+      });
+    }
 
     for (const reserva of reservas) {
       const inicio = new Date(reserva.fecha_hora);
       const fin = new Date(inicio.getTime() + 60 * 60 * 1000); 
+      // Cuando la hora actual coincide con la hora de inicio
       if (reserva.estado === 'reservado' && ahora >= inicio && ahora < fin) {
+  
+        // Si es admin (rol id = 1), pasa directamente a 'en_uso'
         if (reserva.usuario && reserva.usuario.rol && reserva.usuario.rol.id_rol === 1) {
           reserva.estado = 'en_uso';
         } else {
+          // Si no es admin, pasa a 'esperando' (necesita check-in)
           reserva.estado = 'esperando';
         }
         await this.reservaRepository.save(reserva);

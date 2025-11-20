@@ -7,6 +7,7 @@ export default function CheckIn() {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+  const [isValidating, setIsValidating] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -21,10 +22,21 @@ export default function CheckIn() {
 
         const onScanSuccess = async (decodedText) => {
           // Evitar reentradas
-          if (!mounted) return;
-          setMessage('QR detectado, validando...');
+          if (!mounted || isValidating) return;
+          
+          // Mostrar spinner inmediatamente
+          setIsValidating(true);
+          setMessage(null);
+          setError(null);
+          setResult(null);
+
+          // Delay mínimo de 1.5 segundos para mostrar el spinner
+          const startTime = Date.now();
 
           try {
+            // Detener el scanner inmediatamente
+            await scannerRef.current.clear();
+            
             // Esperamos que el QR sea una URL con /checkin/scan/{id}?t={token}
             const url = new URL(decodedText);
             const parts = url.pathname.split('/').filter(Boolean);
@@ -34,27 +46,41 @@ export default function CheckIn() {
 
             if (!reservaId || !token) throw new Error('Formato de QR no reconocido');
 
+            // Realizar la validación
             const resp = await api.post('/qr/validar', { reservaId, token });
+            
+            // Calcular tiempo transcurrido y añadir delay si es necesario
+            const elapsed = Date.now() - startTime;
+            const minimumDelay = 1500; // 1.5 segundos
+            
+            if (elapsed < minimumDelay) {
+              await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsed));
+            }
+            
+            // Mostrar resultado
             setResult(resp.data);
             setMessage(resp.data?.mensaje ?? 'Check-in procesado');
             setError(null);
+            
           } catch (err) {
+            // Añadir delay también para errores
+            const elapsed = Date.now() - startTime;
+            const minimumDelay = 1500;
+            
+            if (elapsed < minimumDelay) {
+              await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsed));
+            }
+            
             console.error(err);
             setError(err?.response?.data?.message || err.message || 'Error validando QR');
             setMessage(null);
+            setResult(null);
           } finally {
-            // detener y limpiar el scanner
-            try {
-              await scannerRef.current.clear();
-            } catch (e) {
-              // ignore
-            }
+            setIsValidating(false);
           }
         };
 
         const onScanError = (err) => {
-          // no mostrar cada error menor
-          // console.debug('scan error', err);
         };
 
         scannerRef.current.render(onScanSuccess, onScanError);
@@ -73,13 +99,14 @@ export default function CheckIn() {
         scannerRef.current.clear().catch(() => {});
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRestart = () => {
     setResult(null);
     setError(null);
     setMessage('Reiniciando cámara...');
-    // recargar la página del componente para re-iniciar el scanner
+    setIsValidating(false);
     window.location.reload();
   };
 
@@ -88,10 +115,18 @@ export default function CheckIn() {
       <h2>Check-in (escáner QR)</h2>
       <div id="qr-reader" className="qr-reader" />
 
-      {message && <p className="ci-message">{message}</p>}
-      {error && <p className="ci-error">{error}</p>}
+      {/* Spinner de validación */}
+      {isValidating && (
+        <div className="validation-spinner">
+          <div className="spinner"></div>
+          <p className="validation-text">Validando código QR...</p>
+        </div>
+      )}
 
-      {result && (
+      {!isValidating && message && <p className="ci-message">{message}</p>}
+      {!isValidating && error && <p className="ci-error">{error}</p>}
+
+      {!isValidating && result && (
         <div className="ci-result">
           <div className={`ci-status ${result.valido ? 'success' : 'error'}`}>
             <span className="ci-icon">{result.valido ? '✓' : '✗'}</span>
@@ -137,7 +172,7 @@ export default function CheckIn() {
         </div>
       )}
 
-      {!result && !error && (
+      {!result && !error && !isValidating && (
         <p className="ci-hint">Asegúrate de permitir el acceso a la cámara y de usar un dispositivo con cámara (móvil recomendado).</p>
       )}
     </div>

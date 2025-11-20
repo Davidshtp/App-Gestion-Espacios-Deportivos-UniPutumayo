@@ -11,33 +11,53 @@ export default function ModalDetalleEvento({ evento, onClose }) {
   if (!evento) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <button className="cerrar-modal" onClick={onClose}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+    <div className="modal-overlay-minimal" onClick={onClose}>
+      <div className="modal-container-minimal" onClick={(e) => e.stopPropagation()}>
+        
+        {/* Header minimalista */}
+        <div className="modal-header-minimal">
+          <h2 className="modal-title-minimal">{evento.nombre}</h2>
+          <button className="modal-close-minimal" onClick={onClose}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
         </div>
 
-        <div className="modal-body">
+        {/* Contenido */}
+        <div className="modal-content-minimal">
+          
+          {/* Imagen */}
           {evento.url_imagen_evento && (
-            <img className="modal-imagen" src={evento.url_imagen_evento} alt={evento.nombre} />
+            <div className="modal-image-wrapper">
+              <img 
+                className="modal-image-minimal" 
+                src={evento.url_imagen_evento} 
+                alt={evento.nombre}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+            </div>
           )}
-          <h3>{evento.nombre}</h3>
-          <p className="modal-fecha">
-            {new Date(evento.fecha_hora_evento).toLocaleString("es-CO", {
+
+          {/* Fecha */}
+          <div className="modal-date-minimal">
+            {new Date(evento.fecha_hora_evento).toLocaleDateString("es-CO", {
               weekday: "long",
-              day: "numeric",
+              day: "numeric", 
               month: "long",
+              year: "numeric",
               hour: "2-digit",
-              minute: "2-digit",
+              minute: "2-digit"
             })}
-          </p>
-          <p className="modal-descripcion">
+          </div>
+
+          {/* Descripción */}
+          <div className="modal-description-minimal">
             <Linkify options={opcionesLinkify}>{evento.descripcion}</Linkify>
-          </p>
+          </div>
+
         </div>
       </div>
     </div>

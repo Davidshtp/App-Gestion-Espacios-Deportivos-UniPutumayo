@@ -32,6 +32,167 @@
 .btn { background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
 .btn:hover { opacity: 0.9; }
 
+/* Spinner de validación */
+.validation-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  margin: 20px 0;
+  background: linear-gradient(145deg, #ffffff, #f1f5f9);
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.validation-spinner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.spinner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top: 3px solid #3b82f6;
+  border-right: 3px solid #60a5fa;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  border: 2px solid transparent;
+  border-bottom: 2px solid #93c5fd;
+  border-left: 2px solid #dbeafe;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite reverse;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.validation-text {
+  color: #1e40af;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+  text-align: center;
+  animation: pulse-text 2s ease-in-out infinite;
+  text-shadow: 0 1px 2px rgba(59, 130, 246, 0.2);
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Efectos adicionales */
+.validation-spinner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15);
+  transition: all 0.3s ease;
+}
+
+/* Animación de entrada */
+.validation-spinner {
+  animation: fadeInScale 0.5s ease-out;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Puntos decorativos */
+.spinner::after {
+  box-shadow: 
+    0 0 0 1px rgba(59, 130, 246, 0.1),
+    0 0 20px rgba(59, 130, 246, 0.3);
+}
+
 @media (max-width: 640px) {
   .qr-reader { width: 100%; }
+  
+  .validation-spinner {
+    padding: 24px 20px;
+    margin: 16px 0;
+    border-radius: 16px;
+  }
+  
+  .spinner {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 14px;
+  }
+  
+  .spinner::before {
+    border-width: 2.5px;
+  }
+  
+  .spinner::after {
+    top: 5px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    border-width: 2px;
+  }
+  
+  .validation-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .validation-spinner {
+    padding: 20px 16px;
+    margin: 12px 0;
+  }
+  
+  .spinner {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .validation-text {
+    font-size: 0.95rem;
+  }
 }

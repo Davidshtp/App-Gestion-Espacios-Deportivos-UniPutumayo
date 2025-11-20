@@ -47,10 +47,24 @@ export class AuthService {
     //Hashea la contraseña del usuario con el salt generado
     const hashedPassword = await bcrypt.hash(userData.contrasena, salt)
 
+    // Generar avatar con iniciales del usuario
+    const iniciales = `${userData.nombre.charAt(0)}${userData.apellido.charAt(0)}`.toUpperCase();
+    
+    // Generar color basado en las iniciales
+    const colors = ['3b82f6', 'ef4444', '10b981', 'f59e0b', '8b5cf6', '06b6d4', 'f97316', '84cc16', 'ec4899', '6366f1', '14b8a6', 'f472b6'];
+    let hash = 0;
+    for (let i = 0; i < iniciales.length; i++) {
+      hash = iniciales.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const backgroundColor = colors[Math.abs(hash) % colors.length];
+    
+    // Generar URL del avatar
+    const avatarUrl = `https://ui-avatars.com/api/?name=${iniciales}&background=${backgroundColor}&color=fff&size=200&font-size=0.6&bold=true`;
 
     const newUser = this.usuarioRepository.create({
       ...userData,
       contrasena: hashedPassword,
+      urlimage: avatarUrl,
       rol
     })
 
@@ -83,6 +97,12 @@ export class AuthService {
     });
 
     if (!user) {
+      // Obtener el rol completo desde la base de datos
+      const rol = await this.rolRepository.findOne({ where: { id_rol: 2 } });
+      if (!rol) {
+        throw new BadRequestException('El rol de usuario no existe');
+      }
+
       user = this.usuarioRepository.create({
         nombre: payload.given_name,
         apellido: payload.family_name,
@@ -90,9 +110,24 @@ export class AuthService {
         contrasena: '',
         identificacion: '',
         urlimage: payload.picture,
-        rol: { id_rol: 2 } as RolEntity,
+        rol: rol,
       });
       await this.usuarioRepository.save(user);
+
+      // Recargar el usuario con las relaciones completas
+      user = await this.usuarioRepository.findOne({
+        where: { correo: email },
+        relations: ['rol'],
+      });
+
+      if (!user) {
+        throw new BadRequestException('Error al crear el usuario');
+      }
+    }
+
+    // Validar que el usuario y el rol existan
+    if (!user || !user.rol) {
+      throw new BadRequestException('Usuario o rol no encontrado');
     }
 
     const tokenPayload = {
@@ -167,5 +202,36 @@ export class AuthService {
     return rest;
   }
 
+  async updateEmail(userId: number, correo: string) {
+    // Verificar que el usuario exista
+    const user = await this.usuarioRepository.findOne({
+      where: { usuario_id: userId }
+    });
+
+    if (!user) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+
+    // Verificar si el usuario ya tiene un correo asignado
+    if (user.correo && user.correo.trim() !== '') {
+      throw new BadRequestException('El correo electrónico no se puede modificar una vez asignado');
+    }
+
+    // Verificar que el correo no esté en uso por otro usuario
+    const existingUser = await this.usuarioRepository.findOne({
+      where: { correo: correo }
+    });
+
+    if (existingUser && existingUser.usuario_id !== userId) {
+      throw new BadRequestException('Este correo electrónico ya está en uso');
+    }
+
+    // Actualizar el correo del usuario
+    await this.usuarioRepository.update(userId, { correo: correo });
+
+    return {
+      message: 'Correo electrónico actualizado exitosamente',
+    };
+  }
 
 }

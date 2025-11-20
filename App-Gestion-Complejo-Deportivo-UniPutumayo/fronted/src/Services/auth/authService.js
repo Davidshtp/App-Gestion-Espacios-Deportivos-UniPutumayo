@@ -68,3 +68,14 @@ export const loginWithGoogle = async (credential) => {
     throw error;
   }
 };
+
+// ✅ Actualiza el correo electrónico del usuario
+export const updateEmail = async (correo) => {
+  try {
+    const response = await api.patch("/auth/update-email", { correo });
+    return response.data;
+  } catch (error) {
+    console.error("Error en updateEmail service:", error);
+    throw error;
+  }
+};

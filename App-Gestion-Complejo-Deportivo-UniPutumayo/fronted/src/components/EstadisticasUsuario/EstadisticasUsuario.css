@@ -2,30 +2,41 @@
 
 .estadisticas-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
   justify-content: center;
   align-items: stretch;
+  justify-items: center;
+  box-sizing: border-box;
 }
 
 .stat-card {
-  padding: 20px;
-  border-radius: 12px;
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  border-radius: 8px;
+  color: #374151;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
   width: 100%;
+  max-width: 100%;
+  min-height: 140px;
   box-sizing: border-box;
+  justify-self: center;
+  align-self: stretch;
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
 }
 
 /* Card Header Layout */
@@ -38,20 +49,22 @@
 
 .card-icon {
   font-size: 24px;
-  opacity: 0.8;
+  color: #6b7280;
   flex-shrink: 0;
+  opacity: 0.8;
 }
 
 .stat-number {
-  font-size: 32px;
+  font-size: clamp(28px, 5vw, 32px);
   font-weight: 700;
   margin: 0;
   text-align: right;
+  color: #1f2937;
 }
 
 .stat-label {
-  font-size: 14px;
-  opacity: 0.9;
+  font-size: 12px;
+  color: #6b7280;
   font-weight: 500;
   margin: 0 0 8px 0;
   text-transform: uppercase;
@@ -59,10 +72,12 @@
 }
 
 .eventos-detalle {
-  font-size: 12px;
-  opacity: 0.8;
+  font-size: 11px;
+  color: #9ca3af;
   line-height: 1.4;
   margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #f3f4f6;
 }
 
 .eventos-detalle p {
@@ -77,36 +92,44 @@
 }
 
 .error-card {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  background: #fef2f2 !important;
+  color: #991b1b !important;
+  border-color: #fca5a5 !important;
 }
 
-/* Color schemes */
+/* Esquema de colores minimalista y opaco */
 .stat-card:nth-child(1),
 .stat-card.azul {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: #f8fafc;
+  border-left: 4px solid #64748b;
 }
 
 .stat-card:nth-child(2),
 .stat-card.naranja {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: #fafaf9;
+  border-left: 4px solid #78716c;
 }
 
 .stat-card:nth-child(3),
 .stat-card.morado {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  background: #f9fafb;
+  border-left: 4px solid #6b7280;
 }
 
 .stat-card:nth-child(4),
 .stat-card.verde {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: #f9fafb;
+  border-left: 4px solid #52525b;
 }
 
 .stat-card.gris {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  background: #f9fafb;
+  border-left: 4px solid #71717a;
 }
 
 .stat-card.negro {
-  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  background: #fafafa;
+  border-left: 4px solid #525252;
 }
 
 /* Responsive Breakpoints */
@@ -166,14 +189,17 @@
 /* Tablet Portrait (768px - 1023px) */
 @media (max-width: 768px) {
   .estadisticas-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
-    justify-items: stretch;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    justify-items: center;
+    padding: 0 10px;
   }
 
   .stat-card {
-    padding: 18px;
+    padding: 20px;
     width: 100%;
+    max-width: 300px;
+    min-height: 130px;
   }
 
   .card-header {
@@ -184,11 +210,11 @@
   }
 
   .card-icon {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .stat-number {
-    font-size: 28px;
+    font-size: 30px;
     text-align: right;
   }
 
@@ -205,29 +231,32 @@
 @media (max-width: 640px) {
   .estadisticas-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-    justify-items: stretch;
+    gap: 16px;
+    justify-items: center;
+    align-items: start;
+    padding: 0 8px;
   }
 
   .stat-card {
-    padding: 16px;
+    padding: 18px;
     width: 100%;
-    min-height: 120px;
+    max-width: 180px;
+    min-height: 130px;
   }
 
   .card-header {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
 
   .card-icon {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .stat-number {
-    font-size: 26px;
+    font-size: 28px;
     text-align: right;
   }
 
@@ -237,7 +266,7 @@
 
   .eventos-detalle {
     font-size: 10px;
-    text-align: center;
+    text-align: left;
   }
 }
 
@@ -245,15 +274,19 @@
 @media (max-width: 480px) {
   .estadisticas-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
-    justify-items: stretch;
+    gap: 16px;
+    justify-items: center;
+    place-items: center;
     width: 100%;
+    padding: 0 12px;
   }
 
   .stat-card {
-    padding: 18px;
+    padding: 20px;
     width: 100%;
-    min-height: 200px;
+    max-width: 350px;
+    min-height: 120px;
+    margin: 0 auto;
     box-sizing: border-box;
   }
 
@@ -261,11 +294,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   .card-icon {
-    font-size: 24px;
+    font-size: 26px;
   }
 
   .stat-number {
@@ -288,16 +321,20 @@
 /* Small Mobile (320px - 479px) */
 @media (max-width: 320px) {
   .estadisticas-grid {
-    gap: 12px;
+    gap: 14px;
     grid-template-columns: 1fr;
-    justify-items: stretch;
+    justify-items: center;
+    place-items: center;
     width: 100%;
+    padding: 0 8px;
   }
 
   .stat-card {
-    padding: 16px;
+    padding: 18px;
     width: 100%;
-    min-height: 95px;
+    max-width: 280px;
+    min-height: 110px;
+    margin: 0 auto;
     box-sizing: border-box;
   }
 
@@ -305,14 +342,15 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 12px;
   }
 
   .card-icon {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .stat-number {
-    font-size: 28px;
+    font-size: 30px;
     text-align: right;
   }
 
@@ -330,16 +368,19 @@
 @media (max-width: 280px) {
   .estadisticas-grid {
     grid-template-columns: 1fr;
-    justify-items: stretch;
+    justify-items: center;
+    place-items: center;
     width: 100%;
-    padding: 0 8px;
-    gap: 10px;
+    padding: 0 6px;
+    gap: 12px;
   }
 
   .stat-card {
-    padding: 14px;
+    padding: 16px;
     width: 100%;
-    min-height: 85px;
+    max-width: 250px;
+    min-height: 100px;
+    margin: 0 auto;
     box-sizing: border-box;
   }
 
@@ -348,14 +389,15 @@
     justify-content: space-between;
     align-items: center;
     gap: 8px;
+    margin-bottom: 10px;
   }
 
   .card-icon {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .stat-number {
-    font-size: 24px;
+    font-size: 26px;
     text-align: right;
   }
 
@@ -366,6 +408,18 @@
   .eventos-detalle {
     font-size: 10px;
     text-align: left;
+  }
+}
+
+/* Utilities para forzar centrado en móviles */
+@media (max-width: 768px) {
+  .estadisticas-grid {
+    justify-content: center !important;
+    place-content: center !important;
+  }
+  
+  .stat-card {
+    justify-self: center !important;
   }
 }
 

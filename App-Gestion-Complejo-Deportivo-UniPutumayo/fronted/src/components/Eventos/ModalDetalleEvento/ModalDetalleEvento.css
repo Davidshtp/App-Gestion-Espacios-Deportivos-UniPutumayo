@@ -1,117 +1,187 @@
-/* --- Modal general --- */
-.modal-overlay {
+/* === MODAL MINIMALISTA === */
+
+/* Overlay */
+.modal-overlay-minimal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
 }
 
-/* --- Modal contenido --- */
-.modal-contenido {
-  background-color: #fff;
-  border-radius: 10px;
-  max-width: 600px;
-  width: 90%;
-  max-height: 90vh;
+/* Contenedor */
+.modal-container-minimal {
+  background: #ffffff;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  animation: scaleIn 0.2s ease;
+}
+
+/* Header minimalista */
+.modal-header-minimal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px 0 20px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-title-minimal {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  flex: 1;
+}
+
+.modal-close-minimal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.modal-close-minimal:hover {
+  background: #f9fafb;
+  color: #374151;
+}
+
+/* Contenido */
+.modal-content-minimal {
+  padding: 20px;
   overflow-y: auto;
-  position: relative;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 0.3s ease-in-out;
+  max-height: 70vh;
   scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
-.modal-contenido::-webkit-scrollbar {
+.modal-content-minimal::-webkit-scrollbar {
   display: none;
 }
 
-/* --- Header fijo dentro del modal --- */
-.modal-header {
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 20;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 9vh;
-  padding: 0 16px;
-  border-bottom: 1px solid #9c9999;
+/* Imagen minimalista */
+.modal-image-wrapper {
+  margin-bottom: 16px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
 }
 
-/* --- Botón cerrar --- */
-.cerrar-modal {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  transition: transform 0.2s ease, color 0.2s ease;
-  color: #555;
-}
-
-.cerrar-modal:hover {
-  transform: scale(1.2);
-  color: #000000;
-}
-
-/* --- Cuerpo desplazable --- */
-.modal-body {
-  padding: 1rem 3rem 3rem;
-}
-
-/* --- Imagen dentro del modal --- */
-.modal-imagen {
+.modal-image-minimal {
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  max-height: 300px;
+  object-fit: contain;
+  display: block;
 }
 
-.modal-fecha {
-  font-size: 0.9rem;
-  color: #666;
-  font-style: italic;
-  margin-bottom: 0.5rem;
+/* Fecha minimalista */
+.modal-date-minimal {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f3f4f6;
+  text-transform: capitalize;
 }
 
-.modal-descripcion {
-  font-size: 1rem;
-  line-height: 1.5;
+/* Descripción minimalista */
+.modal-description-minimal {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #374151;
+  margin: 0;
 }
 
-/* --- Animación modal --- */
+.modal-description-minimal a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.modal-description-minimal a:hover {
+  text-decoration: underline;
+  color: #374151;
+}
+
+/* Animaciones simples */
 @keyframes fadeIn {
-  from {
-    transform: scale(0.9);
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { 
     opacity: 0;
+    transform: scale(0.95);
   }
-  to {
-    transform: scale(1);
+  to { 
     opacity: 1;
+    transform: scale(1);
   }
 }
 
-/* --- Responsividad --- */
-@media (max-width: 1024px) {
-  .slider-container {
-    max-width: 512px;
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-overlay-minimal {
+    padding: 16px;
+  }
+  
+  .modal-container-minimal {
+    max-width: 100%;
+    max-height: 90vh;
+  }
+  
+  .modal-header-minimal {
+    padding: 16px 16px 0 16px;
+  }
+  
+  .modal-title-minimal {
+    font-size: 16px;
+  }
+  
+  .modal-content-minimal {
+    padding: 16px;
+  }
+  
+  .modal-image-minimal {
+    max-height: 200px;
   }
 }
 
-@media (max-width: 600px) {
-  .slider-container {
-    max-width: 240px;
+@media (max-width: 480px) {
+  .modal-overlay-minimal {
+    padding: 12px;
   }
-
-  .arrow {
-    font-size: 20px;
-    padding: 0 6px;
+  
+  .modal-header-minimal {
+    padding: 14px 14px 0 14px;
+  }
+  
+  .modal-content-minimal {
+    padding: 14px;
+  }
+  
+  .modal-date-minimal {
+    font-size: 13px;
+  }
+  
+  .modal-description-minimal {
+    font-size: 14px;
   }
 }

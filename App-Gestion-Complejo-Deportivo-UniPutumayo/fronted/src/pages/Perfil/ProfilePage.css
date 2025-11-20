@@ -85,3 +85,140 @@
   color: #6b7280;
   font-family: 'Inter', sans-serif;
 }
+
+/* Sección de email */
+.email-section {
+  width: 100%;
+}
+
+.email-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn-add-email {
+  align-self: flex-start;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-add-email:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.email-info {
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+/* Formulario de edición de email */
+.email-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.email-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.email-input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.email-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-save, .btn-cancel {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-save {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-cancel {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background-color: #4b5563;
+  transform: translateY(-1px);
+}
+
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .profile-card {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .email-buttons {
+    flex-direction: column;
+  }
+
+  .btn-save, .btn-cancel {
+    width: 100%;
+  }
+}

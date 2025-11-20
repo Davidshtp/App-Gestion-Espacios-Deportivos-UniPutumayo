@@ -1,8 +1,9 @@
 // auth.controller.ts
-import { BadRequestException, Body, Controller, Get, Post, Req, Res, UseGuards, } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Patch, Post, Put, Req, Res, UseGuards, } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { LoginDto } from './dto/login.dto';
+import { UpdateEmailDto } from './dto/update-email.dto';
 import { Response, Request } from 'express';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
@@ -37,6 +38,13 @@ export class AuthController {
   @Get('me')
   async me(@Req() req: Request) {
     return this.authService.getProfile(req['user'].userId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('update-email')
+  async updateEmail(@Body() updateEmailDto: UpdateEmailDto, @Req() req: Request) {
+    const userId = req['user'].userId;
+    return this.authService.updateEmail(userId, updateEmailDto.correo);
   }
 
   @Post('logout')
