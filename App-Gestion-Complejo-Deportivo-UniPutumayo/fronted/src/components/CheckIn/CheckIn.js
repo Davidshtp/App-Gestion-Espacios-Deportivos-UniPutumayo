@@ -8,50 +8,82 @@ export default function CheckIn() {
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
   const [isValidating, setIsValidating] = useState(false);
+  const [qrScanned, setQrScanned] = useState(false);
 
   useEffect(() => {
     let mounted = true;
+    let scanner = null;
     setMessage('Inicializando cámara...');
 
-    // Cargamos la librería dinámicamente para evitar problemas si no está instalada
+    // Cargamos la librería dinámicamente
     import('html5-qrcode')
       .then(({ Html5QrcodeScanner }) => {
         if (!mounted) return;
-        const config = { fps: 10, qrbox: 280 };
-        scannerRef.current = new Html5QrcodeScanner('qr-reader', config, false);
+        
+        // Configuración mejorada para mejor detección
+        const config = { 
+          fps: 30,  // Aumentado más para mejor detección
+          qrbox: { width: 300, height: 300 },  // Aumentado tamaño
+          aspectRatio: 1.0,
+          disableFlip: false,
+          verbose: true  // Para debugging
+        };
+        
+        scanner = new Html5QrcodeScanner('qr-reader', config, false);
+        scannerRef.current = scanner;
 
         const onScanSuccess = async (decodedText) => {
-          // Evitar reentradas
-          if (!mounted || isValidating) return;
+          // Evitar múltiples escaneos simultáneos
+          if (!mounted || isValidating || qrScanned) return;
           
-          // Mostrar spinner inmediatamente
+          setQrScanned(true);
           setIsValidating(true);
           setMessage(null);
           setError(null);
           setResult(null);
 
-          // Delay mínimo de 1.5 segundos para mostrar el spinner
           const startTime = Date.now();
 
           try {
-            // Detener el scanner inmediatamente
-            await scannerRef.current.clear();
+            console.log('QR decodificado:', decodedText);
             
-            // Esperamos que el QR sea una URL con /checkin/scan/{id}?t={token}
-            const url = new URL(decodedText);
-            const parts = url.pathname.split('/').filter(Boolean);
-            const reservaIdStr = parts[parts.length - 1];
-            const reservaId = parseInt(reservaIdStr, 10);
-            const token = url.searchParams.get('t');
+            // Parsear el QR - Esperamos: http://localhost:3000/checkin/scan/123?t=token
+            let reservaId, token;
+            
+            // Intentar extraer con regex
+            const idMatch = decodedText.match(/\/scan\/(\d+)/);
+            const tokenMatch = decodedText.match(/[?&]t=([a-f0-9]+)/);
+            
+            if (idMatch && tokenMatch) {
+              reservaId = parseInt(idMatch[1], 10);
+              token = tokenMatch[1];
+            } else {
+              // Si no encuentra el formato esperado, intentar parsear como URL
+              try {
+                const url = new URL(decodedText);
+                const parts = url.pathname.split('/').filter(Boolean);
+                // parts será: ['checkin', 'scan', '123']
+                if (parts.length >= 3 && parts[0] === 'checkin' && parts[1] === 'scan') {
+                  reservaId = parseInt(parts[2], 10);
+                  token = url.searchParams.get('t');
+                }
+              } catch (e) {
+                console.error('No se pudo parsear como URL:', decodedText);
+              }
+            }
 
-            if (!reservaId || !token) throw new Error('Formato de QR no reconocido');
+            if (!reservaId || !token) {
+              throw new Error(`Código QR inválido. Decodificado: "${decodedText}"`);
+            }
+
+            console.log('Validando QR - reservaId:', reservaId, 'token:', token);
 
             // Realizar la validación
             const resp = await api.post('/qr/validar', { reservaId, token });
             
-            // Calcular tiempo transcurrido y añadir delay si es necesario
+            // Mantener spinner mínimo 1.5 segundos
             const elapsed = Date.now() - startTime;
-            const minimumDelay = 1500; // 1.5 segundos
+            const minimumDelay = 1500;
             
             if (elapsed < minimumDelay) {
               await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsed));
@@ -71,43 +103,153 @@ export default function CheckIn() {
               await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsed));
             }
             
-            console.error(err);
+            console.error('Error en validación:', err);
             setError(err?.response?.data?.message || err.message || 'Error validando QR');
             setMessage(null);
             setResult(null);
           } finally {
             setIsValidating(false);
+            setQrScanned(false);
           }
         };
 
         const onScanError = (err) => {
+          // Ignorar errores de detección normales
+          // console.log('Scan error:', err);
         };
 
-        scannerRef.current.render(onScanSuccess, onScanError);
+        scanner.render(onScanSuccess, onScanError);
         setMessage('Apunta la cámara al código QR');
       })
       .catch((err) => {
         console.error('No se pudo cargar html5-qrcode', err);
-        setError('No se pudo acceder a la cámara. Instala la dependencia `html5-qrcode` y recarga.');
+        setError('No se pudo acceder a la cámara. Verifica los permisos y recarga la página.');
         setMessage(null);
       });
 
     return () => {
       mounted = false;
-      if (scannerRef.current) {
-        // clear devuelve una promesa
-        scannerRef.current.clear().catch(() => {});
+      if (scanner) {
+        scanner.clear().catch(() => {});
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleRestart = () => {
+  const handleRestart = async () => {
+    // Limpiar resultado primero (para animar la salida)
     setResult(null);
     setError(null);
-    setMessage('Reiniciando cámara...');
     setIsValidating(false);
-    window.location.reload();
+    
+    // Pequeño delay para que se vea la transición
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // Reconstruir completamente el scanner
+    const qrReaderElement = document.getElementById('qr-reader');
+    if (qrReaderElement) {
+      // Limpiar todo el contenido del scanner
+      qrReaderElement.innerHTML = '';
+      
+      // Reinicializar el scanner
+      import('html5-qrcode')
+        .then(({ Html5QrcodeScanner }) => {
+          const config = { 
+            fps: 30,
+            qrbox: { width: 300, height: 300 },
+            aspectRatio: 1.0,
+            disableFlip: false,
+            verbose: true
+          };
+          
+          const newScanner = new Html5QrcodeScanner('qr-reader', config, false);
+          scannerRef.current = newScanner;
+          
+          const onScanSuccess = async (decodedText) => {
+            if (!qrScanned) {
+              setQrScanned(true);
+              setIsValidating(true);
+              setMessage(null);
+              setError(null);
+              setResult(null);
+
+              const startTime = Date.now();
+
+              try {
+                console.log('QR decodificado:', decodedText);
+                
+                let reservaId, token;
+                
+                const idMatch = decodedText.match(/\/scan\/(\d+)/);
+                const tokenMatch = decodedText.match(/[?&]t=([a-f0-9]+)/);
+                
+                if (idMatch && tokenMatch) {
+                  reservaId = parseInt(idMatch[1], 10);
+                  token = tokenMatch[1];
+                } else {
+                  try {
+                    const url = new URL(decodedText);
+                    const parts = url.pathname.split('/').filter(Boolean);
+                    if (parts.length >= 3 && parts[0] === 'checkin' && parts[1] === 'scan') {
+                      reservaId = parseInt(parts[2], 10);
+                      token = url.searchParams.get('t');
+                    }
+                  } catch (e) {
+                    console.error('No se pudo parsear como URL:', decodedText);
+                  }
+                }
+
+                if (!reservaId || !token) {
+                  throw new Error(`Código QR inválido. Decodificado: "${decodedText}"`);
+                }
+
+                console.log('Validando QR - reservaId:', reservaId, 'token:', token);
+
+                const resp = await api.post('/qr/validar', { reservaId, token });
+                
+                const elapsed = Date.now() - startTime;
+                const minimumDelay = 1500;
+                
+                if (elapsed < minimumDelay) {
+                  await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsed));
+                }
+                
+                setResult(resp.data);
+                setMessage(resp.data?.mensaje ?? 'Check-in procesado');
+                setError(null);
+                
+              } catch (err) {
+                const elapsed = Date.now() - startTime;
+                const minimumDelay = 1500;
+                
+                if (elapsed < minimumDelay) {
+                  await new Promise(resolve => setTimeout(resolve, minimumDelay - elapsed));
+                }
+                
+                console.error('Error en validación:', err);
+                setError(err?.response?.data?.message || err.message || 'Error validando QR');
+                setMessage(null);
+                setResult(null);
+              } finally {
+                setIsValidating(false);
+                setQrScanned(false);
+              }
+            }
+          };
+
+          const onScanError = (err) => {
+            // Ignorar errores de detección normales
+          };
+
+          newScanner.render(onScanSuccess, onScanError);
+        })
+        .catch((err) => {
+          console.error('Error reinicializando scanner:', err);
+        });
+    }
+    
+    setQrScanned(false);
+    setMessage('Apunta la cámara al código QR');
   };
 
   return (

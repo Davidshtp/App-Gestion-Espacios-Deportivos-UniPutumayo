@@ -15,6 +15,7 @@ import GestionEspacios from "./components/GestionEspacios/GestionEspacios"
 import GestionDeportes from './components/GestionDeportes/GestionDeportes';
 import ProfilePage from './pages/Perfil/ProfilePage';
 import MisReservasActivas from './pages/Mis-reservas/MisReservasActivas';
+import AdminConfiguracion from './pages/AdminConfiguracion/AdminConfiguracion';
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -69,6 +70,14 @@ root.render(
             element={
               <AdminRoute>
                 <CheckIn />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="configuracion"
+            element={
+              <AdminRoute>
+                <AdminConfiguracion />
               </AdminRoute>
             }
           />

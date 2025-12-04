@@ -39,7 +39,42 @@ export class ReservaCronService {
 
   async onModuleInit() {
     this.logger.log('Verificación inicial de reservas...');
+    // Generar tokens para reservas pendientes al iniciar
+    await this.generarTokensParaReservasPendientes();
+    // Luego hacer la actualización de estados
     await this.actualizarReservas();
+  }
+
+  async generarTokensParaReservasPendientes() {
+    try {
+      this.logger.log('Generando tokens para reservas pendientes...');
+      const now = new Date();
+      const en24horas = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+      // Buscar todas las reservas que cumplen el requisito pero sin token
+      const pendientes = await this.reservaRepository.find({
+        where: {
+          estado: In(['reservado', 'esperando', 'check_in_previo']),
+          qr_token: IsNull(),
+          fecha_hora: Between(now, en24horas),
+        },
+      });
+
+      this.logger.log(`Se encontraron ${pendientes.length} reservas pendientes de token`);
+
+      for (const r of pendientes) {
+        try {
+          await this.qrService.generarQrParaReserva(r.id_reserva);
+          this.logger.log(`Token generado para reserva ${r.id_reserva}`);
+        } catch (err) {
+          this.logger.error(`Error al generar token para reserva ${r.id_reserva}:`, err.message);
+        }
+      }
+
+      this.logger.log('Generación de tokens completada');
+    } catch (err) {
+      this.logger.error('Error en generación de tokens al iniciar:', err.message);
+    }
   }
 
   @Cron(CronExpression.EVERY_MINUTE)

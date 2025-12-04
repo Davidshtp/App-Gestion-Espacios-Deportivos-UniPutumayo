@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { ReservaEntity } from "src/reservas/entity/reservas.entity";
 import * as crypto from "crypto";
 import { AppGateway } from "src/gateways/app.gateway";
+import { ConfigService } from "src/config/config.service";
 
 @Injectable()
 export class QrService {
@@ -11,11 +12,16 @@ export class QrService {
     @InjectRepository(ReservaEntity)
     private readonly reservaRepo: Repository<ReservaEntity>,
     private readonly reservasGateway: AppGateway,
+    private readonly configService: ConfigService,
   ) {}
 
-  private ventanas(fechaInicio: Date) {
-    const availableFrom = new Date(fechaInicio.getTime() - 5 * 60 * 1000);
-    const expiresAt = new Date(fechaInicio.getTime() + 15 * 60 * 1000);
+  async ventanas(fechaInicio: Date) {
+    // Obtener los minutos de la configuración
+    const minutosAntes = await this.configService.obtenerConfig('qr_minutos_antes');
+    const minutosDespues = await this.configService.obtenerConfig('qr_minutos_despues');
+
+    const availableFrom = new Date(fechaInicio.getTime() - minutosAntes * 60 * 1000);
+    const expiresAt = new Date(fechaInicio.getTime() + minutosDespues * 60 * 1000);
     return { availableFrom, expiresAt };
   }
 
@@ -24,7 +30,7 @@ export class QrService {
     if (!reserva) throw new NotFoundException('Reserva no encontrada');
 
     const token = crypto.randomBytes(32).toString('hex');
-    const { availableFrom, expiresAt } = this.ventanas(reserva.fecha_hora);
+    const { availableFrom, expiresAt } = await this.ventanas(reserva.fecha_hora);
 
     reserva.qr_token = token;
     reserva.qr_available_from = availableFrom;

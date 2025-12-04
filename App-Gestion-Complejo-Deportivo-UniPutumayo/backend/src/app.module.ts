@@ -14,6 +14,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EventosModule } from './eventos/eventos.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { QrModule } from './qr/qr.module';
+import { ConfigModule as ConfiguracionModule } from './config/config.module';
 
 @Module({
   imports: [
@@ -37,7 +38,7 @@ import { QrModule } from './qr/qr.module';
       }),
       inject: [ConfigService],
     }),
-    UserModule, RolModule, ReservasModule, AuthModule, EspacioModule, DeportesModule, EventosModule, CloudinaryModule,QrModule],
+    UserModule, RolModule, ReservasModule, AuthModule, EspacioModule, DeportesModule, EventosModule, CloudinaryModule, QrModule, ConfiguracionModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -2,7 +2,7 @@ import "./Sidebar.css";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useEffect, useRef } from "react";
-import { FiHome, FiCalendar, FiBookmark, FiCheckSquare, FiMapPin, FiUser, FiLogOut, FiMenu, FiX, } from "react-icons/fi";
+import { FiHome, FiCalendar, FiBookmark, FiCheckSquare, FiMapPin, FiUser, FiLogOut, FiMenu, FiX, FiSettings } from "react-icons/fi";
 import { MdSportsBaseball, MdEvent } from "react-icons/md";
 
 export default function Sidebar() {
@@ -182,6 +182,15 @@ export default function Sidebar() {
               >
                 <MdSportsBaseball className="nav-icon" size={18} />
                 <span className="link-text">Deportes</span>
+              </Link>
+
+              <Link
+                to="/configuracion"
+                className={`nav-link ${isActive("/configuracion") ? "active" : ""}`}
+                onClick={handleLinkClick}
+              >
+                <FiSettings className="nav-icon" size={18} />
+                <span className="link-text">Configuración</span>
               </Link>
             </div>
           )}
