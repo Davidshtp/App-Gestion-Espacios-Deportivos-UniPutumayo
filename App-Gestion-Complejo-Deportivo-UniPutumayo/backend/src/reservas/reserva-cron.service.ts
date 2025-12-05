@@ -110,7 +110,14 @@ export class ReservaCronService {
       });
     }
 
-    for (const reserva of reservas) {
+    // También procesar reservas que hayan expirado de días anteriores
+    const reservasActivas = todasLasReservas.filter(r => 
+      !['usado', 'cancelado'].includes(r.estado)
+    );
+
+    const todasParaProcesar = [...new Set([...reservas, ...reservasActivas])];
+
+    for (const reserva of todasParaProcesar) {
       const inicio = new Date(reserva.fecha_hora);
       const fin = new Date(inicio.getTime() + 60 * 60 * 1000); 
       // Cuando la hora actual coincide con la hora de inicio
