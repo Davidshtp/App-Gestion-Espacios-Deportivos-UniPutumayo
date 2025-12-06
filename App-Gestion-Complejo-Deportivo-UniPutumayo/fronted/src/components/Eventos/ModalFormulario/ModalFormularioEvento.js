@@ -136,7 +136,7 @@ export default function ModalFormularioEvento({ visible, onClose, onSubmit, even
                 <div className="evtForm-container">
                     <div className="evtForm-left">
                         <div className="evtForm-sectionHeader">
-                            <h3>📅 Selecciona la Fecha</h3>
+                            <h3>Selecciona la Fecha</h3>
                         </div>
                         <CalendarioReserva
                             onSelectFecha={(f) => setFecha(f)}

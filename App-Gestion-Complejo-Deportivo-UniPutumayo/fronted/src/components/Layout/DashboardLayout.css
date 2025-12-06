@@ -54,6 +54,8 @@ header {
   flex: 1;
   overflow-y: auto;
   background-color: #fdfdfd;
+  overflow-y: auto; /* habilita scroll */
+  scrollbar-width: none; /* Firefox */
 }
 
 .loading {

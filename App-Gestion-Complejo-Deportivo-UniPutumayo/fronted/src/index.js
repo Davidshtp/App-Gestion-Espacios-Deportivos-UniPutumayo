@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login/Login';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import PrivateRoute from './routes/PrivateRoute';
@@ -82,6 +82,7 @@ root.render(
             }
           />
         </Route>
+        <Route path="*" element={<Navigate to="/inicio" replace />} />
       </Routes>
     </Router>
   </GoogleOAuthProvider>
