@@ -4,6 +4,47 @@
     margin-top: 5px;
     padding: 0 16px;
     overflow: hidden;
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes arrowBounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes arrowPulse {
+  0%, 100% {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  50% {
+    box-shadow: 0 6px 16px rgba(76, 118, 162, 0.2);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .noticias-title {
@@ -32,11 +73,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #111827;
+    color: #4c76a2;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s, opacity 0.3s;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     flex-shrink: 0;
+    animation: fadeInScale 0.5s ease-out backwards;
+}
+
+.arrow:first-of-type {
+    animation-delay: 0.1s;
+}
+
+.slider-wrapper > .arrow:last-of-type {
+    animation-delay: 0.15s;
 }
 
 .arrow svg {
@@ -46,9 +96,16 @@
 }
 
 .arrow:hover:not(:disabled) {
-    background-color: #f3f4f6;
-    transform: scale(1.08);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: #f0f4f8;
+    border-color: #4c76a2;
+    color: #3a5a7f;
+    transform: scale(1.12);
+    box-shadow: 0 6px 16px rgba(76, 118, 162, 0.25);
+    animation: arrowPulse 0.8s ease-in-out infinite;
+}
+
+.arrow:active:not(:disabled) {
+    animation: arrowBounce 0.4s ease-out;
 }
 
 .arrow:disabled,
@@ -58,7 +115,7 @@
     color: #9ca3af;
     cursor: default;
     box-shadow: none;
-    transform: none;
+    transform: scale(1);
     opacity: 0;
     pointer-events: none;
 }
@@ -99,10 +156,31 @@
     overflow: hidden;
     padding-bottom: 12px;
     box-sizing: border-box;
+    animation: fadeInScale 0.6s ease-out backwards;
 }
 
 .noticia-card:hover {
     transform: scale(1.02);
+}
+
+.noticia-card:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.noticia-card:nth-child(2) {
+    animation-delay: 0.25s;
+}
+
+.noticia-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.noticia-card:nth-child(4) {
+    animation-delay: 0.35s;
+}
+
+.noticia-card:nth-child(n+5) {
+    animation-delay: 0.4s;
 }
 
 .noticia-card img {

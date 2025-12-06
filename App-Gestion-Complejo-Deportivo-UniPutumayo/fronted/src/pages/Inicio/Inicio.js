@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import EstadisticasUsuario from "../../components/EstadisticasUsuario/EstadisticasUsuario";
 import NoticiasSlider from "../../components/NoticiasSlider/NoticiasSlider";
-import { FiCalendar, FiClock, FiMapPin } from "react-icons/fi";
+import { FiCalendar, FiClock} from "react-icons/fi";
 import { MdEvent } from "react-icons/md";
 import "./Inicio.css";
 

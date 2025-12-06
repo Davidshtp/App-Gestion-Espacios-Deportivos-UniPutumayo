@@ -21,6 +21,38 @@ body,
   padding: 1.5rem 2rem;
   box-sizing: border-box;
   overflow: visible;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* --- Tarjeta general --- */
@@ -32,6 +64,35 @@ body,
   transition: transform 0.4s ease-in-out, min-height 0.4s ease;
   height: 100%;
   min-height: 300px;
+  animation: scaleIn 0.5s ease-out backwards;
+}
+
+.tarjeta:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.tarjeta:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.tarjeta:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.tarjeta:nth-child(4) {
+  animation-delay: 0.25s;
+}
+
+.tarjeta:nth-child(5) {
+  animation-delay: 0.3s;
+}
+
+.tarjeta:nth-child(6) {
+  animation-delay: 0.35s;
+}
+
+.tarjeta:nth-child(n+7) {
+  animation-delay: 0.4s;
 }
 
 /* Hover solo si no está volteada */

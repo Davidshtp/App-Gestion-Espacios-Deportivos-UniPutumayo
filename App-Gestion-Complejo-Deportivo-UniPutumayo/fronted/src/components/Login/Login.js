@@ -225,7 +225,7 @@ export default function Login() {
               {!isRegistering && (
                 <>
                   <div className="options">
-                    <a href="#">¿Olvidaste tu contraseña?</a>
+                    <a href="/inicio">¿Olvidaste tu contraseña?</a>
                   </div>
                   <div className="p-login_google">
                     <p>

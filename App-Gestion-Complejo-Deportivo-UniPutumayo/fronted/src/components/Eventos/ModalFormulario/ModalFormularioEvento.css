@@ -1,21 +1,32 @@
-.modal-overlay {
+.evtForm-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-
+  backdrop-filter: blur(3px);
+  animation: evtFormFadeIn 0.3s ease-out;
 }
 
-/*animacion abrir modal */
-@keyframes expandirModal {
+@keyframes evtFormFadeIn {
   from {
-    transform: scale(0.85);
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(3px);
+  }
+}
+
+@keyframes evtFormExpand {
+  from {
+    transform: scale(0.92);
     opacity: 0;
   }
   to {
@@ -23,155 +34,524 @@
     opacity: 1;
   }
 }
-/* Modal ancho con scroll interno invisible */
-.modal-evento-wide {
-  background: #fef8f8;
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  padding: 2rem;
-  border-radius: 12px;
+
+@keyframes evtFormSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes evtFormSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal principal */
+.evtForm-modal {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border-radius: 16px;
   width: 90%;
   max-width: 1000px;
-  height: 85vh;            /* ← Esto limita su altura */
-  max-height: 800px;
-  overflow: hidden;        /* ← Esto impide que el modal se expanda */
+  height: 80vh;
+  max-height: 700px;
+  overflow: hidden;
   box-sizing: border-box;
-  animation: expandirModal 0.35s ease-out;
+  animation: evtFormExpand 0.4s ease-out;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  position: relative;
+  display: flex;
+  flex-direction: row;
 }
 
-/* Scroll invisible en navegadores Webkit */
-.modal-evento-wide::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+/* Botón cerrar */
+.evtForm-closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Para Firefox */
-.modal-evento-wide {
-  scrollbar-width: none;
+.evtForm-closeBtn:hover {
+  background: #ff6b6b;
+  color: white;
+  transform: rotate(90deg);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 
-/* Columnas del modal */
-.modal-left {
-  flex: 1;
-  min-width: 75vh;
+/* Contenedor */
+.evtForm-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
 }
 
-.modal-right {
+/* Columna izquierda - Calendario */
+.evtForm-left {
+  flex: 0 0 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2.5rem 2rem;
+  border-right: 2px solid #e5e7eb;
+  background: linear-gradient(180deg, #fafbfc 0%, #f3f4f6 100%);
+  overflow-y: auto;
+  animation: evtFormSlideDown 0.5s ease-out 0.1s backwards;
+}
+
+.evtForm-sectionHeader h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: -0.5px;
+}
+
+/* Columna derecha - Formulario */
+.evtForm-right {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: 2.5rem 3rem;
   overflow-y: auto;
-  padding-right: 2rem;       /* espacio para el scrollbar */
-  margin-right: -1rem;       /* lo compensa visualmente */
-  box-sizing: content-box;   /* necesario para evitar que padding afecte el ancho */
-  overflow-x: hidden;      /* evita scroll horizontal */
-  max-width: 100%;         /* asegura que no crezca más del contenedor padre */
+  padding-right: 2rem;
+  animation: evtFormSlideUp 0.5s ease-out 0.15s backwards;
 }
 
+/* Scroll personalizado */
+.evtForm-left::-webkit-scrollbar,
+.evtForm-right::-webkit-scrollbar {
+  width: 8px;
+}
 
-/* Scroll invisible (WebKit) */
-.modal-right::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
+.evtForm-left::-webkit-scrollbar-track,
+.evtForm-right::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.evtForm-left::-webkit-scrollbar-thumb,
+.evtForm-right::-webkit-scrollbar-thumb {
+  background: rgba(76, 118, 162, 0.4);
+  border-radius: 4px;
+}
+
+.evtForm-left::-webkit-scrollbar-thumb:hover,
+.evtForm-right::-webkit-scrollbar-thumb:hover {
+  background: rgba(76, 118, 162, 0.6);
+}
+
+/* Header del formulario */
+.evtForm-header {
+  margin-bottom: 0.5rem;
+}
+
+.evtForm-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: -0.5px;
+}
+
+.evtForm-subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+/* Grupos de formulario */
+.evtForm-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  animation: evtFormSlideUp 0.4s ease-out backwards;
+}
+
+.evtForm-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.evtForm-group:nth-child(3) {
+  animation-delay: 0.25s;
+}
+
+.evtForm-group:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.evtForm-group:nth-child(5) {
+  animation-delay: 0.35s;
+}
+
+.evtForm-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.evtForm-group label svg {
+  color: #4c76a2;
+  flex-shrink: 0;
 }
 
 /* Inputs y textarea */
-.modal-right input,
-.modal-right textarea {
-  width: 100%;
-  padding: 8px;
+.evtForm-group input,
+.evtForm-group textarea {
+  padding: 12px 14px;
   font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: inherit;
+  transition: all 0.25s ease;
+  background-color: #fafbfc;
+  color: #1f2937;
 }
 
-/* Drag & drop area */
-.drop-area {
-  border: 2px dashed #aaa;
-  padding: 1rem;
+.evtForm-group input::placeholder,
+.evtForm-group textarea::placeholder {
+  color: #9ca3af;
+}
+
+.evtForm-group input:focus,
+.evtForm-group textarea:focus {
+  outline: none;
+  border-color: #4c76a2;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(76, 118, 162, 0.08);
+}
+
+.evtForm-textarea {
+  min-height: 90px;
+  resize: vertical;
+  max-height: 150px;
+}
+
+/* Área drag & drop */
+.evtForm-dropArea {
+  border: 2px dashed #d1d5db;
+  padding: 2rem;
   text-align: center;
   cursor: pointer;
   position: relative;
-  border-radius: 6px;
-  transition: 0.2s;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background-color: #fafbfc;
 }
 
-.drop-area.dragover {
-  background-color: #f0f0f0;
-  border-color: #333;
+.evtForm-dropArea:hover {
+  border-color: #4c76a2;
+  background-color: #f0f4f8;
 }
 
-.preview-image {
-  max-width: 100%;
-  max-height: 200px;
-  display: block;
-  margin: 0 auto;
-  flex-shrink: 0;
+.evtForm-dropArea.evtForm-dragover {
+  border-color: #4c76a2;
+  background-color: #e8f1f8;
+  border-style: solid;
 }
 
-.preview-placeholder {
-  color: #888;
-}
-
-/* Botones */
-.modal-botones {
+/* Placeholder de imagen */
+.evtForm-placeholderContent {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
 }
 
-.modal-botones button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.evtForm-placeholderIcon {
+  color: #4c76a2;
+  opacity: 0.6;
 }
 
-.modal-botones .btn-cancelar {
-  background: #ccc;
+.evtForm-previewPlaceholder {
+  margin: 0;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
 }
 
-.modal-botones button:not(.btn-cancelar) {
-  background-color: #007bff;
-  color: white;
+.evtForm-fileTypes {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin: 0;
 }
 
-.modal-right textarea.descripcion-input {
-  min-height: 35px;
-  resize: vertical;
-  flex-shrink: 0;
-  flex-grow: 1;
-  box-sizing: border-box;
-}
-
-.preview-container {
+/* Preview de imagen */
+.evtForm-previewContainer {
   position: relative;
   display: inline-block;
   max-width: 100%;
 }
 
-.remove-image-button {
+.evtForm-previewImage {
+  max-width: 100%;
+  max-height: 200px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.evtForm-removeImageBtn {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  background: rgba(0, 0, 0, 0.6);
+  top: 10px;
+  right: 10px;
+  background: rgba(239, 68, 68, 0.95);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
-  font-size: 16px;
-  line-height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
 }
 
-.remove-image-button:hover {
-  background: rgba(83, 78, 78, 0.8);
+.evtForm-removeImageBtn:hover {
+  background: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+}
+
+/* Botones de acción */
+.evtForm-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e5e7eb;
+  animation: evtFormSlideUp 0.5s ease-out 0.4s backwards;
+}
+
+.evtForm-buttons button {
+  padding: 11px 28px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 130px;
+}
+
+.evtForm-btnSave {
+  background: linear-gradient(135deg, #4c76a2 0%, #3a5a7f 100%);
+  color: white;
+  box-shadow: 0 4px 14px rgba(76, 118, 162, 0.3);
+}
+
+.evtForm-btnSave:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 118, 162, 0.4);
+}
+
+.evtForm-btnSave:active {
+  transform: translateY(0);
+}
+
+.evtForm-btnCancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1.5px solid #e5e7eb;
+}
+
+.evtForm-btnCancel:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+/* Media Queries - Responsive Design */
+
+/* Tablets y pantallas medianas */
+@media (max-width: 1024px) {
+  .evtForm-modal {
+    max-width: 900px;
+    height: 75vh;
+  }
+
+  .evtForm-left {
+    flex: 0 0 380px;
+    padding: 2rem;
+  }
+
+  .evtForm-right {
+    padding: 2rem 2.5rem;
+  }
+}
+
+/* Tablets pequeños y dispositivos móviles grandes */
+@media (max-width: 768px) {
+  .evtForm-modal {
+    width: 95%;
+    max-width: 100%;
+    height: auto;
+    flex-direction: column;
+    max-height: 90vh;
+  }
+
+  .evtForm-left {
+    flex: 0 0 auto;
+    border-right: none;
+    border-bottom: 2px solid #e5e7eb;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    overflow-y: auto;
+    max-height: none;
+  }
+
+  .evtForm-right {
+    flex: 0 0 auto;
+    padding: 1.5rem;
+    gap: 1rem;
+    overflow-y: auto;
+    max-height: none;
+  }
+
+  .evtForm-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .evtForm-left::-webkit-scrollbar,
+  .evtForm-right::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .evtForm-buttons {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .evtForm-buttons button {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Dispositivos móviles pequeños */
+@media (max-width: 480px) {
+  .evtForm-modal {
+    width: 98%;
+    height: auto;
+    max-height: 96vh;
+    overflow-y: auto;
+  }
+
+  .evtForm-overlay {
+    padding: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 20px;
+  }
+
+  .evtForm-closeBtn {
+    width: 36px;
+    height: 36px;
+    top: 15px;
+    right: 15px;
+  }
+
+  .evtForm-left {
+    padding: 1rem;
+    gap: 1rem;
+    overflow-y: auto;
+    max-height: none;
+  }
+
+  .evtForm-right {
+    padding: 1rem;
+    gap: 0.8rem;
+    overflow-y: auto;
+    max-height: none;
+  }
+
+  .evtForm-header h2 {
+    font-size: 1.3rem;
+    margin: 0 0 0.3rem 0;
+  }
+
+  .evtForm-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .evtForm-sectionHeader h3 {
+    font-size: 1.1rem;
+  }
+
+  .evtForm-group label {
+    font-size: 0.9rem;
+    gap: 0.6rem;
+  }
+
+  .evtForm-group input,
+  .evtForm-group textarea {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .evtForm-textarea {
+    min-height: 80px;
+  }
+
+  .evtForm-dropArea {
+    padding: 1.5rem 1rem;
+  }
+
+  .evtForm-placeholderIcon {
+    font-size: 24px;
+  }
+
+  .evtForm-previewPlaceholder {
+    font-size: 0.9rem;
+  }
+
+  .evtForm-fileTypes {
+    font-size: 0.8rem;
+  }
+
+  .evtForm-buttons {
+    flex-direction: column;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .evtForm-buttons button {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+  }
 }
 

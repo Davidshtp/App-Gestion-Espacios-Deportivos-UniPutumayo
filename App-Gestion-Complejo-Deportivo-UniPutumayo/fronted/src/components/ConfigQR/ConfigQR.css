@@ -27,7 +27,7 @@ body::-webkit-scrollbar {
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-30px);
   }
   to {
     opacity: 1;
@@ -49,7 +49,18 @@ body::-webkit-scrollbar {
 @keyframes slideInLeft {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
   }
   to {
     opacity: 1;
@@ -60,11 +71,31 @@ body::-webkit-scrollbar {
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.9);
   }
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes cardFlip {
+  from {
+    opacity: 0;
+    transform: rotateY(-10deg) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: rotateY(0) scale(1);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 0 2px 20px rgba(59, 130, 246, 0.15);
   }
 }
 
@@ -122,7 +153,7 @@ body::-webkit-scrollbar {
   justify-content: space-between;
   align-items: flex-start;
   gap: 30px;
-  animation: fadeInDown 0.6s ease-out;
+  animation: fadeInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .config-header-content h1 {
@@ -131,7 +162,7 @@ body::-webkit-scrollbar {
   margin: 0 0 12px 0;
   font-weight: 800;
   letter-spacing: -1px;
-  animation: slideInLeft 0.7s ease-out;
+  animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .config-subtitle {
@@ -141,7 +172,7 @@ body::-webkit-scrollbar {
   line-height: 1.6;
   max-width: 450px;
   font-weight: 400;
-  animation: slideInLeft 0.7s ease-out 0.1s backwards;
+  animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s backwards;
 }
 
 .config-header-icon {
@@ -152,7 +183,7 @@ body::-webkit-scrollbar {
   justify-content: center;
   opacity: 0.8;
   margin-top: 5px;
-  animation: fadeInDown 0.6s ease-out 0.2s backwards;
+  animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
   transition: transform 0.3s ease;
 }
 
@@ -174,33 +205,33 @@ body::-webkit-scrollbar {
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   box-shadow: none;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: visible;
-  animation: scaleIn 0.5s ease-out;
+  animation: cardFlip 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
 }
 
 .config-card:nth-child(1) {
-  animation-delay: 0s;
+  animation-delay: 0.3s;
 }
 
 .config-card:nth-child(2) {
-  animation-delay: 0.1s;
+  animation-delay: 0.4s;
 }
 
 .config-card:nth-child(3) {
-  animation-delay: 0.2s;
+  animation-delay: 0.5s;
 }
 
 .config-card:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transform: translateY(-3px);
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.12);
+  transform: translateY(-6px);
 }
 
 .config-card.editing {
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  animation: pulse 2s ease-in-out infinite;
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+  animation: glow 2s ease-in-out infinite;
 }
 
 /* Cuerpo de la tarjeta */
@@ -417,43 +448,43 @@ body::-webkit-scrollbar {
 /* Sección de información */
 .config-info-section {
   margin-top: 50px;
-  animation: fadeInUp 0.6s ease-out 0.3s backwards;
+  animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s backwards;
 }
 
 .info-card {
-  background: white;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 28px;
   display: flex;
   gap: 18px;
-  box-shadow: none;
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .info-card:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
+  border-color: #3b82f6;
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+  transform: translateY(-4px);
 }
 
 .info-icon {
   flex-shrink: 0;
   width: 44px;
   height: 44px;
-  background: #f0f9ff;
+  background: #eff6ff;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #3b82f6;
-  animation: scaleIn 0.5s ease-out 0.4s backwards;
-  transition: all 0.3s ease;
+  animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s backwards;
+  transition: all 0.4s ease;
 }
 
 .info-card:hover .info-icon {
-  background: #e0f2fe;
-  transform: rotate(10deg) scale(1.1);
+  background: #dbeafe;
+  transform: rotate(12deg) scale(1.15);
 }
 
 .info-content h4 {
@@ -464,7 +495,7 @@ body::-webkit-scrollbar {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 0.95rem;
-  animation: slideInLeft 0.5s ease-out 0.45s backwards;
+  animation: slideInLeft 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.55s backwards;
 }
 
 .info-content ul {
@@ -479,29 +510,30 @@ body::-webkit-scrollbar {
 .info-content li {
   color: #475569;
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
-  animation: fadeInUp 0.5s ease-out backwards;
+  animation: fadeInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
   transition: all 0.3s ease;
 }
 
 .info-content li:nth-child(1) {
-  animation-delay: 0.5s;
+  animation-delay: 0.6s;
 }
 
 .info-content li:nth-child(2) {
-  animation-delay: 0.55s;
+  animation-delay: 0.7s;
 }
 
 .info-card:hover .info-content li {
-  transform: translateX(4px);
+  transform: translateX(6px);
+  color: #1f2937;
 }
 
 .info-content strong {
   color: #0f172a;
   font-weight: 700;
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   text-transform: capitalize;
 }
 

@@ -1,6 +1,7 @@
 // src/components/GestionEventos/GestionEventos.jsx
 import React, { useEffect, useState, useCallback } from 'react';
 import Swal from 'sweetalert2';
+import { FiCalendar, FiEdit2, FiTrash2, FiPlus } from 'react-icons/fi';
 import { obtenerTodosLosEventosParaAdmin, crearEvento, actualizarEvento, eliminarEvento } from '../../Services/eventos/eventosService';
 import { useAuth } from '../../context/AuthContext';
 import ModalFormularioEvento from './ModalFormulario/ModalFormularioEvento';
@@ -88,6 +89,7 @@ export default function GestionEventos() {
         setEventoEnEdicion(null);
         setMostrarModal(true);
       }}>
+        <FiPlus size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
         Crear Nuevo Evento
       </button>
 
@@ -111,37 +113,48 @@ export default function GestionEventos() {
                   <div className="placeholder-imagen">Sin Imagen</div>
                 )}
               </div>
-              <div className="evento-info">
-                <h3>{evento.nombre}</h3>
-                <p className="evento-fecha">
-                  📅{' '}
-                  {evento.fecha_hora_evento
-                    ? new Date(evento.fecha_hora_evento).toLocaleString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })
-                    : 'Fecha no disponible'}
-                </p>
-                <p className="evento-descripcion">{evento.descripcion}</p>
-              </div>
-              <div className="evento-acciones">
-                <button
-                  className="btn-editar"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setEventoEnEdicion(evento);
-                    setMostrarModal(true);
-                  }}
-                >
-                  Editar
-                </button>
-                <button className="btn-eliminar" onClick={(e) => {
-                  e.stopPropagation();
-                  handleEliminarEvento(evento);
-                }}>Eliminar</button>
+              <div className="evento-content">
+                <div className="evento-info">
+                  <h3 className="evento-titulo">{evento.nombre}</h3>
+                  <div className="evento-fecha-container">
+                    <FiCalendar className="icon-fecha" />
+                    <p className="evento-fecha">
+                      {evento.fecha_hora_evento
+                        ? new Date(evento.fecha_hora_evento).toLocaleString('es-ES', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })
+                        : 'Fecha no disponible'}
+                    </p>
+                  </div>
+                  <p className="evento-descripcion">{evento.descripcion}</p>
+                </div>
+                <div className="evento-acciones">
+                  <button
+                    className="btn-editar"
+                    title="Editar evento"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEventoEnEdicion(evento);
+                      setMostrarModal(true);
+                    }}
+                  >
+                    <FiEdit2 size={16} />
+                  </button>
+                  <button 
+                    className="btn-eliminar" 
+                    title="Eliminar evento"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEliminarEvento(evento);
+                    }}
+                  >
+                    <FiTrash2 size={16} />
+                  </button>
+                </div>
               </div>
             </div>
           ))}

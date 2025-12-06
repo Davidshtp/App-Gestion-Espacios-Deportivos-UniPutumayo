@@ -1,5 +1,6 @@
 // src/components/GestionEventos/ModalFormularioEvento.jsx
 import React, { useState, useEffect, useRef } from 'react';
+import { FiX, FiImage, FiClock, FiFileText, FiType } from 'react-icons/fi';
 import CalendarioReserva from '../../CalendarioReserva/CalendarioReserva';
 import './ModalFormularioEvento.css';
 import Swal from 'sweetalert2';
@@ -76,18 +77,18 @@ export default function ModalFormularioEvento({ visible, onClose, onSubmit, even
 
     const handleDrop = (e) => {
         e.preventDefault();
-        dropRef.current.classList.remove('dragover');
+        dropRef.current.classList.remove('evtForm-dragover');
         const droppedFile = e.dataTransfer.files[0];
         handleFile(droppedFile);
     };
 
     const handleDragOver = (e) => {
         e.preventDefault();
-        dropRef.current.classList.add('dragover');
+        dropRef.current.classList.add('evtForm-dragover');
     };
 
     const handleDragLeave = () => {
-        dropRef.current.classList.remove('dragover');
+        dropRef.current.classList.remove('evtForm-dragover');
     };
 
     const handleSubmit = () => {
@@ -119,86 +120,140 @@ export default function ModalFormularioEvento({ visible, onClose, onSubmit, even
     if (!visible) return null;
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-evento-wide">
-                <div className="modal-left">
-                    <h3>Selecciona la Fecha</h3>
-                    <CalendarioReserva
-                        onSelectFecha={(f) => setFecha(f)}
-                        espacioId={0}
-                    />
-                </div>
+        <div className="evtForm-overlay">
+            <div className="evtForm-modal">
+                <button 
+                    className="evtForm-closeBtn"
+                    onClick={() => {
+                        resetFormulario();
+                        onClose();
+                    }}
+                    title="Cerrar"
+                >
+                    <FiX size={24} />
+                </button>
 
-                <div className="modal-right">
-                    <h2>{eventoInicial ? 'Editar Evento' : 'Crear Evento'}</h2>
-
-                    <input
-                        type="text"
-                        placeholder="Título del Evento"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                    />
-                    <textarea
-                        className="descripcion-input"
-                        placeholder="Descripción"
-                        value={descripcion}
-                        onChange={(e) => setDescripcion(e.target.value)}
-                    />
-
-                    <label>Hora:</label>
-                    <input
-                        type="time"
-                        value={hora}
-                        onChange={(e) => setHora(e.target.value)}
-                    />
-
-                    <label>Imagen del evento:</label>
-                    <div
-                        ref={dropRef}
-                        className="drop-area"
-                        onClick={() => document.getElementById('fileInput').click()}
-                        onDrop={handleDrop}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                    >
-                        {previewUrl ? (
-                            <div className="preview-container">
-                                <img src={previewUrl} alt="Preview" className="preview-image" />
-                                <button
-                                    type="button"
-                                    className="remove-image-button"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setFile(null);
-                                        setPreviewUrl('');
-                                    }}
-                                >
-                                    ✖
-                                </button>
-                            </div>
-                        ) : (
-                            <p className="preview-placeholder">Arrastra una imagen o haz clic aquí</p>
-                        )}
-
-                        <input
-                            id="fileInput"
-                            type="file"
-                            accept="image/*"
-                            hidden
-                            onChange={(e) => handleFile(e.target.files[0])}
+                <div className="evtForm-container">
+                    <div className="evtForm-left">
+                        <div className="evtForm-sectionHeader">
+                            <h3>📅 Selecciona la Fecha</h3>
+                        </div>
+                        <CalendarioReserva
+                            onSelectFecha={(f) => setFecha(f)}
+                            espacioId={0}
                         />
                     </div>
 
-                    <div className="modal-botones">
-                        <button onClick={() => {
-                            handleSubmit();
-                        }}>
-                            {eventoInicial ? 'Guardar Cambios' : 'Crear Evento'}
-                        </button>
-                        <button className="btn-cancelar" onClick={() => {
-                            resetFormulario();
-                            onClose();
-                        }}>Cancelar</button>
+                    <div className="evtForm-right">
+                        <div className="evtForm-header">
+                            <h2>{eventoInicial ? 'Editar Evento' : 'Crear Nuevo Evento'}</h2>
+                            <p className="evtForm-subtitle">Completa los datos del evento</p>
+                        </div>
+
+                        <div className="evtForm-group">
+                            <label htmlFor="nombre">
+                                <FiType size={18} />
+                                Título del Evento
+                            </label>
+                            <input
+                                id="nombre"
+                                type="text"
+                                placeholder="Ej: Torneo de Fútbol"
+                                value={nombre}
+                                onChange={(e) => setNombre(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="evtForm-group">
+                            <label htmlFor="descripcion">
+                                <FiFileText size={18} />
+                                Descripción
+                            </label>
+                            <textarea
+                                id="descripcion"
+                                className="evtForm-textarea"
+                                placeholder="Describe los detalles del evento..."
+                                value={descripcion}
+                                onChange={(e) => setDescripcion(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="evtForm-group">
+                            <label htmlFor="hora">
+                                <FiClock size={18} />
+                                Hora del Evento
+                            </label>
+                            <input
+                                id="hora"
+                                type="time"
+                                value={hora}
+                                onChange={(e) => setHora(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="evtForm-group">
+                            <label htmlFor="imagen">
+                                <FiImage size={18} />
+                                Imagen del Evento
+                            </label>
+                            <div
+                                ref={dropRef}
+                                className="evtForm-dropArea"
+                                onClick={() => document.getElementById('fileInput').click()}
+                                onDrop={handleDrop}
+                                onDragOver={handleDragOver}
+                                onDragLeave={handleDragLeave}
+                            >
+                                {previewUrl ? (
+                                    <div className="evtForm-previewContainer">
+                                        <img src={previewUrl} alt="Preview" className="evtForm-previewImage" />
+                                        <button
+                                            type="button"
+                                            className="evtForm-removeImageBtn"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setFile(null);
+                                                setPreviewUrl('');
+                                            }}
+                                        >
+                                            <FiX size={16} />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="evtForm-placeholderContent">
+                                        <FiImage size={32} className="evtForm-placeholderIcon" />
+                                        <p className="evtForm-previewPlaceholder">Arrastra una imagen aquí</p>
+                                        <span className="evtForm-fileTypes">PNG, JPG, SVG o WEBP (Máx. 2MB)</span>
+                                    </div>
+                                )}
+
+                                <input
+                                    id="fileInput"
+                                    type="file"
+                                    accept="image/*"
+                                    hidden
+                                    onChange={(e) => handleFile(e.target.files[0])}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="evtForm-buttons">
+                            <button 
+                                className="evtForm-btnSave"
+                                onClick={() => handleSubmit()}
+                            >
+                                {eventoInicial ? 'Guardar Cambios' : 'Crear Evento'}
+                            </button>
+                            <button 
+                                className="evtForm-btnCancel" 
+                                onClick={() => {
+                                    resetFormulario();
+                                    onClose();
+                                }}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

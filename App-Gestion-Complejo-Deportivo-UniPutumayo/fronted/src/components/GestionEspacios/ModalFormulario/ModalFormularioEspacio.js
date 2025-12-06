@@ -32,29 +32,31 @@ export default function ModalFormularioEspacio({ visible, onClose, onSubmit, esp
 
   // 🔹 Inicializar formulario al abrir (edición o creación)
   useEffect(() => {
-    if (espacioInicial) {
-      setEspacio(espacioInicial.espacio || '');
-      setPreviewUrl(espacioInicial.imagen_url || '');
-      setFile(null);
+    if (visible) {
+      if (espacioInicial) {
+        setEspacio(espacioInicial.espacio || '');
+        setPreviewUrl(espacioInicial.imagen_url || '');
+        setFile(null);
 
-      // Si el backend trae deportes como [{ id_deporte, nombre }]
-      if (espacioInicial.deportes && espacioInicial.deportes.length > 0) {
-        const seleccionados = espacioInicial.deportes.map((d) => ({
-          value: d.id_deporte,
-          label: d.nombre || 'Sin nombre',
-        }));
-        setDeportesSeleccionados(seleccionados);
+        // Si el backend trae deportes como [{ id_deporte, nombre }]
+        if (espacioInicial.deportes && espacioInicial.deportes.length > 0) {
+          const seleccionados = espacioInicial.deportes.map((d) => ({
+            value: d.id_deporte,
+            label: d.nombre || 'Sin nombre',
+          }));
+          setDeportesSeleccionados(seleccionados);
+        } else {
+          setDeportesSeleccionados([]);
+        }
       } else {
+        // Si es un nuevo espacio
+        setEspacio('');
+        setFile(null);
+        setPreviewUrl('');
         setDeportesSeleccionados([]);
       }
-    } else {
-      // Si es un nuevo espacio
-      setEspacio('');
-      setFile(null);
-      setPreviewUrl('');
-      setDeportesSeleccionados([]);
     }
-  }, [espacioInicial]);
+  }, [visible, espacioInicial]);
 
   // 🔹 Manejar archivo e imagen
   const handleFile = (selected) => {

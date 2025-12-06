@@ -6,9 +6,14 @@ export default function ModalFormularioDeporte({ visible, onClose, onSubmit, dep
   const [nombre, setNombre] = useState("");
 
   useEffect(() => {
-    if (deporteInicial) setNombre(deporteInicial.nombre);
-    else setNombre("");
-  }, [deporteInicial, visible]);
+    if (visible) {
+      if (deporteInicial) {
+        setNombre(deporteInicial.nombre);
+      } else {
+        setNombre("");
+      }
+    }
+  }, [visible, deporteInicial]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

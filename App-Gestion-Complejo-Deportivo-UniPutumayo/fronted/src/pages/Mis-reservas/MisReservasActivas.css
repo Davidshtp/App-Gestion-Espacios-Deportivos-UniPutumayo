@@ -6,6 +6,40 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #f8f9fa;
   min-height: 100vh;
+  animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Título */
@@ -16,6 +50,7 @@
   color: #374151;
   text-align: left;
   letter-spacing: -0.025em;
+  animation: slideInDown 0.5s ease-out 0.1s backwards;
 }
 
 /* Lista de reservas */
@@ -38,6 +73,31 @@
   text-align: left;
   transition: all 0.15s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  animation: scaleIn 0.4s ease-out backwards;
+}
+
+.reserva-card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.reserva-card:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.reserva-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.reserva-card:nth-child(4) {
+  animation-delay: 0.35s;
+}
+
+.reserva-card:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+.reserva-card:nth-child(n+6) {
+  animation-delay: 0.45s;
 }
 
 .reserva-card:hover {

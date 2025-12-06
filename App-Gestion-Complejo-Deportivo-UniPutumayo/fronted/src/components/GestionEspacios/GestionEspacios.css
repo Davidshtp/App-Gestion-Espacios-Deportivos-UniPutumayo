@@ -8,6 +8,40 @@
     background-color: #ffffff;
     border-radius: 12px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Título principal */
@@ -15,6 +49,7 @@
     margin-bottom: 2rem;
     font-size: 2rem;
     color: #000;
+    animation: slideInDown 0.5s ease-out 0.1s backwards;
 }
 
 /* Botón de crear espacio */
@@ -29,6 +64,7 @@
     margin: 0 auto 20px auto;
     display: block;
     transition: all 0.2s ease-in-out;
+    animation: slideInUp 0.5s ease-out 0.2s backwards;
 }
 
 .btn-crear-espacio:hover {
@@ -65,7 +101,31 @@
     gap: 12px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     min-height: 300px;
-    /* altura uniforme */
+    animation: scaleIn 0.4s ease-out backwards;
+}
+
+.espacio-card:nth-child(1) {
+  animation-delay: 0.3s;
+}
+
+.espacio-card:nth-child(2) {
+  animation-delay: 0.35s;
+}
+
+.espacio-card:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.espacio-card:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+.espacio-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.espacio-card:nth-child(n+6) {
+  animation-delay: 0.55s;
 }
 
 .espacio-card:hover {
